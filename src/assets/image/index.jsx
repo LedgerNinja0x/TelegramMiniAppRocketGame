@@ -9,8 +9,15 @@ import rocketExplosed from "./rocket-explosed.svg";
 import rocketActive from "./rocket-active.svg";
 import inputNumberArrowDown from "./input-number-arrow-down.png";
 import inputNumberArrowUp from "./input-number-arrow-up.png";
-import trailingButton from "./TrailingButton.png"
+import trailingButton from "./TrailingButton.png";
+import navPlay from "./nav_play.svg";
+import navEarn from "./nav_earn.svg";
+import navFriends from "./nav_friends.svg";
+import navStats from "./nav-stats.svg";
+import navWallet from "./nav_wallet.svg";
 
 export const Img = {
   agree, disagree,counter1, counter2, counter3, 
-  coin, rocketInactive, rocketExplosed, rocketActive, inputNumberArrowDown, inputNumberArrowUp, trailingButton }; 
+  coin, rocketInactive, rocketExplosed, rocketActive, 
+  inputNumberArrowDown, inputNumberArrowUp, trailingButton,
+  navPlay, navEarn, navFriends, navStats, navWallet }; 

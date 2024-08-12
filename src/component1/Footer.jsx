@@ -1,18 +1,37 @@
-/* eslint-disable react/prop-types */
-import React, { memo } from 'react'
-import { Link } from 'react-router-dom'
+import React, {useState} from "react";
+import { Img } from "../assets/image";
+import ToggleButton from "../component/atom/toggleButton";
 
-export default memo(function Footer () {
+const footerData = [
+  {img : Img.navPlay, text: "Play"},
+  {img : Img.navEarn, text: "Earn"},
+  {img : Img.navFriends, text: "Friends"},
+  {img : Img.navStats, text: "Stats"},
+  {img : Img.navWallet, text: "Wallet"},
+]
+
+const Footer = () =>{
+  const [slot,setSlot] = useState(footerData[0].text);
+  console.log(slot)
+  const footerItems = footerData.map((data, index) =>{
+    return(
+      <ToggleButton key={index}
+      img={data.img} 
+      text={data.text} 
+      bgColor = {" bg-white bg-opacity-40 "} 
+      textColor = {" text-white "}
+      fgColor = {" bg-transparent "} 
+      setSlot = {(value)=>setSlot(value)} 
+      disabled = {slot===data.text} />
+    )
+  }) 
   return (
-    <footer id='footer'>
-      <hr/>
-      <div id='footer-flexbox'>
-        <span id='footer-flexbox-left'>© 2020 <Link to='/'>Rocket-X.io</Link>. All rights reserved.</span>
-        <div id='footer-flexbox-right'>
-          <Link to='/terms'>Terms and Privacy Policy</Link>
-          <Link to='/support'>Support</Link>
-        </div>
+    <div className="flex bg-bgNavbar w-full fixed bottom-4 gap-1.5 h-15 rounded-xl p-[5px]">
+      <div className={`flex  gap-1.5  items-center justify-center `}>
+        {footerItems}
       </div>
-    </footer>
+    </div>
   )
-})
+}
+
+export default Footer;

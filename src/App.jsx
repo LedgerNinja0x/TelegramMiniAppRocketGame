@@ -1,6 +1,7 @@
 import React from 'react';
 import MainPage from "./pages/MainPage"
 import Header from "./component1/Header";
+import Footer from './component1/Footer';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <div className='p-4'>
         <MainPage/>
       </div>
-      
+      <Footer/>
     </div>
   </>
     
