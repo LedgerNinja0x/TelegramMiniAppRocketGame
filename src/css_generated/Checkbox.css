@@ -1,0 +1,28 @@
+.checkbox {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  margin-right: 12px;
+}
+
+.checkbox input {
+  position: relative;
+  z-index: -9999;
+}
+
+.checkbox span {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 16px;
+  height: 16px;
+  display: block;
+  background: url("../public/images/unchecked.png");
+  background-size: 16px;
+  background-repeat: no-repeat;
+}
+
+.checkbox input:checked + span {
+  background: url("../public/images/checked.png");
+  background-size: 16px;
+}

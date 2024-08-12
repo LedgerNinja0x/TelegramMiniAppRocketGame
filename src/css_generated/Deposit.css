@@ -1,0 +1,41 @@
+#profile-deposit .profile-text {
+  display: block;
+  margin-top: 24px;
+  margin-bottom: 29px;
+}
+#profile-deposit input {
+  width: 373px;
+  margin-bottom: 29px;
+  font-weight: bold;
+}
+#profile-deposit .button-filled {
+  height: 36px;
+  background: #2C41FF;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 32px;
+  margin: 0;
+}
+#profile-deposit .button-filled:hover {
+  background: #4b5dff;
+}
+#profile-deposit .button-filled:active {
+  background: #6d7bff;
+}
+#profile-deposit h2 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+#profile-deposit .profile-table {
+  grid-template-columns: 100px auto 180px;
+}
+
+@media (max-width: 1051px) {
+  #profile-deposit input {
+    width: 100%;
+    margin-bottom: 0;
+  }
+  #profile-deposit .button-filled {
+    width: 100%;
+  }
+}

@@ -1,0 +1,85 @@
+#profile-affilate span {
+  display: block;
+}
+#profile-affilate .profile-text {
+  margin-bottom: 24px;
+}
+#profile-affilate .profile-label {
+  margin-bottom: 17px;
+  margin-left: 5px;
+}
+#profile-affilate input {
+  width: 275px;
+  font-weight: bold;
+}
+#profile-affilate #profile-affilate-grid {
+  display: grid;
+  border: 1px solid #18A0FB;
+  box-sizing: border-box;
+  line-height: 46px;
+  text-align: center;
+  margin: 24px 0;
+}
+#profile-affilate #profile-affilate-grid :nth-child(2) {
+  font-size: 22px;
+  color: white;
+  background: #756CFF;
+}
+#profile-affilate .button-filled {
+  height: 36px;
+  background: #2C41FF;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 32px;
+  margin: 0;
+}
+#profile-affilate .button-filled:hover {
+  background: #4b5dff;
+}
+#profile-affilate .button-filled:active {
+  background: #6d7bff;
+}
+#profile-affilate #profile-affilate-tabs {
+  width: 100%;
+  border-bottom: 1px solid #2C41FF;
+  display: grid;
+  grid-template-columns: 92px 92px;
+  grid-template-rows: 36px;
+  line-height: 36px;
+  text-align: center;
+  height: 36px;
+  box-sizing: border-box;
+}
+#profile-affilate #profile-affilate-tabs .selected {
+  border: 1px solid #2C41FF;
+  border-bottom: 1px solid white;
+  font-weight: bold;
+  line-height: 34px;
+}
+#profile-affilate #profile-affilate-tabs :not(.selected) {
+  color: #2C41FF;
+}
+#profile-affilate #profile-affilate-tabs :not(.selected):hover {
+  cursor: pointer;
+}
+#profile-affilate .profile-table-referrals {
+  grid-template-columns: 35px 1fr 1fr 1fr 80px;
+}
+#profile-affilate .profile-table-referrals img {
+  height: 16px;
+  margin-top: 10px;
+  margin-left: calc(50% - 6px);
+}
+#profile-affilate .profile-table-incomes {
+  grid-template-columns: 35px 1fr 1fr 1fr;
+}
+
+@media (max-width: 1051px) {
+  #profile-affilate input {
+    width: 100%;
+    margin-bottom: 0;
+  }
+  #profile-affilate .button-filled {
+    width: 100%;
+  }
+}
