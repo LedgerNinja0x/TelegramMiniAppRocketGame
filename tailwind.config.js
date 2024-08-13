@@ -6,7 +6,7 @@ module.exports = {
       colors: {
         'white_20' : '#ffffff33',
         'bgGradientColor1' : '#0000d0',
-        'bgGradientColor2' : '#ffffff',
+        'bgGradientColor2' : '#9393EB',
         'bgNavbar' : '#3861fb',
         'blueFaded' : "#ACC1D9"
       },
