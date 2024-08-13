@@ -24,18 +24,19 @@
   display: block;
   position: absolute;
   left: 50%;
+  top: 100%
 }
 #game #game-rocket.active, #game #game-rocket.inactive {
   width: 75;
   height: 84px;
   margin-left: -38px;
-  top: 240px;
+  top: calc(100vh - 550px);
 }
 #game #game-rocket.explosed {
   width: 90px;
   height: 100px;
   margin-left: -45px;
-  top: 230px;
+  top: 190px;
 }
 #game .shaking {
   animation: shake 3s infinite ease-in-out both;
@@ -57,12 +58,20 @@
     transform: translate3d(12px, 0, 0);
   }
 }
-#game #game-gauge {
+#game #game-gauge.left {
   position: absolute;
   left: 0px;
-  top: 50px;
+  top: 0px;
   width: 48px;
-  height: 224px;
+  height: calc(100vh - 500px);
+  color: #FFFFFF;
+}
+#game #game-gauge.right {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 48px;
+  height: calc(100vh - 500px);
   color: #FFFFFF;
 }
 #game #game-gauge div {

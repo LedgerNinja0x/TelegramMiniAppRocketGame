@@ -1,6 +1,5 @@
 import React from "react";
 import { Img } from "../../assets/image";
-
 const PannelRocket = ({amount}) =>{
   return(
     <div className="flex flex-col h-[283px] justify-between items-center">
