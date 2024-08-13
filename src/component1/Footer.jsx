@@ -31,8 +31,10 @@ const Footer = () => {
     )
   })
   return (
-    <div className="flex bg-bgNavbar w-full gap-1.5 h-15 rounded-xl p-[5px] justify-between">
-      {footerItems}
+    <div className="fixed bottom-0 p-4 w-full z-[1]">
+      <div className="flex bg-bgNavbar w-full gap-1.5 h-15 rounded-xl p-[5px] justify-between">
+        {footerItems}
+      </div>
     </div>
   )
 }
