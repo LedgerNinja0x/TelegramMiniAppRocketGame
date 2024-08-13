@@ -1,0 +1,98 @@
+const taskData = [
+    {
+        src: "ins-avatar.svg",
+        title: "Task title",
+        amount: 100,
+        status: 0
+    },
+    {
+        src: "you-avatar.svg",
+        title: "Task title",
+        amount: 100,
+        status: 1
+    },
+    {
+        src: "tg-avatar.svg",
+        title: "Task title",
+        amount: 100,
+        status: 2
+    },
+    {
+        src: "you-avatar.svg",
+        title: "Task title",
+        amount: 100,
+        status: 2
+    },
+    {
+        src: "you-avatar.svg",
+        title: "Task title",
+        amount: 100,
+        status: 2
+    },
+    {
+        src: "tg-avatar.svg",
+        title: "Task title",
+        amount: 100,
+        status: 2
+    },
+    {
+        src: "ins-avatar.svg",
+        title: "Task title",
+        amount: 100,
+        status: 2
+    },
+    {
+        src: "you-avatar.svg",
+        title: "Task title",
+        amount: 100,
+        status: 2
+    },
+    {
+        src: "you-avatar.svg",
+        title: "Task title",
+        amount: 100,
+        status: 2
+    },
+    {
+        src: "you-avatar.svg",
+        title: "Task title",
+        amount: 100,
+        status: 2
+    }
+]
+
+const TaskList = () => {
+    return (
+        <div className="flex flex-col gap-2 text-[14px] overflow-auto" style={{height: "calc(100vh - 300px)"}}>
+            {
+                taskData.map((_task, _index) => (
+                    <div className="bg-[#0000001A] rounded-lg flex justify-between items-center py-2 pl-2 pr-4 text-[14px]">
+                        <div className="flex gap-2 items-center">
+                            <img src={`/image/icon/${_task.src}`} alt="" className="w-8 h-8" />
+                            <div className="flex flex-col">
+                                <div className="text-white">{_task.title}</div>
+                                <div className="text-[#ffffff99]">+{_task.amount} Coins</div>
+                            </div>
+                        </div>
+                        {
+                            _task.status == 0 ?
+                            <button className="rounded-lg w-[61px] py-1 px-0 h-7 bg-[#3861FB] text-white text-center text-[14px]">
+                                Start
+                            </button> :
+                            _task.status == 1 ?
+                            <button className="rounded-lg w-[61px] py-1 px-0 h-7 bg-white text-[#080888] text-center text-[14px]">
+                                Claim
+                            </button> :
+                            <img 
+                                src={`/image/icon/circle-checkmark.svg`}
+                                className="w-[19px] h-[19px]"
+                            />
+                        }
+                    </div>
+                ))
+            }
+        </div>
+    )
+}
+
+export default TaskList;

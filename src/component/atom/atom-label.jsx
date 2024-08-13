@@ -5,3 +5,5 @@ const AtomLabel = ({ content }) => {
         </div>
     )
 }
+
+export default AtomLabel;
