@@ -19,7 +19,6 @@ const PannelSetting = () =>{
     <div className="flex w-full  gap-4">
       <InputNumber InputProps={{ value: bet, min: 1, step: 1, onChange: e => { setBet(parseFloat(e.target.value)) } }}/>
       <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setAutoStop(parseFloat(e.target.value)) } }}/>
-
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { Img } from "../assets/image";
 
 const Header = () =>{
   return(
-    <div className="flex w-full  py-[7px] text-white text-[17px] font-medium \
+    <div className="flex w-full py-[7px] text-white text-[17px] font-medium \
           leading-[22px] justify-between items-center text-center top-3 box-border p-4 ">
       <div>Close</div>
       <div className="flex flex-col">

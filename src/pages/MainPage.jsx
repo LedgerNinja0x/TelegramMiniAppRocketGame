@@ -6,7 +6,7 @@ import '../css_generated/Index.css'
 
 const MainPage = () =>{
   return(
-    <div className="flex flex-col w-full gap-4 ">
+    <div className="flex-auto flex flex-col w-full h-full justify-between">
       <SectionScore/>
       <SectionRocket/>
       <SectionControl/> 
