@@ -7,12 +7,14 @@ import Earned from './pages/Earned';
 import Friends from './pages/Friends';
 import Stats from './pages/Stats';
 import Wallet from './pages/Wallet';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <div className="App bg-gradient-to-b from-bgGradientColor1 to-bgGradientColor2 h-screen flex flex-col relative">
       <BrowserRouter>
         <Header />
+        <Toaster />
         <div className='p-4 flex-auto'>
           <Routes>
             <Route path="/" element={<MainPage />} />
