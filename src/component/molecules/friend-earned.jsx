@@ -1,4 +1,5 @@
 import AtomLabel from "../atom/atom-label";
+import ShadowButton from "../atom/shadow-btn";
 
 const FriendEarned = () => {
     return (
@@ -26,9 +27,7 @@ const FriendEarned = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-4 rounded-[12px] w-full text-center py-[14px] text-[16px] font-bold cursor-pointer border border-solid border-transparent invite-btn-gradient-border bg-[#3434DA] text-white invite-btn-shadow">
-                Invite a friend
-            </div>
+            <ShadowButton className={"mt-4 invite-btn-gradient-border bg-[#3434DA]"} content={"Invite a friend"} />
         </div>
     )
 }
