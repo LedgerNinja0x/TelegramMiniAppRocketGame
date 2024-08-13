@@ -65,7 +65,7 @@ const taskData = [
 
 const TaskList = () => {
     return (
-        <div className="flex flex-col gap-2 text-[14px] overflow-auto" style={{height: "calc(100vh - 300px)"}}>
+        <div className="flex flex-col gap-2 text-[14px] overflow-auto" style={{height: "calc(100vh - 250px)"}}>
             {
                 taskData.map((_task, _index) => (
                     <div className="bg-[#0000001A] rounded-lg flex justify-between items-center py-2 pl-2 pr-4 text-[14px]">

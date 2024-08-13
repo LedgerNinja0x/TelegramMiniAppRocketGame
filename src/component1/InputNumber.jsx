@@ -41,7 +41,7 @@ const InputNumber = memo(({ InputProps }) => {
   };
 
   return (
-    <div className='input-number-parent relative w-full h-11 text-black'>
+    <div className='input-number-parent relative w-full h-11 text-black hover:outline-[#0000FF4D] hover:outline-4'>
       <input
         className='input-number absolute w-full h-11 top-0 left-0 box-border rounded-xl pl-2'
         type='number'
@@ -49,19 +49,21 @@ const InputNumber = memo(({ InputProps }) => {
         onChange={handleChange}
         onKeyPress={handleKeyPress}
       />
-      <div className='absolute flex flex-col w-3 h-3 right-2.5 top-2'>
-        <img
-          className='top-2 cursor-pointer'
-          src='image/input-number-arrow-up.png'
-          alt='Increase'
-          onClick={incrementValue}
-        />
-        <img
-          className='bottom-2 cursor-pointer'
-          src='image/input-number-arrow-down.png'
-          alt='Decrease'
-          onClick={decrementValue}
-        />
+      <div className='absolute right-2.5 top-1/2 transform -translate-y-1/2'>
+        <div className='flex flex-col'>  
+          <img
+            className='cursor-pointer w-3 h-3'
+            src='image/icon/up-arrow.svg'
+            alt='Increase'
+            onClick={incrementValue}
+          />
+          <img
+            className='cursor-pointer w-3 h-3'
+            src='image/icon/down-arrow.svg'
+            alt='Decrease'
+            onClick={decrementValue}
+          />
+        </div>
       </div>
     </div>
   );

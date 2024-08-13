@@ -4,7 +4,7 @@ import FriendsList from "../component/molecules/friends-list";
 
 const Friends = () => {
     return (
-        <div className="flex flex-col h-full gap-4 justify-between">
+        <div className="flex flex-col h-full gap-4 pb-[76px] justify-between">
             <FriendComment />
             <FriendsList />
             <FriendEarned />

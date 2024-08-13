@@ -1,24 +1,28 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
+import { useNavigate } from "react-router";
 import SwitchButton from "../component/atom/switchButtton.jsx";
 import InputNumber from "../component1/InputNumber";
 import AppContext from "../component1/AppContext";
 import Game from '../component1/Game.jsx'
 import { useCookies } from 'react-cookie';
 import DropDown from "../component1/DropDown";
-import '../css_generated/DropDown.css';
-import "../css_generated/Style.css";
 import PannelScore from "../component/atom/PannelScore";
-import { Img } from "../assets/image";import '../css_generated/Index.css'
+import { Img } from "../assets/image"; 
 import { avatar } from "../assets/avatar/index.js";
-const MainPage = () =>{
+import ScrollModal from "../component/atom/scroll-modal.jsx";
+import NavPlay from "../component/svg/nav_play.jsx";
+import ShadowButton from "../component/atom/shadow-btn.jsx";
+
+const MainPage = () => {
   const context = useContext(AppContext);
   const cookiesData = useCookies(['user_id', 'session']);
   const [cookies] = !context.ssrFlag ? cookiesData : [context.cookies];
 
   const modalRef = useRef();
-  
+
   // State variables
   const [stopWasPressed, setStopWasPressed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [realGame, setRealGame] = useState(false);
   const [autoMode, setAutoMode] = useState(false);
   const [gamePhase, setGamePhase] = useState();
@@ -37,7 +41,7 @@ const MainPage = () =>{
   const [games, setGames] = useState(0);
   const [wins, setWins] = useState(0);
   const [losses, setLosses] = useState(0);
-  
+
 
   // Refs for mutable state
   const balanceRef = useRef(balance);
@@ -47,6 +51,7 @@ const MainPage = () =>{
   const valueAfterWinRef = useRef(valueAfterWin);
   const operationAfterLossRef = useRef(operationAfterLoss);
   const valueAfterLossRef = useRef(valueAfterLoss);
+  const navigate = useNavigate();
   const counterItem = [Img.counter1, Img.counter2, Img.counter3];
 
   // Effect to validate and adjust state values
@@ -204,7 +209,7 @@ const MainPage = () =>{
     }, 50);
   };
 
-  const handleGameStopped = (data={stop : 'x',profit : ''}) => {
+  const handleGameStopped = (data = { stop: 'x', profit: '' }) => {
     setFinalResult(data.stop);
     setGamePhase('stopped');
     updateGameHistory(data, 'stopped');
@@ -270,64 +275,89 @@ const MainPage = () =>{
     }
   };
 
+  const setPlayMode = (condition) => {
+    console.log(condition);
+    
+    setAutoMode(condition);
+    setIsModalOpen(condition);
+  }
+
+  const goToUserInfo = () => {
+    navigate("userInfo");
+  }
+
   return (
-    <div id='index-operations' className={`"flex flex-col flex-auto w-full gap-4  justify-between"${autoMode ? 'auto-mode' : ''} flex flex-col gap-4`}>
-      <div className="flex w-full bg-white_20 justify-between p-2 rounded-[10px] text-white text-base leading-5">
+    <div id='index-operations' className={`flex flex-col h-full w-full gap-4 pb-[76px] justify-between ${autoMode ? 'auto-mode' : ''} flex flex-col gap-4`}>
+      <div className="flex w-full bg-white_20 justify-between p-2 rounded-[10px] text-white text-base leading-5" onClick={goToUserInfo}>
         <div className="flex gap-2.5">
-          <img src={avatar.avatar1} width="64px" height="64px" className="max-w-16 h-16"  alt = "avatar" />
+          <img src={avatar.avatar1} width="64px" height="64px" className="max-w-16 h-16" alt="avatar" />
           <div className="flex flex-col w-full gap-0.5">
             <p className="font-semibold">Sergei Kovtun</p>
             <p className="font-semibold">Beginner · 1/10</p>
             <p>1808944</p>
           </div>
         </div>
-        
+
         <div className="flex flex-col gap-2">
-          <PannelScore img = {Img.agree} text2 = {"Won"} text3={"48"}/>
-          <PannelScore img = {Img.disagree} text2 = {"Lost"} text3={"32"}/>
-        </div>
-    </div>
-
-      <Game finalResult={finalResult} gamePhase={gamePhase} realGame={realGame} setRealGame={setRealGame} setLoaderIsShown={setLoaderIsShown}/>
-      <div className="flex flex-col text-white">
-      <div className="flex flex-row justify-center">
-        <span className={!autoMode ? 'selected' : ''} onClick={() => setAutoMode(false)}>Manual</span>
-        <SwitchButton checked={autoMode} onChange={e => setAutoMode(e.target.checked)} />
-        <span className={autoMode ? 'selected' : ''} onClick={() => setAutoMode(true)}>Auto</span>
-      </div>
-
-      <div className="flex gap-4">
-        <div className="flex flex-col w-1/2">
-          <div className="text-sm leading-5">Bet</div>
-          <InputNumber InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
-          <div className="text-xs leading-[14px]">Minimal Bet is 0.1 Coin</div>
-        </div>
-
-        <div className="flex flex-col w-1/2">
-          <div className="text-sm leading-5">Auto Stop</div>
-          <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setAutoStop(parseFloat(e.target.value)) } }} />
-          <div className="text-xs leading-[14px]">Auto Cash Out when this amount will be reached</div>
+          <PannelScore img={Img.agree} text2={"Won"} text3={"48"} />
+          <PannelScore img={Img.disagree} text2={"Lost"} text3={"32"} />
         </div>
       </div>
-      {gamePhase !== 'started' ? (
-        <button onClick={startGame} disabled={balance === '0.00' || bet < 1 || autoStop < 1.01 || balance < 1 || isNaN(bet) || isNaN(autoStop) || isNaN(valueAfterWin) || isNaN(valueAfterLoss)}>Start</button>
-      ) : (
-        <button onClick={stopGame}>Stop</button>
-      )}
 
-      {autoMode && (
-        <>
+      <Game finalResult={finalResult} gamePhase={gamePhase} realGame={realGame} setRealGame={setRealGame} setLoaderIsShown={setLoaderIsShown} />
+      <div className="flex flex-col text-white gap-4">
+        <div className="flex flex-row justify-center text-base font-medium">
+          <span className={`text-white ${!autoMode ? 'selected' : ''}`} onClick={() => setPlayMode(true)}>Manual</span>
+          <SwitchButton checked={autoMode} onChange={e => setPlayMode(e.target.checked)} />
+          <span className={`text-[#3861FB] ${autoMode ? 'selected' : ''}`} onClick={() => setPlayMode(false)}>Auto</span>
+        </div>
+
+        <div className="flex gap-4">
+          <div className="flex flex-col w-1/2 gap-1">
+            <div className="text-sm leading-5">Bet</div>
+            <InputNumber InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
+            <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Minimal Bet is 0.1 Coin</div>
+          </div>
+
+          <div className="flex flex-col w-1/2 gap-1">
+            <div className="text-sm leading-5">Auto Stop</div>
+            <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setAutoStop(parseFloat(e.target.value)) } }} />
+            <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Auto Cash Out when this amount will be reached</div>
+          </div>
+        </div>
+        {
+          gamePhase !== 'started' ? 
+          (
+            <ShadowButton
+              action={startGame} 
+              content={"Start"}
+              disabled={
+                balance === '0.00' || bet < 1 || autoStop < 1.01 || 
+                balance < 1 || isNaN(bet) || isNaN(autoStop) || isNaN(valueAfterWin) 
+                || isNaN(valueAfterLoss)
+              }
+            />
+          ) : 
+          (
+            <ShadowButton
+              className={"bg-[#CC070A] shadow-btn-red-border"}
+              content={"Stop"}
+              action={stopGame}
+            />
+          )
+        }
+
+        <ScrollModal icon={<NavPlay />} title="Auto Launch" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
           <div className='index-operations-top'>If Loss</div>
           <div className='index-operations-top'>{operationAfterLoss === 'Increase Bet by' ? 'Coefficient' : 'Base Bet'}</div>
           <DropDown label={operationAfterLoss} content={['Return to base Bet']} onChange={e => setOperationAfterLoss(e)} />
           <InputNumber InputProps={{ value: valueAfterLoss, min: 1, step: 1, onChange: e => setValueAfterLoss(parseFloat(e.target.value)) }} />
-          
+
           <div className='index-operations-top'>If Win</div>
           <div className='index-operations-top'>{operationAfterWin === 'Increase Bet by' ? 'Coefficient' : 'Base Bet'}</div>
           <DropDown label={operationAfterWin} content={['Increase Bet by']} onChange={e => setOperationAfterWin(e)} />
           <InputNumber InputProps={{ value: valueAfterWin, min: 1, step: 1, onChange: e => setValueAfterWin(parseFloat(e.target.value)) }} />
-        </>
-      )}
+        </ScrollModal>
       </div>
     </div>
   );

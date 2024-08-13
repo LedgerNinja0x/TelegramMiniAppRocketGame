@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 import React, { memo, useState } from 'react'
+import "../css_generated/DropDown.css";
 
 export default memo(function DropDown ({ label, content, onChange }) {
   const [showDropDown, setShowDropDown] = useState(false)
