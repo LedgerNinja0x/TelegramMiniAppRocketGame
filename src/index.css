@@ -17,3 +17,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.invite-btn-gradient-border {
+  border-image-source: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #4444E0 100%);
+  border-image-slice: 1; /* This ensures the gradient covers the border */
+  border-width: 1px; /* Adjust this if you want a different border width */
+}
+
+.invite-btn-shadow {
+  box-shadow: 0px 2px 0px 0px #191998;
+}

@@ -4,6 +4,8 @@ import MainPage from "./pages/MainPage"
 import Header from "./component1/Header";
 import Footer from './component1/Footer';
 import Earned from './pages/Earned';
+import Friends from './pages/Friends';
+import Stats from './pages/Stats';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path='/play' element={<MainPage />} />
           <Route path='/earn' element={<Earned />} />
+          <Route path='/friends' element={<Friends />} />
+          <Route path='/stats' element={<Stats />} />
         </Routes>
         <Footer />
       </BrowserRouter>
