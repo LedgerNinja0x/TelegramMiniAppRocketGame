@@ -1,17 +1,35 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ToggleButton = ({
-  className, disabled, bgColor, textColor, 
-  text, img, setSlot, fgColor
-    }) =>{
+  className, 
+  disabled, 
+  bgColor, 
+  textColor,
+  text, 
+  img, 
+  fgColor
+}) => {
   return (
-    <div className={`${className} ${(disabled) ?(bgColor+" "+textColor)
-      :(fgColor+" bg-transparent text-[#ACC1D9]")} 
-      flex flex-col text-center items-center rounded-lg text-[9px] font-medium w-[62px] h-[50px] leading-[10px] justify-center cursor-pointer `}
-      onClick={()=>setSlot(text)}>
-      <img src={img} width={24} height={24} alt = "Toggle Button" />
-      <p>{text}</p>    
-    </div>
+    <Link 
+      to={`/${text}`}
+      className={`
+        ${className} 
+        ${
+          (disabled) ? 
+          (bgColor + " " + textColor) : 
+          (fgColor + " bg-transparent text-[#ACC1D9]")
+        } 
+        flex flex-col text-center items-center rounded-lg text-[9px] font-medium w-[62px] h-[50px] gap-[2px] leading-[10px] justify-center cursor-pointer `
+      }
+    >
+      <div className="w-6 h-6">
+      {
+        img
+      }
+      </div>
+      <div className="capitalize">{text}</div>
+    </Link>
   )
 }
 export default ToggleButton;

@@ -7,7 +7,8 @@ module.exports = {
         'white_20' : '#ffffff33',
         'bgGradientColor1' : '#0000d0',
         'bgGradientColor2' : '#ffffff',
-        'bgNavbar' : '#3861fb'
+        'bgNavbar' : '#3861fb',
+        'blueFaded' : "#ACC1D9"
       },
       fontFamily: {
         roboto: ['Roboto', 'sans-serif']
