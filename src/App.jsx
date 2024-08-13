@@ -6,6 +6,7 @@ import Footer from './component1/Footer';
 import Earned from './pages/Earned';
 import Friends from './pages/Friends';
 import Stats from './pages/Stats';
+import Wallet from './pages/Wallet';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/earn' element={<Earned />} />
           <Route path='/friends' element={<Friends />} />
           <Route path='/stats' element={<Stats />} />
+          <Route path='/wallet' element={<Wallet />} />
         </Routes>
         <Footer />
       </BrowserRouter>

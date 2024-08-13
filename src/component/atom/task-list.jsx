@@ -1,3 +1,5 @@
+import CheckMark from "../svg/check-mark";
+
 const taskData = [
     {
         src: "ins-avatar.svg",
@@ -83,10 +85,9 @@ const TaskList = () => {
                             <button className="rounded-lg w-[61px] py-1 px-0 h-7 bg-white text-[#080888] text-center text-[14px]">
                                 Claim
                             </button> :
-                            <img 
-                                src={`/image/icon/circle-checkmark.svg`}
-                                className="w-[19px] h-[19px]"
-                            />
+                            <div className="text-white">
+                                <CheckMark />
+                            </div>
                         }
                     </div>
                 ))

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router";
 import ToggleButton from "../component/atom/toggleButton";
-import NavEarn from "../component/footer-svg/nav_earn";
-import NavFriends from "../component/footer-svg/nav_friends";
-import NavPlay from "../component/footer-svg/nav_play";
-import NavWallet from "../component/footer-svg/nav_wallet";
-import NavStats from "../component/footer-svg/nav-stats";
+import NavEarn from "../component/svg/nav_earn";
+import NavFriends from "../component/svg/nav_friends";
+import NavPlay from "../component/svg/nav_play";
+import NavWallet from "../component/svg/nav_wallet";
+import NavStats from "../component/svg/nav-stats";
 
 const footerData = [
   { img: <NavPlay color="white" />, text: "play" },

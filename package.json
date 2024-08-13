@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "aes256": "^1.1.0",
     "bootstrap": "^5.3.3",
+    "clsx": "^2.1.1",
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.12.0",
     "mui": "^0.0.1",
@@ -21,6 +22,7 @@
     "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
     "saas": "^1.0.0",
+    "tailwind-merge": "^2.5.2",
     "web-vitals": "^2.1.4",
     "webpack": "^5.93.0"
   },
