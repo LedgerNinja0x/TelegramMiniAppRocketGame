@@ -1,7 +1,7 @@
-import aes256 from 'aes256'
+// import aes256 from 'aes256'
 
-const key = 'y5*)Q:J1IqFj|)g^/2<2)MM0i'
-export const cipher = aes256.createCipher(key)
+// const key = 'y5*)Q:J1IqFj|)g^/2<2)MM0i'
+// export const cipher = aes256.createCipher(key)
 
 /**
  * Database connection handler

@@ -10,8 +10,12 @@ import rocketActive from "./rocket-active.svg";
 import inputNumberArrowDown from "./input-number-arrow-down.png";
 import inputNumberArrowUp from "./input-number-arrow-up.png";
 import trailingButton from "./TrailingButton.png";
+import youWon from "./youwon.svg";
+import wow from "./wow.svg";
+import crash from "./crash.png";
 
 export const Img = {
   agree, disagree,counter1, counter2, counter3, 
   coin, rocketInactive, rocketExplosed, rocketActive, 
-  inputNumberArrowDown, inputNumberArrowUp, trailingButton }; 
+  inputNumberArrowDown, inputNumberArrowUp, trailingButton,
+  youWon, wow, crash }; 

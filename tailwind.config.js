@@ -11,7 +11,8 @@ module.exports = {
         'blueFaded' : "#ACC1D9"
       },
       fontFamily: {
-        roboto: ['Roboto', 'sans-serif']
+        roboto: ['Roboto', 'sans-serif'],
+        BadaBoom:['BadaBoom BB','sans-serif']
       },
       height: {
         'height_1px' : '1px',
