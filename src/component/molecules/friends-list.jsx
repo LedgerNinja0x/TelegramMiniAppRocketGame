@@ -1,40 +1,37 @@
 import AtomLabel from "../atom/atom-label";
 import FriendInfo from "../atom/friend-info";
 
-const friendData = [
-    {
-        url: "anna.svg",
-        name: "Anna Brown",
-        label: "Beginner",
-        rate: 1,
-        id: 1808944,
-        coin: 100,
-        ton: 6.688
-    },
-    {
-        url: "john.svg",
-        name: "John Smith",
-        label: "Beginner",
-        rate: 1,
-        id: 1808935,
-        coin: 100,
-        ton: 0
-    }
-]
-
-const FriendsList = () => {
+const FriendsList = ( { friendData } ) => {
     return (
-        <div className="flex-auto">
-            <AtomLabel content={"List of your friends"} />
-            <div className="flex flex-col gap-2 mt-4">
-                {
-                    friendData.map((_friend, _index) => {
-                        return (
-                            <FriendInfo key={_index} data={_friend} />
-                        )
-                    })
-                }
-            </div>
+        <div className="flex-auto" style={{height: "calc(100vh - 500px)"}}>
+            {
+                friendData.length > 0 ? 
+                (
+                    <>
+                        <AtomLabel content={"List of your friends"} />
+                        <div className="flex flex-col gap-2 mt-4">
+                            {
+                                friendData.map((_friend, _index) => {
+                                    return (
+                                        <FriendInfo key={_index} data={_friend} />
+                                    )
+                                })
+                            }
+                        </div>
+                    </>
+                ) : (
+                    <div className="py-[30px] flex flex-col items-center gap-4 text-center my-auto h-full">
+                        <img 
+                            src="/image/main/friends.png"
+                            alt=""
+                            className="h-full max-w-auto"
+                        />
+                        <div className="text-[15px] text-white">
+                            Invite a friend and you'll both get 100 points. Every time the invited person tops up their TON balance, you will receive 1% of the top-up amount.
+                        </div>
+                    </div>
+                )
+            }
         </div>
     )
 }

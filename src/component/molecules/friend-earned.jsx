@@ -1,7 +1,7 @@
 import AtomLabel from "../atom/atom-label";
 import ShadowButton from "../atom/shadow-btn";
 
-const FriendEarned = () => {
+const FriendEarned = ( {setIsModalOpen} ) => {
     return (
         <div>
             <AtomLabel content={"Earned"} />
@@ -27,7 +27,7 @@ const FriendEarned = () => {
                     </div>
                 </div>
             </div>
-            <ShadowButton className={"mt-4 invite-btn-gradient-border bg-[#3434DA]"} content={"Invite a friend"} />
+            <ShadowButton className={"mt-4 invite-btn-gradient-border bg-[#3434DA]"} content={"Invite a friend"} action={() => setIsModalOpen(true)} />
         </div>
     )
 }
