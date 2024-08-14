@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import UserInfo from './pages/UserInfo';
 import Stars from './component1/Stars';
 
+
 function App() {
   return (
     <div className="App h-screen flex flex-col relative">
