@@ -283,7 +283,7 @@ const MainPage = () => {
   }
 
   const goToUserInfo = () => {
-    navigate("userInfo");
+    navigate("/userInfo");
   }
 
   return (

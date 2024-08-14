@@ -8,6 +8,7 @@ import Friends from './pages/Friends';
 import Stats from './pages/Stats';
 import Wallet from './pages/Wallet';
 import { Toaster } from 'react-hot-toast';
+import UserInfo from './pages/UserInfo';
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
             <Route path='/friends' element={<Friends />} />
             <Route path='/stats' element={<Stats />} />
             <Route path='/wallet' element={<Wallet />} />
-            <Route path='/userInfo' element={<Wallet />} />
+            <Route path='/userInfo' element={<UserInfo />} />
           </Routes>
         </div>
         <Footer />
