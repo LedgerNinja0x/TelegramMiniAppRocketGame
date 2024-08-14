@@ -21,9 +21,10 @@ code {
 
 .shadow-btn-blue-border {
   border-image-source: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #4444E0 100%);
-  border-image-slice: 1; /* This ensures the gradient covers the border */
+  /* border-image-slice: 1; This ensures the gradient covers the border */
   border-width: 1px; /* Adjust this if you want a different border width */
 }
+
 
 .shadow-btn-red-border {
   border-image-source: linear-gradient(180deg, #FFFFFF00 0%, #EA2F32 100%);
@@ -39,4 +40,7 @@ code {
 
 .invite-btn-shadow {
   box-shadow: 0px 2px 0px 0px #191998;
+}
+.invite-btn-setting {
+  box-shadow: 0px 2px 0px 0px #cccccc;
 }

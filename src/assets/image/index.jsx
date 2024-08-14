@@ -13,9 +13,11 @@ import trailingButton from "./TrailingButton.png";
 import youWon from "./youwon.svg";
 import wow from "./wow.svg";
 import crash from "./crash.png";
+import go from "./Go.svg";
+import imgSetting from "./img_setting.svg";
 
 export const Img = {
   agree, disagree,counter1, counter2, counter3, 
   coin, rocketInactive, rocketExplosed, rocketActive, 
   inputNumberArrowDown, inputNumberArrowUp, trailingButton,
-  youWon, wow, crash }; 
+  youWon, wow, crash ,go, imgSetting}; 

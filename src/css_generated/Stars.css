@@ -7,7 +7,7 @@
   overflow: hidden;
   pointer-events: none;
   background-size: 100vw 400vh;
-  background-image: linear-gradient(to bottom, #000037,#2D2DA6);
+  background-image: linear-gradient(to bottom, black, black, #001AFF, #001AFF, rgba(196, 196, 196, 0));
   background-position-y: 233.33%;
   animation: 40s flying forwards;
   animation-play-state: paused;

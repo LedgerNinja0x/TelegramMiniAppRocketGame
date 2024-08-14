@@ -16,9 +16,9 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
 
   const [currentResult, setCurrentResult] = useState(1)
   const [timerHandler, setTimerHandler] = useState()
-  const [counterNumber, setCounterNumber] =useState(3);
+  const [counterNumber, setCounterNumber] =useState(0);
   const [counterFlag, setCounterFlag] = useState(false);
-  const counterItem = [Img.counter1, Img.counter2, Img.counter3];
+  const counterItem = [Img.go, Img.counter1, Img.counter2, Img.counter3];
 
    if (gamePhase === 'stopped') {
     clearInterval(timerHandler)
@@ -30,13 +30,14 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
 
     if (gamePhase === 'started') {
       if(!counterFlag){
-      setCounterNumber(3)
-      setTimeout(() => { setCounterNumber(2) }, 1000)
-      setTimeout(() => { setCounterNumber(1) }, 2000)
+      setCounterNumber(4)
+      setTimeout(() => { setCounterNumber(3) }, 1000)
+      setTimeout(() => { setCounterNumber(2) }, 2000)
+      setTimeout(() => { setCounterNumber(1) }, 3000)
       setTimeout(() => { 
         setCounterNumber(0);
         setCounterFlag(true) 
-      }, 3000)}
+      }, 4000)}
      
         counterFlag && setTimerHandler(setInterval(() => {
         timer += 100
@@ -57,15 +58,15 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
     
   }, [gamePhase,counterFlag])
 
-  // useEffect(() => () => {
-  //   if (context.socket) {
-  //     context.socket.send(JSON.stringify({ operation: 'stop' }))
-  //   }
-  //   document.getElementById('stars1').style.animationPlayState =
-  //   document.getElementById('stars2').style.animationPlayState =
-  //   document.getElementById('stars3').style.animationPlayState =
-  //   document.getElementById('stars').style.animationPlayState = 'paused'
-  // }, [])
+  useEffect(() => () => {
+    
+    if (gamePhase === 'stopped'){
+    document.getElementById('stars1').style.animationPlayState =
+    document.getElementById('stars2').style.animationPlayState =
+    document.getElementById('stars3').style.animationPlayState =
+    document.getElementById('stars').style.animationPlayState = 'paused'
+  }
+  }, [])
 
   function generateGauge () {
     const price = 0.5
@@ -79,7 +80,7 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
     const isSecondWide = !isFirstWide
     
     return (
-      <>
+      <div className='relative'>
         <div
           className = { + isFirstWide ? 'game-gauge-wide' : 'game-gauge-narrow '}
           style = {{ bottom: first * 75 + '%' }}>
@@ -95,7 +96,7 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
           style = {{ bottom: third * 75 + '%' }}>
           {isThirdWide ? <span>x{Math.ceil(currentResult) + 1}</span> : <></>}
         </div>
-      </>
+      </div>
     )
   }
 
@@ -166,7 +167,7 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
   score = score === 'Crashed...' ? 'Crashed...' : `x${score}`
 
   return (
-    <div id='game' className='flex-auto flex flex-col h-auto justify-between items-center"'>
+    <div id='game' className='flex-auto flex flex-col h-full justify-between items-center"'>
 
       {/* <div id='game-toggle'>
         <span className={!realGame ? 'selected' : ''} onClick={() => { switchChanged({ target: { checked: false } }) }}>Virtual</span>
@@ -178,10 +179,10 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
           <img src = {Img.coin} width={44} height={44} className="max-w-11 h-11" alt = "coin" />
           <p className="text-[40px] text-white font-extrabold">{amount.toFixed(2)}</p>
         </div>
-        {counterNumber<4 &&counterNumber?<img src={counterItem[counterNumber-1]} width={56} height={56}/>:""}
-        {gamePhase === 'started' && counterNumber === 0 &&  <div className='text-2xl leading-7 mt-6 text-white font-roboto text-center'>{score}</div>}
-        <div className='items-ce'>
-          {comment && <img src={commentImg} height={43} className='max-w-fit h-11'/>}
+        {counterNumber<5 &&counterNumber?<img className=' start_waiting ' src={counterItem[counterNumber-1]} width={56} height={56}/>:""}
+        {gamePhase === 'started' && counterNumber === 0 &&  <div className=' text-2xl leading-7 mt-6 text-white font-roboto text-center'>{score}</div>}
+        <div className='items-center justify-center h-fit'>
+          {comment && <img src={commentImg} height={43} className=' max-w-fit h-11'/>}
         </div>
         </div>  
         

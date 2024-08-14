@@ -2,12 +2,11 @@ import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import "../css_generated/InputNumber.css";
 
-const InputNumber = memo(( {InputProps} ) => {
+const InputText = memo(( {InputProps} ) => {
   const [value, setValue] = useState(InputProps.value || '');
 
   const handleKeyPress = (e) => {
-    const allowedChars = '0123456789.';
-    const isInvalidKey = (e.key.length === 1 && !allowedChars.includes(e.key)) ||
+    const isInvalidKey = e.key.length === 1  ||
                          (e.key === '.' && value.includes('.'));
 
     if (isInvalidKey) {
@@ -44,7 +43,7 @@ const InputNumber = memo(( {InputProps} ) => {
     <div className={`input-number-parent relative w-full h-11 text-black hover:outline-[#0000FF4D] hover:outline-4` }>
       <input
         className={`input-number absolute w-full h-11 top-0 left-0 box-border rounded-xl pl-2 ${InputProps.disabled ? "text-[#FFFFFF99] bg-white_20 cursor-none contain-none select-none" : ""}`}
-        type='number'
+        type='text'
         value={value}
         onChange={handleChange}
         onKeyPress={handleKeyPress}
@@ -69,11 +68,11 @@ const InputNumber = memo(( {InputProps} ) => {
   );
 });
 
-InputNumber.propTypes = {
+InputText.propTypes = {
   InputProps: PropTypes.shape({
     value: PropTypes.string,
     onChange: PropTypes.func,
   }).isRequired,
 };
 
-export default InputNumber;
+export default InputText;

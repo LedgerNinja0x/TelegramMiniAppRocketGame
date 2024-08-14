@@ -74,6 +74,9 @@
   height: calc(100vh - 500px);
   color: #FFFFFF;
 }
+.start_waiting {
+  margin-top: calc(50vh - 330px);
+}
 #game #game-gauge div {
   position: absolute;
   right: 0px;
