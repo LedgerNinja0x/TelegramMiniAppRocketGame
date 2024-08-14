@@ -121,7 +121,7 @@ const GenerateTask = (_task, _index) => {
 
 const TaskList = () => {
     return (
-        <div className="flex flex-col gap-2 text-[14px] overflow-auto" style={{ height: "calc(100vh - 250px)" }}>
+        <div className="flex flex-col gap-2 text-[14px] overflow-auto pb-4" style={{ height: "calc(100vh - 250px)" }}>
             {
                 taskData.map((_task, _index) => GenerateTask(_task, _index))
             }

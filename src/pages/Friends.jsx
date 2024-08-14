@@ -33,6 +33,7 @@ const Friends = () => {
 
     const [ friendList, setFriendList ] = useState([]);
     const [ isOpen, setIsOpen ] = useState(false);
+    const [ isClosing, setIsClosing ] = useState(false);
 
     const copyLink = () => {
         toast('Referral link is copied',
