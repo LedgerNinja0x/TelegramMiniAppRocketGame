@@ -9,7 +9,7 @@ import FriendRanking from "../component/atom/friend-ranking.jsx";
 
 const statsList = [
     {
-        src: "Coin.svg",
+        src: "coin-y.svg",
         amount: "10,968.67",
         id: 1
     },

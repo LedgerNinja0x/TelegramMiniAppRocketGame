@@ -16,7 +16,7 @@ const FriendInfo = ( { data }) => {
             <div className="flex flex-col justify-between items-end text-white" >
                 <div className="flex items-center gap-2 text-[14px] font-medium">
                     <img 
-                        src="/image/Coin.svg"
+                        src="/image/coin-y.svg"
                         alt=""
                         className="w-6 h-6"
                     />

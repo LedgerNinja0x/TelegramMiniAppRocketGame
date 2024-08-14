@@ -5,7 +5,7 @@ import StatList from "../component/molecules/stat-list";
 
 const statsList = [
     {
-        src: "Coin.svg",
+        src: "coin-y.svg",
         amount: "10,968.67",
         id: 1
     },

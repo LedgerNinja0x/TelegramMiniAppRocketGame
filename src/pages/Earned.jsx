@@ -5,7 +5,7 @@ import EarningTask from "../component/molecules/earning-task";
 const tabList = [
     {
         id: 1,
-        src: "coin.svg",
+        src: "coin-y.svg",
         amount: 600
     },
     {
