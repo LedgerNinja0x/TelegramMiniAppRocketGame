@@ -17,7 +17,6 @@ function App() {
     <div className="App h-screen flex flex-col relative">
       <Stars/>
       <BrowserRouter>
-        <Header />
         <Toaster />
         <div className='p-4 flex-auto'>
           <Routes>

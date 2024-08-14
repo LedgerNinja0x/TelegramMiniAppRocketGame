@@ -82,7 +82,7 @@ const StatList = () => {
                 <div>Stop/Crash</div>
                 <div>Profit</div>
             </div>
-            <div className="overflow-auto" style={{height: "calc(100vh - 270px)"}}>
+            <div className="overflow-auto" style={{height: "calc(100vh - 180px)"}}>
                 {
                     statData.map((_statdata, _index) => (
                         <StatInfo data={_statdata} key={_index} />
