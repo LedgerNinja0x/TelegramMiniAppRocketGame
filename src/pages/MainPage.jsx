@@ -217,7 +217,6 @@ const MainPage = () => {
   const handleGameStarted = () => {
     const animation = document.getElementById('stars').style.animation
     document.getElementById('stars').style.animation = 'none'
-    // const animation = "none";
     document.getElementById('stars').style.animation = 'none'
     setTimeout(() => {
       setFinalResult(0);
