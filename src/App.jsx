@@ -8,15 +8,12 @@ import Friends from './pages/Friends';
 import Stats from './pages/Stats';
 import Wallet from './pages/Wallet';
 import { Toaster } from 'react-hot-toast';
-<<<<<<< Updated upstream
 import UserInfo from './pages/UserInfo';
-=======
 import Stars from './component1/Stars';
->>>>>>> Stashed changes
 
 function App() {
   return (
-    <div className="App bg-gradient-to-b from-bgGradientColor1 to-bgGradientColor2 h-screen flex flex-col relative">
+    <div className="App h-screen flex flex-col relative">
       <Stars/>
       <BrowserRouter>
         <Header />

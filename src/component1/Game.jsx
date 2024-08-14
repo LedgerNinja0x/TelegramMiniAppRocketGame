@@ -7,7 +7,7 @@ import { useCookies } from 'react-cookie'
 import "../css_generated/Game.css"
 import { Img } from '../assets/image'
 
-export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGame, setLoaderIsShown, amount = 10.00,isMounted }) {
+export default memo(function Game({ gamePhase, finalResult, realGame, setRealGame, setLoaderIsShown, amount = 10.00, isMounted }) {
   const context = useContext(AppContext);
   const cookiesData = useCookies(['user_id', 'session']);
   const [cookies] = !context.ssrFlag ? cookiesData : [context.cookies];
@@ -16,30 +16,34 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
 
   const [currentResult, setCurrentResult] = useState(1)
   const [timerHandler, setTimerHandler] = useState()
-  const [counterNumber, setCounterNumber] =useState(0);
+  const [counterNumber, setCounterNumber] = useState(0);
   const [counterFlag, setCounterFlag] = useState(false);
   const counterItem = [Img.go, Img.counter1, Img.counter2, Img.counter3];
 
-   if (gamePhase === 'stopped') {
+  if (gamePhase === 'stopped') {
     clearInterval(timerHandler)
-  } 
+  }
 
   useEffect(() => {
     let isMounted = true
     let timer = 0
 
     if (gamePhase === 'started') {
-      if(!counterFlag){
-      setCounterNumber(4)
-      setTimeout(() => { setCounterNumber(3) }, 1000)
-      setTimeout(() => { setCounterNumber(2) }, 2000)
-      setTimeout(() => { setCounterNumber(1) }, 3000)
-      setTimeout(() => { 
-        setCounterNumber(0);
-        setCounterFlag(true) 
-      }, 4000)}
-     
-        counterFlag && setTimerHandler(setInterval(() => {
+      setCurrentResult(1);
+      if (!counterFlag) {
+        setCounterNumber(4)
+        let time = 0;
+        const countTimeHandler = setInterval(() => {
+          setCounterNumber((number) => (number - 1))
+          time++;
+          if (time == 4) {
+            clearInterval(countTimeHandler);
+            setCounterFlag(true);
+          }
+        }, 1000)
+      }
+
+      counterFlag && setTimerHandler(setInterval(() => {
         timer += 100
         if (isMounted) {
           try {
@@ -52,55 +56,56 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
       }, 100))
     } else if (gamePhase === 'stopped' || gamePhase === 'crashed') {
       clearInterval(timerHandler)
-      setCounterFlag(false)
+      setCounterFlag(false);
+      if (counterNumber > 0) {
+        setCounterNumber(0)
+      }
     }
-
-    
-  }, [gamePhase,counterFlag])
+  }, [gamePhase, counterFlag])
 
   useEffect(() => () => {
-    
-    if (gamePhase === 'stopped'){
-    document.getElementById('stars1').style.animationPlayState =
-    document.getElementById('stars2').style.animationPlayState =
-    document.getElementById('stars3').style.animationPlayState =
-    document.getElementById('stars').style.animationPlayState = 'paused'
-  }
+
+    if (gamePhase === 'stopped') {
+      document.getElementById('stars1').style.animationPlayState =
+        document.getElementById('stars2').style.animationPlayState =
+        document.getElementById('stars3').style.animationPlayState =
+        document.getElementById('stars').style.animationPlayState = 'paused'
+    }
   }, [])
 
-  function generateGauge () {
+  function generateGauge() {
     const price = 0.5
-    let first= price - currentResult % price
+    let first = price - currentResult % price
     first = !(currentResult % price) ? 0 : first
-    const  second = first + price
-    const  third = second + price
+    const second = first + price
+    const third = second + price
     let isFirstWide = currentResult % 1 > 0.5
     isFirstWide = currentResult < 1.01 ? true : isFirstWide
     const isThirdWide = isFirstWide
     const isSecondWide = !isFirstWide
-    
+
     return (
-      <div className='relative'>
+      <div className='relative h-[90%]'>
         <div
-          className = { + isFirstWide ? 'game-gauge-wide' : 'game-gauge-narrow '}
-          style = {{ bottom: first * 75 + '%' }}>
+          className={+ isFirstWide ? 'game-gauge-wide' : 'game-gauge-narrow '}
+          style={{ bottom: first * 75 + '%' }}>
           {isFirstWide ? <span>x{Math.ceil(currentResult)}</span> : <></>}
         </div>
         <div
-          className = { isSecondWide ? 'game-gauge-wide' : 'game-gauge-narrow'}
-          style = {{ bottom: second * 75 + '%' }}>
+          className={isSecondWide ? 'game-gauge-wide' : 'game-gauge-narrow'}
+          style={{ bottom: second * 75 + '%' }}>
           {isSecondWide ? <span>x{Math.ceil(currentResult)}</span> : <></>}
         </div>
         <div
-          className = { isThirdWide ? 'game-gauge-wide' : 'game-gauge-narrow'}
-          style = {{ bottom: third * 75 + '%' }}>
+          className={isThirdWide ? 'game-gauge-wide' : 'game-gauge-narrow'}
+          style={{ bottom: third * 75 + '%' }}>
           {isThirdWide ? <span>x{Math.ceil(currentResult) + 1}</span> : <></>}
         </div>
       </div>
     )
   }
 
-  function switchChanged (e) {
+  function switchChanged(e) {
     if (e.target.checked && !cookies.name) {
       modalRef.current.style.display = 'block'
     } else {
@@ -112,10 +117,10 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
   let score = finalResult === 'Crashed...' ? 'Crashed...' : finalResult || currentResult
 
   if (typeof window !== 'undefined') {
-    // document.getElementById('stars1').style.animationPlayState =
-    // document.getElementById('stars2').style.animationPlayState =
-    // document.getElementById('stars3').style.animationPlayState =
-    // document.getElementById('stars').style.animationPlayState = gamePhase === 'started' ? 'running' : 'paused'
+    // document.getElementById('stars1')?.style.animationPlayState =
+    // document.getElementById('stars2')?.style.animationPlayState =
+    // document.getElementById('stars3')?.style.animationPlayState =
+    // document.getElementById('stars')?.style.animationPlayState = gamePhase === 'started' ? 'running' : 'paused';
 
     try {
       if (currentResult >= 1.2) {
@@ -138,9 +143,9 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
 
   const comments = ['WoW!', 'Cool!', 'Amazing!', 'Awesome!', "That's Hot!", 'You are Epic!']
 
-  let comment ;
+  let comment;
   let commentImg = Img.wow;
-  
+
   if (score >= 3 && score <= 3.2) {
     comment = comments[0]
   } else if (score >= 3 && score <= 3.2) {
@@ -162,12 +167,12 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
   if (score.toString().indexOf('.') === -1) {
     score += '.00'
   }
-  
+
 
   score = score === 'Crashed...' ? 'Crashed...' : `x${score}`
 
   return (
-    <div id='game' className='flex-auto flex flex-col h-full justify-between items-center"'>
+    <div id='game' className='flex-auto flex flex-col h-full justify-between items-center relative'>
 
       {/* <div id='game-toggle'>
         <span className={!realGame ? 'selected' : ''} onClick={() => { switchChanged({ target: { checked: false } }) }}>Virtual</span>
@@ -176,36 +181,43 @@ export default memo(function Game ({ gamePhase, finalResult, realGame, setRealGa
       </div> */}
       <div className='flex flex-col items-center justify-between'>
         <div className="flex gap-2 items-center justify-center font-extrabold ">
-          <img src = {Img.coin} width={44} height={44} className="max-w-11 h-11" alt = "coin" />
+          <img src={Img.coin} width={44} height={44} className="max-w-11 h-11" alt="coin" />
           <p className="text-[40px] text-white font-extrabold">{amount.toFixed(2)}</p>
         </div>
-        {counterNumber<5 &&counterNumber?<img className=' start_waiting ' src={counterItem[counterNumber-1]} width={56} height={56}/>:""}
-        {gamePhase === 'started' && counterNumber === 0 &&  <div className=' text-2xl leading-7 mt-6 text-white font-roboto text-center'>{score}</div>}
-        <div className='items-center justify-center h-fit'>
-          {comment && <img src={commentImg} height={43} className=' max-w-fit h-11'/>}
+        {
+          counterNumber < 5 &&
+            counterNumber > 0 ?
+            <img className='absolute top-1/3 z-10' src={counterItem[counterNumber - 1]} width={56} height={56} /> : ""
+        }
+        {
+          gamePhase === 'started' && counterNumber === 0 &&
+          <div className='text-2xl leading-7 mt-6 text-white font-roboto text-center score-position z-10'>{score}</div>
+        }
+        <div className='items-center justify-center h-fit absolute top-1/3 z-10'>
+          {comment && <img src={commentImg} height={43} className='max-w-fit h-11 z-20' />}
         </div>
-        </div>  
-        
-      
+      </div>
+
+
       <div className='flex items-center'>
-      {counterNumber===0 && gamePhase === 'started' 
-        ? <img
-          id='game-rocket'
-          src='/image/rocket-active.svg'
-          className='shaking active'/>
-        : gamePhase === 'crashed'
+        {counterNumber === 0 && gamePhase === 'started'
           ? <img
             id='game-rocket'
-            src='/image/rocket-explosed.svg'
-            className='explosed'/>
-          : <img
-            id='game-rocket'
-            src='/image/rocket-inactive.svg'
-            className='inactive'/>}
+            src='/image/rocket-active.svg'
+            className='shaking active' />
+          : gamePhase === 'crashed'
+            ? <img
+              id='game-rocket'
+              src='/image/rocket-explosed.svg'
+              className='explosed' />
+            : <img
+              id='game-rocket'
+              src='/image/rocket-inactive.svg'
+              className='inactive' />}
       </div>
-      
-      
-            
+
+
+
       <div id='game-gauge' className='left'>
         {generateGauge()}
       </div>
