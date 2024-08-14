@@ -7,7 +7,7 @@ import Game from '../component1/Game.jsx'
 import { useCookies } from 'react-cookie';
 import DropDown from "../component1/DropDown";
 import PannelScore from "../component/atom/PannelScore";
-import { Img } from "../assets/image"; 
+import { Img } from "../assets/image";
 import { avatar } from "../assets/avatar/index.js";
 import ScrollModal from "../component/atom/scroll-modal.jsx";
 import NavPlay from "../component/svg/nav_play.jsx";
@@ -46,8 +46,8 @@ const MainPage = () => {
   const [losses, setLosses] = useState(0);
   const [winCoefficient, setWinCoefficient] = useState("X1");
   const [lostCoefficient, setLostCoefficient] = useState("X1");
-  const [winResult, setWinResult] = useState ("increse Bet by Bet");
-  const [lostResult, setLostResult] = useState ("Return to base Bet");
+  const [winResult, setWinResult] = useState("increse Bet by Bet");
+  const [lostResult, setLostResult] = useState("Return to base Bet");
 
 
   // Refs for mutable state
@@ -59,10 +59,12 @@ const MainPage = () => {
   const operationAfterLossRef = useRef(operationAfterLoss);
   const valueAfterLossRef = useRef(valueAfterLoss);
   const navigate = useNavigate();
-  const counterItem = [Img.counter1, Img.counter2, Img.counter3,Img.go];
-  const imgSettingButton = () => {return (
-    <img src={Img.imgSetting} width={24} height={24} alt ="setting" />
-  )}
+  const counterItem = [Img.counter1, Img.counter2, Img.counter3, Img.go];
+  const imgSettingButton = () => {
+    return (
+      <img src={Img.imgSetting} width={24} height={24} alt="setting" />
+    )
+  }
 
   const handleModalButton = () => {
     startGame();
@@ -292,7 +294,7 @@ const MainPage = () => {
 
   const setPlayMode = (condition) => {
     console.log(condition);
-    
+
     setAutoMode(condition);
     setIsModalOpen(condition);
   }
@@ -320,9 +322,9 @@ const MainPage = () => {
       </div>
 
       <Game finalResult={finalResult} gamePhase={gamePhase} realGame={realGame} setRealGame={setRealGame} setLoaderIsShown={setLoaderIsShown} />
-     
-        <div className="flex flex-col text-white gap-4">
-        <div className={`${gamePhase === 'started' ? "opacity-20 !text-white":""}`}>
+
+      <div className="flex flex-col text-white gap-4">
+        <div className={`${gamePhase === 'started' ? "opacity-20 !text-white" : ""}`}>
           <div className="flex flex-row justify-center text-base font-medium">
             <span className={`text-white ${!autoMode ? 'selected' : ''}`} onClick={() => setPlayMode(true)}>Manual</span>
             <SwitchButton checked={autoMode} onChange={e => setPlayMode(e.target.checked)} />
@@ -345,94 +347,94 @@ const MainPage = () => {
         </div>
 
         {
-          gamePhase !== 'started' ? 
-          (
-            <div className="flex gap-2 w-full justify-between">
-            {autoMode &&<ShadowButton className="flex w-1/5 bg-white justify-center items-center invite-btn-setting border-white" 
-              content={<SettingButton />} 
-              action={()=>setIsModalOpen(true)} 
-            />}
-            <ShadowButton
-              action={startGame} 
-              content={"Start"}
-              // disabled={
-              //   // balance === '0.00' || 
-              //   // bet < 1 || autoStop < 1.01 || 
-              //   // balance < 1 || isNaN(bet) || isNaN(autoStop) || isNaN(valueAfterWin) 
-              //   // || isNaN(valueAfterLoss)
-              // }
-            />
-            </div>
-          ) : 
-          (
-            <ShadowButton
-              className={"bg-[#CC070A] shadow-btn-red-border"}
-              content={"Stop"}
-              action={stopGame}
-            />
-          )
+          gamePhase !== 'started' ?
+            (
+              <div className="flex gap-2 w-full justify-between">
+                {autoMode && <ShadowButton className="flex w-1/5 bg-white justify-center items-center invite-btn-setting border-white"
+                  content={<SettingButton />}
+                  action={() => setIsModalOpen(true)}
+                />}
+                <ShadowButton
+                  action={startGame}
+                  content={"Start"}
+                // disabled={
+                //   // balance === '0.00' || 
+                //   // bet < 1 || autoStop < 1.01 || 
+                //   // balance < 1 || isNaN(bet) || isNaN(autoStop) || isNaN(valueAfterWin) 
+                //   // || isNaN(valueAfterLoss)
+                // }
+                />
+              </div>
+            ) :
+            (
+              <ShadowButton
+                className={"bg-[#CC070A] shadow-btn-red-border invite-btn-red-shadow"}
+                content={"Stop"}
+                action={stopGame}
+              />
+            )
         }
 
         <ScrollModal icon={<NavPlay />} title="Auto Launch" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
           <div className="flex flex-col pt-2 px-4 pb-4 gap-4" >
             <div className="flex gap-4">
-            <div className="flex flex-col w-1/2 gap-1">
-              <div className="text-sm leading-5">Bet</div>
-              <InputNumber InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
-              <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Minimal Bet is 0.1 Coin</div>
-            </div>
+              <div className="flex flex-col w-1/2 gap-1">
+                <div className="text-sm leading-5">Bet</div>
+                <InputNumber InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
+                <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Minimal Bet is 0.1 Coin</div>
+              </div>
 
-            <div className="flex flex-col w-1/2 gap-1">
-              <div className="text-sm leading-5">Auto Stop</div>
-              <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setAutoStop(parseFloat(e.target.value)) } }} />
-              <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Auto Cash Out when this amount will be reached</div>
-            </div>
-            </div>
-
-            <div className="flex gap-4">
-            <div className="flex flex-col w-1/2 gap-1">
-              <div className="text-sm leading-5">If Lose</div>
-              <InputText InputProps={{ value: winResult, min: 1, step: 1, onChange: e => setWinResult(parseFloat(e.target.value)) }} />
-            </div>
-
-            <div className="flex flex-col w-1/2 gap-1">
-              <div className="text-sm leading-5">Coefficient</div>
-              <InputText InputProps={{ value: winCoefficient, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setWinCoefficient(parseFloat(e.target.value)) } }} />
-            </div>
+              <div className="flex flex-col w-1/2 gap-1">
+                <div className="text-sm leading-5">Auto Stop</div>
+                <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setAutoStop(parseFloat(e.target.value)) } }} />
+                <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Auto Cash Out when this amount will be reached</div>
+              </div>
             </div>
 
             <div className="flex gap-4">
-            <div className="flex flex-col w-1/2 gap-1">
-              <div className="text-sm leading-5">If Win</div>
-              <InputText InputProps={{ value: lostResult, min: 1, step: 1, onChange: e => setLostResult(parseFloat(e.target.value)) }} />
+              <div className="flex flex-col w-1/2 gap-1">
+                <div className="text-sm leading-5">If Lose</div>
+                <InputText InputProps={{ value: winResult, min: 1, step: 1, onChange: e => setWinResult(parseFloat(e.target.value)) }} />
+              </div>
+
+              <div className="flex flex-col w-1/2 gap-1">
+                <div className="text-sm leading-5">Coefficient</div>
+                <InputText InputProps={{ value: winCoefficient, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setWinCoefficient(parseFloat(e.target.value)) } }} />
+              </div>
             </div>
 
-            <div className="flex flex-col w-1/2 gap-1">
-              <div className="text-sm leading-5 text-[#FFFFFF99]">Coefficeent</div>
-              <InputText InputProps={{ value: lostCoefficient, min: 1.01, max: 100, step: 1, disabled : true, onChange: e => { stopGame(); setLostCoefficient(parseFloat(e.target.value)) } }} />
-            </div>
+            <div className="flex gap-4">
+              <div className="flex flex-col w-1/2 gap-1">
+                <div className="text-sm leading-5">If Win</div>
+                <InputText InputProps={{ value: lostResult, min: 1, step: 1, onChange: e => setLostResult(parseFloat(e.target.value)) }} />
+              </div>
+
+              <div className="flex flex-col w-1/2 gap-1">
+                <div className="text-sm leading-5 text-[#FFFFFF99]">Coefficeent</div>
+                <InputText InputProps={{ value: lostCoefficient, min: 1.01, max: 100, step: 1, disabled: true, onChange: e => { stopGame(); setLostCoefficient(parseFloat(e.target.value)) } }} />
+              </div>
             </div>
 
             {
-              gamePhase !== 'started' ? 
-              (
-                <ShadowButton
-                  action={handleModalButton} 
-                  content={"Start"}
+              gamePhase !== 'started' ?
+                (
+                  <ShadowButton
+                    action={handleModalButton}
+                    content={"Start"}
                   // disabled={
                   //   balance === '0.00' || bet < 1 || autoStop < 1.01 || 
                   //   balance < 1 || isNaN(bet) || isNaN(autoStop) || isNaN(valueAfterWin) 
                   //   || isNaN(valueAfterLoss)
                   // }
-                />
-              ) : 
-              (
-                <ShadowButton
-                  className={"bg-[#CC070A] shadow-btn-red-border"}
-                  content={"Stop"}
-                  action={stopGame}
-                />
-              )
+                  />
+                ) :
+                (
+                  <ShadowButton
+                    className={"bg-[#CC070A] shadow-btn-red-border invite-btn-red-shadow"}
+                    content={"Stop"}
+                    action={stopGame}
+                  />
+                )
             }
 
 

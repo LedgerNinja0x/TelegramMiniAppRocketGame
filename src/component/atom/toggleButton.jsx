@@ -20,7 +20,7 @@ const ToggleButton = ({
           (bgColor + " " + textColor) : 
           (fgColor + " bg-transparent text-[#ACC1D9]")
         } 
-        flex flex-col text-center items-center rounded-lg text-[9px] font-medium w-[62px] h-[50px] gap-[2px] leading-[10px] justify-center cursor-pointer `
+        flex flex-col text-center items-center rounded-lg text-[9px] font-medium h-[50px] gap-[2px] leading-[10px] justify-center cursor-pointer w-1/5`
       }
     >
       <div className="w-6 h-6">
