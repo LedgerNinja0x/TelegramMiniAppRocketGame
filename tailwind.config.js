@@ -8,7 +8,8 @@ module.exports = {
         'bgGradientColor1' : '#0000d0',
         'bgGradientColor2' : '#9393EB',
         'bgNavbar' : '#3861fb',
-        'blueFaded' : "#ACC1D9"
+        'blueFaded' : "#ACC1D9",
+        'gradient-border': 'linear-gradient(180deg, #FFFFFF 0%, #FAD557 100%)',
       },
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],

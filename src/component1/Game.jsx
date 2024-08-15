@@ -14,10 +14,12 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
 
   const modalRef = useRef()
 
-  const [currentResult, setCurrentResult] = useState(1)
-  const [timerHandler, setTimerHandler] = useState()
-  const [counterNumber, setCounterNumber] = useState(0);
-  const [counterFlag, setCounterFlag] = useState(false);
+  const [ currentResult, setCurrentResult ] = useState(1)
+  const [ timerHandler, setTimerHandler ] = useState();
+  const [ countTimeHandler, setCountTimeHandler ] = useState();
+  const [ counterNumber, setCounterNumber ] = useState(0);
+  const [ timerRounded, setTimerRounded ] = useState(0);
+  const [ counterFlag, setCounterFlag ] = useState(false);
   const counterItem = [Img.go, Img.counter1, Img.counter2, Img.counter3];
 
   if (gamePhase === 'stopped') {
@@ -32,15 +34,21 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
       setCurrentResult(1);
       if (!counterFlag) {
         setCounterNumber(4)
+        setTimerRounded(0);
         let time = 0;
-        const countTimeHandler = setInterval(() => {
-          setCounterNumber((number) => (number - 1))
-          time++;
-          if (time == 4) {
+        setCountTimeHandler(setInterval(() => {
+          console.log(timerRounded, ":", counterNumber);
+
+          time += 0.01;
+          setTimerRounded((round) => (round + 0.42));
+          setCounterNumber(5 - Math.ceil(time));
+          if (time > 4) {
+            console.log("aaa");
+
             clearInterval(countTimeHandler);
             setCounterFlag(true);
           }
-        }, 1000)
+        }, 10))
       }
 
       counterFlag && setTimerHandler(setInterval(() => {
@@ -56,9 +64,11 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
       }, 100))
     } else if (gamePhase === 'stopped' || gamePhase === 'crashed') {
       clearInterval(timerHandler)
+      clearInterval(countTimeHandler);
       setCounterFlag(false);
       if (counterNumber > 0) {
         setCounterNumber(0)
+        setTimerRounded(0)
       }
     }
   }, [gamePhase, counterFlag])
@@ -185,9 +195,28 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
           <p className="text-[40px] text-white font-extrabold">{amount.toFixed(2)}</p>
         </div>
         {
-          counterNumber < 5 &&
-            counterNumber > 0 ?
+          counterNumber > 0 && counterNumber < 1.2 ?
             <img className='absolute top-1/3 z-10' src={counterItem[counterNumber - 1]} width={56} height={56} /> : ""
+        }
+        {
+          counterNumber < 5 &&
+            counterNumber > 1.2 ?
+            <div className='absolute top-1/3 rounded-full flex text-gradient-border'>
+              <div className='w-14 h-14 relative'>
+                <svg viewBox="22 22 44 44" className='transform -rotate-90'>
+                  <defs>
+                    <linearGradient id="gradientBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: "#FAD557", stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: "#FFFFFF", stopOpacity: 1 }} />
+                    </linearGradient>
+                  </defs>
+                  <circle stroke="url(#gradientBorder)" cx="44" cy="44" r="20.2" fill="none" stroke-width="2" style={{ strokeDasharray: 126.92, strokeDashoffset: `${126 - timerRounded}px` }}></circle>
+                </svg>
+                <div className='absolute left-1/2 top-1/2 transfrom -translate-x-1/2 -translate-y-1/2 text-2xl text-white font-black'>
+                  {counterNumber - 1}
+                </div>
+              </div>
+            </div> : ""
         }
         {
           gamePhase === 'started' && counterNumber === 0 &&
