@@ -21,7 +21,7 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
   const [ timerRounded, setTimerRounded ] = useState(0);
   const [ counterFlag, setCounterFlag ] = useState(false);
   const counterItem = [Img.go, Img.counter1, Img.counter2, Img.counter3];
-
+  
   if (gamePhase === 'stopped') {
     clearInterval(timerHandler)
   }
@@ -32,22 +32,36 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
 
     if (gamePhase === 'started') {
       setCurrentResult(1);
-      if (!counterFlag) {
-        setCounterNumber(4)
-        setTimerRounded(0);
-        let time = 0;
-        setCountTimeHandler(setInterval(() => {
-          time += 0.01;
-          setTimerRounded((round) => (round + 0.42));
-          setCounterNumber(5 - Math.ceil(time));
-          if (time > 4) {
-
-            clearInterval(countTimeHandler);
-            setCounterFlag(true);
-          }
-        }, 10))
+      setCounterNumber(4);
+      setTimerRounded(0);
+      let time = 0;
+  
+      // Clear any existing interval before starting a new one
+      if (countTimeHandler) {
+          clearInterval(countTimeHandler);
       }
-
+  
+      // Set the interval for counting time
+      const newCountTimeHandler = setInterval(() => {
+          time += 0.01;
+          setTimerRounded((prevRound) => prevRound + 0.42);
+          const newCounterNumber = 5 - Math.ceil(time);
+  
+          // Check if the counter has reached zero
+          if (newCounterNumber <= 0) {
+              console.log("dd");
+              clearInterval(newCountTimeHandler); // Clear the interval when counter reaches zero
+              setCounterNumber(0); // Ensure counter is set to zero
+          } else {
+              setCounterNumber(newCounterNumber);
+          }
+      }, 10);
+  
+      // Update the handler reference
+      setCountTimeHandler(newCountTimeHandler); 
+        console.log(counterNumber,gamePhase)
+      
+      
       counterFlag && setTimerHandler(setInterval(() => {
         timer += 100
         if (isMounted) {
@@ -123,9 +137,9 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
   let score = finalResult === 'Crashed...' ? 'Crashed...' : finalResult || currentResult
 
   if (typeof window !== 'undefined') {
-    const animationState = (gamePhase === 'started') ? 'running' : 'paused';
+    const animationState = (gamePhase === 'started' && counterNumber===0) ? 'running' : 'paused';
 
-const starsElements = ['stars2', 'stars3', 'stars'];
+  const starsElements = ['stars2', 'stars3', 'stars'];
 
 starsElements.forEach(id => {
     const element = document.getElementById(id);
