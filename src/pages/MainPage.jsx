@@ -297,7 +297,6 @@ const MainPage = () => {
   };
 
   const setPlayMode = (condition) => {
-    console.log(condition);
 
     setAutoMode(condition);
     setIsModalOpen(condition);

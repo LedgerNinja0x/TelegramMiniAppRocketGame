@@ -95,11 +95,7 @@ const UserInfo = () => {
     const rankingPrev = () => {
       setRankingIndex((rankingIndex - 1) % rankingData.length);
     }
-    console.log(rankingIndex)
-    const [hasNext, setHasNext] = useState(true);
-    const [hasPrev, setHasPrev] = useState(true);
-    const [labelPrev] = useState("PREVIOUS");
-    const [labelNext] = useState("NEXT");
+
   return (
     <div className="flex flex-col gap-4 items-center text-white text-base">
       <div className="font-semibold">Sergei Kovtun</div>

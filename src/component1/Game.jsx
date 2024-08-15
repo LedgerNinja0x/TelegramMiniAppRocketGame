@@ -37,13 +37,10 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
         setTimerRounded(0);
         let time = 0;
         setCountTimeHandler(setInterval(() => {
-          console.log(timerRounded, ":", counterNumber);
-
           time += 0.01;
           setTimerRounded((round) => (round + 0.42));
           setCounterNumber(5 - Math.ceil(time));
           if (time > 4) {
-            console.log("aaa");
 
             clearInterval(countTimeHandler);
             setCounterFlag(true);
@@ -93,7 +90,6 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
     isFirstWide = currentResult < 1.01 ? true : isFirstWide
     const isThirdWide = isFirstWide
     const isSecondWide = !isFirstWide
-    console.log(first * 75 + '%', first)
     return (
       <div className='relative h-[90%]'>
         <div
@@ -127,11 +123,16 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
   let score = finalResult === 'Crashed...' ? 'Crashed...' : finalResult || currentResult
 
   if (typeof window !== 'undefined') {
-    document.getElementById('stars1')?.style.animationPlayState =
-    document.getElementById('stars2')?.style.animationPlayState =
-    document.getElementById('stars3')?.style.animationPlayState =
-    document.getElementById('stars')?.style.animationPlayState = 
-    (gamePhase === 'started') ? 'running' : 'paused';
+    const animationState = (gamePhase === 'started') ? 'running' : 'paused';
+
+const starsElements = ['stars2', 'stars3', 'stars'];
+
+starsElements.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.style.animationPlayState = animationState;
+    }
+});
 
     try {
       if (currentResult >= 1.2) {
