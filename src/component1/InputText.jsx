@@ -47,6 +47,7 @@ const InputText = memo(( {InputProps} ) => {
         value={value}
         onChange={handleChange}
         onKeyPress={handleKeyPress}
+        disabled ={InputProps.disabled}
       />
       <div className='absolute right-2.5 top-1/2 transform -translate-y-1/2'>
         <div className='flex flex-col'>  
@@ -54,13 +55,13 @@ const InputText = memo(( {InputProps} ) => {
             className='cursor-pointer w-3 h-3'
             src='image/icon/up-arrow.svg'
             alt='Increase'
-            onClick={incrementValue}
+            onClick= {()=>!InputProps.disabled && incrementValue()}
           />
           <img
             className='cursor-pointer w-3 h-3'
             src='image/icon/down-arrow.svg'
             alt='Decrease'
-            onClick={decrementValue}
+            onClick={()=>!InputProps.disabled && decrementValue()}
           />
         </div>
       </div>

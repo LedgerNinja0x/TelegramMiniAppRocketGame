@@ -21,7 +21,6 @@ const Stats = () => {
 
     return (
         <div className="flex flex-col">
-            <AtomLabel content={"Statistics"} />
             <div className="mt-2">
                 <TabButton tabList={statsList} tabNo={tabId} setTabNo={setTabId} />
             </div>

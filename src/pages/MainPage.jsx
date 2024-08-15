@@ -15,6 +15,8 @@ import ShadowButton from "../component/atom/shadow-btn.jsx";
 import "../css_generated/Style.css"
 import SettingButton from "../component/svg/button_setting.jsx";
 import InputText from "../component1/InputText.jsx";
+import { useAtom } from "jotai";
+import { isActionState } from "../store/actionState.jsx";
 
 const MainPage = () => {
   const context = useContext(AppContext);
@@ -48,6 +50,7 @@ const MainPage = () => {
   const [lostCoefficient, setLostCoefficient] = useState("X1");
   const [winResult, setWinResult] = useState("increse Bet by Bet");
   const [lostResult, setLostResult] = useState("Return to base Bet");
+  const [isAction,setActionState] = useAtom(isActionState);
 
 
   // Refs for mutable state
@@ -176,6 +179,7 @@ const MainPage = () => {
   // Function to stop the game
   const stopGame = () => {
     setStopWasPressed(true);
+    setActionState("stop");
     // context.socket.send(JSON.stringify({ operation: 'stop' }));
     handleGameStopped()
   };
@@ -183,6 +187,7 @@ const MainPage = () => {
   // Function to start the game
   const startGame = () => {
     setStopWasPressed(false);
+    setActionState("start");
     // context.socket.send(JSON.stringify({
     //   operation: 'start',
     //   bet,
@@ -303,31 +308,36 @@ const MainPage = () => {
   }
 
   return (
-    <div id='index-operations' className={`flex flex-col h-full w-full gap-4 pb-[76px] justify-between ${autoMode ? 'auto-mode' : ''} flex flex-col gap-4`}>
-      <div className="flex w-full bg-white_20 justify-between p-2 rounded-[10px] text-white text-base leading-5" onClick={goToUserInfo}>
-        <div className="flex gap-2.5">
-          <img src={avatar.avatar1} width="64px" height="64px" className="max-w-16 h-16" alt="avatar" />
-          <div className="flex flex-col w-full gap-0.5">
-            <p className="font-semibold">Sergei Kovtun</p>
-            <p className="font-semibold">Beginner · 1/10</p>
-            <p>1808944</p>
+    <div className="flex-auto p-4">
+    <div id='index-operations' className={`flex flex-col h-full w-full gap-4 justify-between ${autoMode ? 'auto-mode' : ''} flex flex-col gap-4 ${isAction==="start"? "pb-0" : "pb-[76px]" }`}>
+      { isAction !== "start" &&
+        <div className="flex w-full bg-white_20 justify-between p-2 rounded-[10px] text-white text-base leading-5" onClick={goToUserInfo}>
+          
+          <div className="flex gap-2.5">
+            <img src={avatar.avatar1} width="64px" height="64px" className="max-w-16 h-16" alt="avatar" />
+            <div className="flex flex-col w-full gap-0.5">
+              <p className="font-semibold">Sergei Kovtun</p>
+              <p className="font-semibold">Beginner · 1/10</p>
+              <p>1808944</p>
+            </div>
+          </div>
+            
+
+          <div className="flex flex-col gap-2">
+            <PannelScore img={Img.agree} text2={"Won"} text3={"48"} />
+            <PannelScore img={Img.disagree} text2={"Lost"} text3={"32"} />
           </div>
         </div>
-
-        <div className="flex flex-col gap-2">
-          <PannelScore img={Img.agree} text2={"Won"} text3={"48"} />
-          <PannelScore img={Img.disagree} text2={"Lost"} text3={"32"} />
-        </div>
-      </div>
+      }
 
       <Game finalResult={finalResult} gamePhase={gamePhase} realGame={realGame} setRealGame={setRealGame} setLoaderIsShown={setLoaderIsShown} />
 
       <div className="flex flex-col text-white gap-4">
         <div className={`${gamePhase === 'started' ? "opacity-20 !text-white" : ""}`}>
           <div className="flex flex-row justify-center text-base font-medium">
-            <span className={`text-white ${!autoMode ? 'selected' : ''}`} onClick={() => setPlayMode(true)}>Manual</span>
-            <SwitchButton checked={autoMode} onChange={e => setPlayMode(e.target.checked)} />
-            <span className={`text-[#3861FB] ${autoMode ? 'selected' : ''}`} onClick={() => setPlayMode(false)}>Auto</span>
+            <span className={`text-[#3861FB] ${!autoMode ? 'selected text-white ' : ''}`} >Manual</span>
+            <SwitchButton checked={autoMode}  onChange={ gamePhase !== 'started' ? ( e => setPlayMode(e.target.checked)):undefined}  />
+            <span className={`text-[#3861FB] ${autoMode ? 'selected text-white ' : ''}`} >Auto</span>
           </div>
 
           <div className={`${autoMode && "hidden"} flex gap-4`}>
@@ -440,6 +450,7 @@ const MainPage = () => {
           </div>
         </ScrollModal>
       </div>
+    </div>
     </div>
   );
 };

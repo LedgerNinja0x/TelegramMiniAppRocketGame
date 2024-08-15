@@ -25,8 +25,15 @@
   position: absolute;
   left: 50%;
 }
-#game #game-rocket.active, #game #game-rocket.inactive {
-  width: 75;
+#game #game-rocket.active{
+  width: 65px;
+  height: 105px;
+  margin-left: -38px;
+  bottom: 10px;
+  
+} 
+#game #game-rocket.inactive {
+  width: 65px;
   height: 84px;
   margin-left: -38px;
   bottom: 10px;

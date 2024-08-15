@@ -93,7 +93,7 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
     isFirstWide = currentResult < 1.01 ? true : isFirstWide
     const isThirdWide = isFirstWide
     const isSecondWide = !isFirstWide
-
+    console.log(first * 75 + '%', first)
     return (
       <div className='relative h-[90%]'>
         <div
@@ -127,10 +127,11 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
   let score = finalResult === 'Crashed...' ? 'Crashed...' : finalResult || currentResult
 
   if (typeof window !== 'undefined') {
-    // document.getElementById('stars1')?.style.animationPlayState =
-    // document.getElementById('stars2')?.style.animationPlayState =
-    // document.getElementById('stars3')?.style.animationPlayState =
-    // document.getElementById('stars')?.style.animationPlayState = gamePhase === 'started' ? 'running' : 'paused';
+    document.getElementById('stars1')?.style.animationPlayState =
+    document.getElementById('stars2')?.style.animationPlayState =
+    document.getElementById('stars3')?.style.animationPlayState =
+    document.getElementById('stars')?.style.animationPlayState = 
+    (gamePhase === 'started') ? 'running' : 'paused';
 
     try {
       if (currentResult >= 1.2) {

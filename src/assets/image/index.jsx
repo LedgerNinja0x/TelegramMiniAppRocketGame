@@ -15,9 +15,10 @@ import wow from "./wow.svg";
 import crash from "./crash.png";
 import go from "./Go.svg";
 import imgSetting from "./img_setting.svg";
+import loadingTitle from "./loading_title.png";
 
 export const Img = {
   agree, disagree,counter1, counter2, counter3, 
   coin, rocketInactive, rocketExplosed, rocketActive, 
   inputNumberArrowDown, inputNumberArrowUp, trailingButton,
-  youWon, wow, crash ,go, imgSetting}; 
+  youWon, wow, crash ,go, imgSetting, loadingTitle}; 
