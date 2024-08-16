@@ -35,17 +35,12 @@ const Footer = () => {
     )
   })
   return (
-    <>
-    
-    {
-    isVisuable !== "start" &&
-    <div className="fixed bottom-0 p-4 w-full z-[1]">
+    <div className={`fixed transition transform bottom-0 p-4 w-full z-[1] ${isVisuable == "start"?"translate-y-20":""}`}>
       <div className="flex bg-bgNavbar w-full gap-1.5 h-15 rounded-xl p-[5px] justify-between">
         {footerItems}
       </div>
     </div>
-    }
-    </>
+   
   )
 }
 

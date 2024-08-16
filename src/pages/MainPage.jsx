@@ -17,7 +17,8 @@ import SettingButton from "../component/svg/button_setting.jsx";
 import InputText from "../component1/InputText.jsx";
 import { useAtom } from "jotai";
 import { isActionState } from "../store/actionState.jsx";
-
+import { CSSTransition } from "react-transition-group";
+// import './SmoothTransantion.css'
 const MainPage = () => {
   const context = useContext(AppContext);
   const cookiesData = useCookies(['user_id', 'session']);
@@ -29,7 +30,7 @@ const MainPage = () => {
   const [stopWasPressed, setStopWasPressed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [realGame, setRealGame] = useState(false);
-  const [autoMode, setAutoMode] = useState(false);
+  const [autoMode, setAutoMode] = useState(true);
   const [gamePhase, setGamePhase] = useState();
   const [bet, setBet] = useState(1);
   const [autoStop, setAutoStop] = useState(20);
@@ -46,10 +47,8 @@ const MainPage = () => {
   const [games, setGames] = useState(0);
   const [wins, setWins] = useState(0);
   const [losses, setLosses] = useState(0);
-  const [winCoefficient, setWinCoefficient] = useState("X1");
-  const [lostCoefficient, setLostCoefficient] = useState("X1");
-  const [winResult, setWinResult] = useState("increse Bet by Bet");
-  const [lostResult, setLostResult] = useState("Return to base Bet");
+  const [winCoefficient, setWinCoefficient] = useState(1);
+  const [lostCoefficient, setLostCoefficient] = useState(1);
   const [isAction,setActionState] = useAtom(isActionState);
 
 
@@ -138,30 +137,30 @@ const MainPage = () => {
     }
   }, [realGame, cookies.name]);
 
-  useEffect(() => {
-    let isMounted = true
-    if (gamePhase !== 'started' && autoMode && !stopWasPressed && balanceRef.current >= betRef.current && betRef.current) {
+  // useEffect(() => {
+  //   let isMounted = true
+  //   if (gamePhase !== 'started' && autoMode && !stopWasPressed && balanceRef.current >= betRef.current && betRef.current) {
 
-      setTimeout(() => {
-        if (isMounted) {
-          try {
-            context.socket.send(JSON.stringify({
-              operation: 'start',
-              bet: betRef.current,
-              autoStop,
-              isReal: realGame,
-              userID: cookies.user_id,
-              session: cookies.session
-            }))
-          } catch (e) {
-            // eslint-disable-next-line no-self-assign
-            document.location.href = document.location.href
-          }
-        }
-      }, 2000)
-    }
-    return () => { isMounted = false }
-  }, [historyGames])
+  //     setTimeout(() => {
+  //       if (isMounted) {
+  //         try {
+  //           context.socket.send(JSON.stringify({
+  //             operation: 'start',
+  //             bet: betRef.current,
+  //             autoStop,
+  //             isReal: realGame,
+  //             userID: cookies.user_id,
+  //             session: cookies.session
+  //           }))
+  //         } catch (e) {
+  //           // eslint-disable-next-line no-self-assign
+  //           document.location.href = document.location.href
+  //         }
+  //       }
+  //     }, 2000)
+  //   }
+  //   return () => { isMounted = false }
+  // }, [historyGames])
 
   // Effect to clean up on component unmount
   // useEffect(() => () => { context.overlayRef.current.style.display = 'none'; }, []);
@@ -298,6 +297,7 @@ const MainPage = () => {
 
   const setPlayMode = (condition) => {
 
+
     setAutoMode(condition);
     setIsModalOpen(condition);
   }
@@ -308,9 +308,10 @@ const MainPage = () => {
 
   return (
     <div className="flex-auto p-4">
-    <div id='index-operations' className={`flex flex-col h-full w-full gap-4 justify-between ${autoMode ? 'auto-mode' : ''} flex flex-col gap-4 ${isAction==="start"? "pb-0" : "pb-[76px]" }`}>
-      { isAction !== "start" &&
-        <div className="flex w-full bg-white_20 justify-between p-2 rounded-[10px] text-white text-base leading-5" onClick={goToUserInfo}>
+    <div id='index-operations' className={`flex flex-col relative h-full w-full gap-4 justify-between ${autoMode ? 'auto-mode' : ''} transition flex flex-col gap-4 ${isAction==="start"? "pb-0" : "pb-[76px]" }`}>
+      
+    
+        <div className={`flex w-full absolute bg-white_20 justify-between transition transform duration-200 p-2 rounded-[10px] text-white text-base leading-5 ${isAction === "start"?"-translate-y-24":""} `} onClick={goToUserInfo}>
           
           <div className="flex gap-2.5">
             <img src={avatar.avatar1} width="64px" height="64px" className="max-w-16 h-16" alt="avatar" />
@@ -327,9 +328,13 @@ const MainPage = () => {
             <PannelScore img={Img.disagree} text2={"Lost"} text3={"32"} />
           </div>
         </div>
-      }
-
-      <Game finalResult={finalResult} gamePhase={gamePhase} realGame={realGame} setRealGame={setRealGame} setLoaderIsShown={setLoaderIsShown} />
+      
+      
+      <Game className = {`transition-all ${isAction !== "start" ?"mt-24":"mt-0"} `} finalResult={finalResult} gamePhase={gamePhase} 
+      realGame={realGame} setRealGame={setRealGame} 
+      setLoaderIsShown={setLoaderIsShown} amount ={10} />
+      
+      
 
       <div className="flex flex-col text-white gap-4">
         <div className={`${gamePhase === 'started' ? "opacity-20 !text-white" : ""}`}>
@@ -339,16 +344,16 @@ const MainPage = () => {
             <span className={`text-[#3861FB] ${autoMode ? 'selected text-white ' : ''}`} >Auto</span>
           </div>
 
-          <div className={`${autoMode && "hidden"} flex gap-4`}>
+          <div className={`transition duration-300 ${autoMode && "hidden"} flex gap-4`}>
             <div className=" flex flex-col w-1/2 gap-1">
               <div className="text-sm leading-5">Bet</div>
-              <InputNumber InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
+              <InputText InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
               <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Minimal Bet is 0.1 Coin</div>
             </div>
 
             <div className="flex flex-col w-1/2 gap-1">
               <div className="text-sm leading-5">Auto Stop</div>
-              <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setAutoStop(parseFloat(e.target.value)) } }} />
+              <InputText InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setAutoStop(parseFloat(e.target.value)) } }} />
               <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Auto Cash Out when this amount will be reached</div>
             </div>
           </div>
@@ -358,7 +363,7 @@ const MainPage = () => {
           gamePhase !== 'started' ?
             (
               <div className="flex gap-2 w-full justify-between">
-                {autoMode && <ShadowButton className="flex w-1/5 bg-white justify-center items-center invite-btn-setting border-white"
+                {autoMode && <ShadowButton className={`transition-all flex w-1/5 bg-white justify-center items-center invite-btn-setting border-white `}
                   content={<SettingButton />}
                   action={() => setIsModalOpen(true)}
                 />}
@@ -394,7 +399,7 @@ const MainPage = () => {
 
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">Auto Stop</div>
-                <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setAutoStop(parseFloat(e.target.value)) } }} />
+                <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, type:"xWithNumber", onChange: e => { stopGame(); setAutoStop(e.target.value) } }} />
                 <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Auto Cash Out when this amount will be reached</div>
               </div>
             </div>
@@ -402,24 +407,24 @@ const MainPage = () => {
             <div className="flex gap-4">
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">If Lose</div>
-                <InputText InputProps={{ value: winResult, min: 1, step: 1, onChange: e => setWinResult(parseFloat(e.target.value)) }} />
+                <InputText InputProps={{ value: operationAfterWin, onChange: e => setOperationAfterWin(e.target.value) }} />
               </div>
 
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">Coefficient</div>
-                <InputText InputProps={{ value: winCoefficient, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setWinCoefficient(parseFloat(e.target.value)) } }} />
+                <InputNumber InputProps={{ value: winCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", onChange: e => { stopGame(); setWinCoefficient(parseFloat(e.target.value)) } }} />
               </div>
             </div>
 
             <div className="flex gap-4">
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">If Win</div>
-                <InputText InputProps={{ value: lostResult, min: 1, step: 1, onChange: e => setLostResult(parseFloat(e.target.value)) }} />
+                <InputText InputProps={{ value: operationAfterLoss, onChange: e => setOperationAfterLoss(parseFloat(e.target.value)) }} />
               </div>
 
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5 text-[#FFFFFF99]">Coefficeent</div>
-                <InputText InputProps={{ value: lostCoefficient, min: 1.01, max: 100, step: 1, disabled: true, onChange: e => { stopGame(); setLostCoefficient(parseFloat(e.target.value)) } }} />
+                <InputNumber InputProps={{ value: lostCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: true, onChange: e => { stopGame(); setLostCoefficient(parseFloat(e.target.value)) } }} />
               </div>
             </div>
 
@@ -429,11 +434,11 @@ const MainPage = () => {
                   <ShadowButton
                     action={handleModalButton}
                     content={"Start"}
-                  // disabled={
-                  //   balance === '0.00' || bet < 1 || autoStop < 1.01 || 
-                  //   balance < 1 || isNaN(bet) || isNaN(autoStop) || isNaN(valueAfterWin) 
-                  //   || isNaN(valueAfterLoss)
-                  // }
+                  disabled={
+                    balance === '0.00' || bet < 1 || autoStop < 1.01 || 
+                    balance < 1 || isNaN(bet) || isNaN(autoStop) || isNaN(valueAfterWin) 
+                    || isNaN(valueAfterLoss)
+                  }
                   />
                 ) :
                 (

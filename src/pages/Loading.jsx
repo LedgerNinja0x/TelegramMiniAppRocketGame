@@ -4,15 +4,20 @@ import { Img } from "../assets/image";
 
 const Loading = ({setLoading}) =>{
   const [progress, setProgress] = useState(0);
-  const [progresstimer, setProgreesstimer] =useState();
   
-  useEffect(()=>{
-    setProgreesstimer(setTimeout(()=>setProgress(progress+1),10));
-  },[progress]);
-  if(progress==100) {
-    clearInterval(progresstimer);
-    setLoading(true);
-  };
+  useEffect(() => {
+    if(progress < 100 ){
+      const timer = setTimeout(() => {
+        setProgress((preProgress) => preProgress + 1);
+      }, 10)
+      return () => clearTimeout(timer);
+    }
+    else{
+      setLoading(false);
+    }
+  },[progress,setLoading]);
+
+  
   return (
     <div className="loading h-screen bg-center bg-cover">
 

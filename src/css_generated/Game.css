@@ -23,19 +23,12 @@
 #game #game-rocket {
   display: block;
   position: absolute;
+  width: 64px;
   left: 50%;
 }
-#game #game-rocket.active{
-  width: 65px;
-  height: 105px;
-  margin-left: -38px;
-  bottom: 10px;
-  
-} 
-#game #game-rocket.inactive {
-  width: 65px;
-  height: 84px;
-  margin-left: -38px;
+#game #game-rocket.active, #game #game-rocket.inactive {
+  width: 64;
+  margin-left: -32px;
   bottom: 10px;
 }
 #game #game-rocket.explosed {
@@ -83,8 +76,15 @@
 
 #game #game-gauge div {
   position: absolute;
-  right: 0px;
   border-top: 1px solid white;
+}
+
+#game #game-gauge.right div {
+  right: 15px;
+}
+
+#game #game-gauge.left div {
+  left: 15px;
 }
 
 #game #game-gauge div span {
@@ -96,6 +96,15 @@
   right: 15px;
   top: -11px;
 }
+
+#game #game-gauge.left div span {  
+  right: 15px;
+}
+
+#game #game-gauge.right div span {
+  left: 15px;
+}
+
 #game #game-gauge .game-gauge-wide {
   width: 12px;
 }

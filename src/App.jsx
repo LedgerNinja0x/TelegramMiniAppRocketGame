@@ -17,12 +17,17 @@ import Layout from './component/atom/Layout';
 
 
 function App() {
-  const [isLoading, setLoadingState] = useState(false);
+  const [isLoading, setLoadingState] = useState(true);
+  
+  const handleLoadingState = (loading) =>{
+     setLoadingState(loading); 
+  }
+  
   return (
     <JotaiProvider>
     <div className="App h-screen flex flex-col relative">
       
-      {isLoading?
+      {!isLoading?
           ( <>
           <Stars/>
           <BrowserRouter>
@@ -41,7 +46,7 @@ function App() {
             <Footer />
           </BrowserRouter>
           </>)
-      : <Loading setLoading ={(e)=>setLoadingState(e)} />
+      : <Loading setLoading ={handleLoadingState} />
       
       }
     </div>

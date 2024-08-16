@@ -7,7 +7,7 @@ import { useCookies } from 'react-cookie'
 import "../css_generated/Game.css"
 import { Img } from '../assets/image'
 
-export default memo(function Game({ gamePhase, finalResult, realGame, setRealGame, setLoaderIsShown, amount = 10.00, isMounted }) {
+export default memo(function Game({ gamePhase, finalResult, realGame, setRealGame, setLoaderIsShown, amount = 10.00, isMounted, className }) {
   const context = useContext(AppContext);
   const cookiesData = useCookies(['user_id', 'session']);
   const [cookies] = !context.ssrFlag ? cookiesData : [context.cookies];
@@ -27,10 +27,10 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
   }
 
   useEffect(() => {
-    let isMounted = true
-    let timer = 0
+    
+    
 
-    if (gamePhase === 'started') {
+    if (gamePhase === 'started' ) {
       setCurrentResult(1);
       setCounterNumber(4);
       setTimerRounded(0);
@@ -41,38 +41,30 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
           clearInterval(countTimeHandler);
       }
   
+      
       // Set the interval for counting time
-      const newCountTimeHandler = setInterval(() => {
-          time += 0.01;
-          setTimerRounded((prevRound) => prevRound + 0.42);
+     if(!counterFlag){
+      const newCountTimeHandler =  setInterval(() => {
+          time += 0.015;
+          setTimerRounded((prevRound) => prevRound + 0.61);
           const newCounterNumber = 5 - Math.ceil(time);
-  
+          
           // Check if the counter has reached zero
-          if (newCounterNumber <= 0) {
-              console.log("dd");
+          if (newCounterNumber <= 0) {   
               clearInterval(newCountTimeHandler); // Clear the interval when counter reaches zero
-              setCounterNumber(0); // Ensure counter is set to zero
+              setCounterNumber(0);// Ensure counter is set to zero
+              setCounterFlag(true)
+              
           } else {
               setCounterNumber(newCounterNumber);
           }
+          
       }, 10);
-  
+   
       // Update the handler reference
-      setCountTimeHandler(newCountTimeHandler); 
-        console.log(counterNumber,gamePhase)
-      
-      
-      counterFlag && setTimerHandler(setInterval(() => {
-        timer += 100
-        if (isMounted) {
-          try {
-            setCurrentResult((ACCELERATION * timer * timer / 2 + 1).toFixed(2))
-          } catch (e) {
-            // eslint-disable-next-line no-self-assign
-            document.location.href = document.location.href
-          }
-        }
-      }, 100))
+      setCountTimeHandler(newCountTimeHandler);    
+    }
+  
     } else if (gamePhase === 'stopped' || gamePhase === 'crashed') {
       clearInterval(timerHandler)
       clearInterval(countTimeHandler);
@@ -82,9 +74,26 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
         setTimerRounded(0)
       }
     }
-  }, [gamePhase, counterFlag])
+  }, [gamePhase])
 
-  useEffect(() => () => {
+  useEffect(()=>{
+    let timer = 0;
+    let isMounted = true;
+    console.log(counterFlag)
+    counterFlag && setTimerHandler(setInterval(() => {
+      timer += 100
+      if (isMounted) {
+        try {
+          setCurrentResult((ACCELERATION * timer * timer / 2 + 1).toFixed(2))
+        } catch (e) {
+          // eslint-disable-next-line no-self-assign
+          document.location.href = document.location.href
+        }
+      }
+    }, 100))
+  },[counterFlag])
+
+  useEffect(() => {
 
     if (gamePhase === 'stopped') {
       document.getElementById('stars1').style.animationPlayState =
@@ -94,7 +103,7 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
     }
   }, [])
 
-  function generateGauge() {
+  const generateGauge = () => {
     const price = 0.5
     let first = price - currentResult % price
     first = !(currentResult % price) ? 0 : first
@@ -105,9 +114,9 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
     const isThirdWide = isFirstWide
     const isSecondWide = !isFirstWide
     return (
-      <div className='relative h-[90%]'>
+      <div className={'relative h-[90%]'}>
         <div
-          className={+ isFirstWide ? 'game-gauge-wide' : 'game-gauge-narrow '}
+          className={ isFirstWide ? 'game-gauge-wide' : 'game-gauge-narrow '}
           style={{ bottom: first * 75 + '%' }}>
           {isFirstWide ? <span>x{Math.ceil(currentResult)}</span> : <></>}
         </div>
@@ -139,7 +148,7 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
   if (typeof window !== 'undefined') {
     const animationState = (gamePhase === 'started' && counterNumber===0) ? 'running' : 'paused';
 
-  const starsElements = ['stars2', 'stars3', 'stars'];
+  const starsElements = ['stars1','stars2', 'stars3', 'stars'];
 
 starsElements.forEach(id => {
     const element = document.getElementById(id);
@@ -198,7 +207,7 @@ starsElements.forEach(id => {
   score = score === 'Crashed...' ? 'Crashed...' : `x${score}`
 
   return (
-    <div id='game' className='flex-auto flex flex-col h-full justify-between items-center relative'>
+    <div id='game' className={`${className} flex-auto flex flex-col h-full justify-between items-center relative`}>
 
       {/* <div id='game-toggle'>
         <span className={!realGame ? 'selected' : ''} onClick={() => { switchChanged({ target: { checked: false } }) }}>Virtual</span>

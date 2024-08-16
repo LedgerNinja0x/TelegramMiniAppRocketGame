@@ -83,7 +83,7 @@ const UserInfo = () => {
     const [ rankingIndex, setRankingIndex] =useState(0);
     const rankingItems = rankingData.map((data,index)=>{
       return(
-        <div key={index}>
+        <div className="w-full left-3" key={index}>
            <p><span className="text-blueFaded">Ranking : </span>{data}</p>
         </div>
         
@@ -101,9 +101,11 @@ const UserInfo = () => {
       <div className="font-semibold">Sergei Kovtun</div>
       <TabButton tabList={statsList} tabNo={tabId} setTabNo={setTabId} />
       <div className="flex flex-col gap-4 overflow-auto w-full " style={{height: "calc(100vh - 200px)"}}>
-        <div className="flex gap-[41px] text-blueFaded text-sm">
+        <div className="flex gap-[41px] text-blueFaded text-sm justify-center">
+            
             <div>Level <span className="text-white">1/10</span></div>
             <div>Rank <span className="text-white">1808944</span></div>
+            
         </div>
         <div className="flex flex-col items-center gap-2">
             <img src={avatar.avatar1} width="200px" height="200px" className="max-w-[200px] h-[200px]" alt="avatar" />

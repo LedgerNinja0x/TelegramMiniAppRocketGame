@@ -4,8 +4,10 @@ import "../css_generated/InputNumber.css";
 
 const InputNumber = memo(( {InputProps} ) => {
   const [value, setValue] = useState(InputProps.value || '');
-
+  
+  console.log(value)
   const handleKeyPress = (e) => {
+    console.log(e.key)
     const allowedChars = '0123456789.';
     const isInvalidKey = (e.key.length === 1 && !allowedChars.includes(e.key)) ||
                          (e.key === '.' && value.includes('.'));
@@ -17,7 +19,8 @@ const InputNumber = memo(( {InputProps} ) => {
     if (e.key === ',' && !value.includes('.')) {
       e.preventDefault();
       const newValue = parseFloat(value).toFixed(1).slice(0, -1);
-      setValue(newValue);
+      console.log(newValue);
+      // setValue(newValue);
       InputProps.onChange && InputProps.onChange({ target: { value: newValue } });
     }
   };
@@ -41,27 +44,30 @@ const InputNumber = memo(( {InputProps} ) => {
   };
 
   return (
-    <div className={`input-number-parent relative w-full h-11 text-black hover:outline-[#0000FF4D] hover:outline-4` }>
+    <div className={`input-number-parent relative w-full h-11 hover:outline-[#0000FF4D] hover:outline-4 ${InputProps.disabled ?"text-[#FFFFFF99]":"text-black"}` }>
+     
       <input
-        className={`input-number absolute w-full h-11 top-0 left-0 box-border rounded-xl pl-2 ${InputProps.disabled ? "text-[#FFFFFF99] bg-white_20 cursor-none contain-none select-none" : ""}`}
+        className={`input-number absolute w-full h-11 top-0 left-0 box-border rounded-xl pl-4 ${InputProps.disabled ? "text-[#FFFFFF99] bg-white_20 cursor-none contain-none select-none" : ""}`}
         type='number'
         value={value}
         onChange={handleChange}
         onKeyPress={handleKeyPress}
+        disabled ={InputProps.disabled}
       />
+      {InputProps.type === "xWithNumber" && <div className='absolute left-2 top-1/2 transfrom -translate-y-1/2'>X</div>}
       <div className='absolute right-2.5 top-1/2 transform -translate-y-1/2'>
         <div className='flex flex-col'>  
           <img
             className='cursor-pointer w-3 h-3'
             src='image/icon/up-arrow.svg'
             alt='Increase'
-            onClick={incrementValue}
+            onClick={()=>!InputProps.disabled && incrementValue()}
           />
           <img
             className='cursor-pointer w-3 h-3'
             src='image/icon/down-arrow.svg'
             alt='Decrease'
-            onClick={decrementValue}
+            onClick={()=>!InputProps.disabled && decrementValue()}
           />
         </div>
       </div>

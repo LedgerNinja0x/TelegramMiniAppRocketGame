@@ -77,7 +77,7 @@ const statData = [
 const StatList = () => {
     return (
         <div className="text-[14px] font-medium">
-            <div className="flex w-full justify-between text-blueFaded border-b border-blueFaded px-4 py-2">
+            <div className="flex w-full justify-between text-blueFaded border-b border-white_20 px-4 py-2">
                 <div>Bet</div>
                 <div>Stop/Crash</div>
                 <div>Profit</div>

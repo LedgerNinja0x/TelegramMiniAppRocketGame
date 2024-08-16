@@ -1,7 +1,7 @@
 const StatInfo = ({data}) => {
     return (
         <div>
-            <div className="text-blueFaded border-b border-blueFaded px-4 py-2">
+            <div className="text-blueFaded border-b border-white_20 px-4 py-2">
                 {data.date}
             </div>
             {
