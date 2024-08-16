@@ -50,8 +50,8 @@ const MainPage = () => {
   const [winCoefficient, setWinCoefficient] = useState(1);
   const [lostCoefficient, setLostCoefficient] = useState(1);
   const [isAction,setActionState] = useAtom(isActionState);
-
-
+  
+  
   // Refs for mutable state
   const balanceRef = useRef(balance);
   const historyGamesRef = useRef(historyGames);
@@ -67,26 +67,26 @@ const MainPage = () => {
       <img src={Img.imgSetting} width={24} height={24} alt="setting" />
     )
   }
-
+  
   const handleModalButton = () => {
     startGame();
     setIsModalOpen(false);
   }
-
+  
   // Effect to validate and adjust state values
   useEffect(() => {
     if (bet < 1 || balance === '0.00' || balance < 1) {
       setBet(1);
     } else if (bet > balance && balance !== '0.00') {
-      setBet(balance);
+      setBet(parseFloat(balance));
     }
-
+    
     setAutoStop(prev => Math.min(Math.max(prev, 1.01), 100));
     setBalance(prev => prev === 0 ? '0.00' : prev);
     setValueAfterWin(prev => Math.min(Math.max(prev, 1), 100));
     setValueAfterLoss(prev => Math.min(Math.max(prev, 1), 100));
   }, [bet, autoStop, balance, valueAfterLoss, valueAfterWin]);
-
+  
   // Effect to update refs
   useEffect(() => {
     operationAfterWinRef.current = operationAfterWin;
@@ -280,10 +280,10 @@ const MainPage = () => {
       } else {
         betRef.current = Math.min(valueAfterWinRef.current, parseFloat(balanceRef.current));
       }
-      setBet(betRef.current);
+      setBet(parseFloat(betRef.current));
     }
   };
-
+  
   const adjustBetAfterLoss = () => {
     if (autoMode) {
       if (operationAfterLossRef.current === 'Increase Bet by') {
@@ -291,21 +291,21 @@ const MainPage = () => {
       } else {
         betRef.current = Math.min(valueAfterLossRef.current, parseFloat(balanceRef.current));
       }
-      setBet(betRef.current);
+      setBet(parseFloat(betRef.current));
     }
   };
-
+  
   const setPlayMode = (condition) => {
-
-
+    
+    
     setAutoMode(condition);
     setIsModalOpen(condition);
   }
-
+  
   const goToUserInfo = () => {
     navigate("/userInfo");
   }
-
+  
   return (
     <div className="flex-auto p-4">
     <div id='index-operations' className={`flex flex-col relative h-full w-full gap-4 justify-between ${autoMode ? 'auto-mode' : ''} transition flex flex-col gap-4 ${isAction==="start"? "pb-0" : "pb-[76px]" }`}>
@@ -345,17 +345,17 @@ const MainPage = () => {
           </div>
 
           <div className={`transition duration-300 ${autoMode && "hidden"} flex gap-4`}>
-            <div className=" flex flex-col w-1/2 gap-1">
-              <div className="text-sm leading-5">Bet</div>
-              <InputText InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
-              <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Minimal Bet is 0.1 Coin</div>
-            </div>
+              <div className="flex flex-col w-1/2 gap-1">
+                <div className="text-sm leading-5">Bet</div>
+                <InputNumber InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
+                <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Minimal Bet is 0.1 Coin</div>
+              </div>
 
-            <div className="flex flex-col w-1/2 gap-1">
-              <div className="text-sm leading-5">Auto Stop</div>
-              <InputText InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, onChange: e => { stopGame(); setAutoStop(parseFloat(e.target.value)) } }} />
-              <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Auto Cash Out when this amount will be reached</div>
-            </div>
+              <div className="flex flex-col w-1/2 gap-1">
+                <div className="text-sm leading-5">Auto Stop</div>
+                <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, type:"xWithNumber", onChange: e => { stopGame(); setAutoStop(e.target.value) } }} />
+                <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Auto Cash Out when this amount will be reached</div>
+              </div>
           </div>
         </div>
 
@@ -412,19 +412,19 @@ const MainPage = () => {
 
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">Coefficient</div>
-                <InputNumber InputProps={{ value: winCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", onChange: e => { stopGame(); setWinCoefficient(parseFloat(e.target.value)) } }} />
+                <InputNumber InputProps={{ value: winCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: operationAfterWin === "Return to base Bet", onChange: e => { stopGame(); setWinCoefficient(parseFloat(e.target.value)) } }} />
               </div>
             </div>
 
             <div className="flex gap-4">
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">If Win</div>
-                <InputText InputProps={{ value: operationAfterLoss, onChange: e => setOperationAfterLoss(parseFloat(e.target.value)) }} />
+                <InputText InputProps={{ value: operationAfterLoss, onChange: e => setOperationAfterLoss(e.target.value) }} />
               </div>
 
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5 text-[#FFFFFF99]">Coefficeent</div>
-                <InputNumber InputProps={{ value: lostCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: true, onChange: e => { stopGame(); setLostCoefficient(parseFloat(e.target.value)) } }} />
+                <InputNumber InputProps={{ value: lostCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: operationAfterLoss === "Return to base Bet", onChange: e => { stopGame(); setLostCoefficient(e.target.value) } }} />
               </div>
             </div>
 

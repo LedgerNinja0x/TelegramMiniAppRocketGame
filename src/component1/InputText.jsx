@@ -33,15 +33,14 @@ const InputText = memo(( {InputProps} ) => {
   };
 
   const incrementValue = () => {
-    const newValue = (parseFloat(value) || 0) + 1;
-    setValue(newValue);
-    InputProps.onChange && InputProps.onChange({ target: { value: newValue } });
+    
+    setIndex((index+1)%2)
+    InputProps.onChange && InputProps.onChange({ target: { value: operationAferAction[(index+1)%2] } });
   };
 
   const decrementValue = () => {
-    const newValue = (parseFloat(value) || 0) - 1;
-    setValue(newValue);
-    InputProps.onChange && InputProps.onChange({ target: { value: newValue } });
+    setIndex((index-1+2)%2)
+    InputProps.onChange && InputProps.onChange({ target: { value: operationAferAction[(index+1)%2] } });
   };
 
   return (
@@ -60,13 +59,13 @@ const InputText = memo(( {InputProps} ) => {
             className='cursor-pointer w-3 h-3'
             src='image/icon/up-arrow.svg'
             alt='Increase'
-            onClick= {()=>!InputProps.disabled && setIndex((index+1)%2)}
+            onClick= {()=>!InputProps.disabled && incrementValue() }
           />
           <img
             className='cursor-pointer w-3 h-3'
             src='image/icon/down-arrow.svg'
             alt='Decrease'
-            onClick={()=>!InputProps.disabled && setIndex((index-1)%2)}
+            onClick={()=>!InputProps.disabled && decrementValue() }
           />
         </div>
       </div>

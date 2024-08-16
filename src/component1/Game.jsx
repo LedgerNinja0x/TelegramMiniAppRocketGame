@@ -79,7 +79,6 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
   useEffect(()=>{
     let timer = 0;
     let isMounted = true;
-    console.log(counterFlag)
     counterFlag && setTimerHandler(setInterval(() => {
       timer += 100
       if (isMounted) {

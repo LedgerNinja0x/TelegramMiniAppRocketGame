@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import "../css_generated/InputNumber.css";
 
 const InputNumber = memo(( {InputProps} ) => {
-  const [value, setValue] = useState(InputProps.value || '');
+  const [value, setValue] = useState(InputProps.value );
   
-  console.log(value)
+  
   const handleKeyPress = (e) => {
-    console.log(e.key)
     const allowedChars = '0123456789.';
     const isInvalidKey = (e.key.length === 1 && !allowedChars.includes(e.key)) ||
                          (e.key === '.' && value.includes('.'));
@@ -19,7 +18,6 @@ const InputNumber = memo(( {InputProps} ) => {
     if (e.key === ',' && !value.includes('.')) {
       e.preventDefault();
       const newValue = parseFloat(value).toFixed(1).slice(0, -1);
-      console.log(newValue);
       // setValue(newValue);
       InputProps.onChange && InputProps.onChange({ target: { value: newValue } });
     }
