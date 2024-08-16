@@ -14,7 +14,6 @@ import NavPlay from "../component/svg/nav_play.jsx";
 import ShadowButton from "../component/atom/shadow-btn.jsx";
 import "../css_generated/Style.css"
 import SettingButton from "../component/svg/button_setting.jsx";
-import InputText from "../component1/InputText.jsx";
 import { useAtom } from "jotai";
 import { isActionState } from "../store/actionState.jsx";
 import { CSSTransition } from "react-transition-group";
@@ -30,7 +29,7 @@ const MainPage = () => {
   const [stopWasPressed, setStopWasPressed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [realGame, setRealGame] = useState(false);
-  const [autoMode, setAutoMode] = useState(true);
+  const [autoMode, setAutoMode] = useState(false);
   const [gamePhase, setGamePhase] = useState();
   const [bet, setBet] = useState(1);
   const [autoStop, setAutoStop] = useState(20);
@@ -295,7 +294,7 @@ const MainPage = () => {
     }
   };
   
-  const setPlayMode = (condition) => {
+  const   setPlayMode = (condition) => {
     
     
     setAutoMode(condition);
@@ -337,23 +336,23 @@ const MainPage = () => {
       
 
       <div className="flex flex-col text-white gap-4">
-        <div className={`${gamePhase === 'started' ? "opacity-20 !text-white" : ""}`}>
-          <div className="flex flex-row justify-center text-base font-medium">
-            <span className={`text-[#3861FB] ${!autoMode ? 'selected text-white ' : ''}`} >Manual</span>
+        <div >
+          <div className={`flex flex-row justify-center text-base font-medium ${gamePhase === 'started' ? "opacity-20 !text-white" : ""}`}>
+            <span className={`text-[#3861FB] ${!autoMode ? 'selected text-white ' : ''}`} onClick={e => setPlayMode(false)} >Manual</span>
             <SwitchButton checked={autoMode}  onChange={ gamePhase !== 'started' ? ( e => setPlayMode(e.target.checked)):undefined}  />
-            <span className={`text-[#3861FB] ${autoMode ? 'selected text-white ' : ''}`} >Auto</span>
+            <span className={`text-[#3861FB] ${autoMode ? 'selected text-white ' : ''}`} onClick={e => setPlayMode(true)} >Auto</span>
           </div>
 
           <div className={`transition duration-300 ${autoMode && "hidden"} flex gap-4`}>
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">Bet</div>
-                <InputNumber InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
+                <InputNumber InputProps={{ value: bet, min: 1, step: 1, disabled : isAction ==="start", onChange: e => setBet(parseFloat(e.target.value)) }} />
                 <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Minimal Bet is 0.1 Coin</div>
               </div>
 
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">Auto Stop</div>
-                <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, type:"xWithNumber", onChange: e => { stopGame(); setAutoStop(e.target.value) } }} />
+                <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, disabled : isAction ==="start", type:"xWithNumber", onChange: e => { stopGame(); setAutoStop(e.target.value) } }} />
                 <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Auto Cash Out when this amount will be reached</div>
               </div>
           </div>
@@ -407,24 +406,24 @@ const MainPage = () => {
             <div className="flex gap-4">
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">If Lose</div>
-                <InputText InputProps={{ value: operationAfterWin, onChange: e => setOperationAfterWin(e.target.value) }} />
+                <DropDown label={operationAfterLoss} content={['Return to base Bet']} onChange={e => { setOperationAfterLoss(e) }}/>
               </div>
 
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">Coefficient</div>
-                <InputNumber InputProps={{ value: winCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: operationAfterWin === "Return to base Bet", onChange: e => { stopGame(); setWinCoefficient(parseFloat(e.target.value)) } }} />
+                <InputNumber InputProps={{ value: lostCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: operationAfterLoss === "Return to base Bet", onChange: e => { stopGame(); setWinCoefficient(parseFloat(e.target.value)) } }} />
               </div>
             </div>
 
             <div className="flex gap-4">
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5">If Win</div>
-                <InputText InputProps={{ value: operationAfterLoss, onChange: e => setOperationAfterLoss(e.target.value) }} />
+                <DropDown label={operationAfterWin} content={['Increase Bet by']} onChange={e => { setOperationAfterWin(e) }}/>
               </div>
 
               <div className="flex flex-col w-1/2 gap-1">
                 <div className="text-sm leading-5 text-[#FFFFFF99]">Coefficeent</div>
-                <InputNumber InputProps={{ value: lostCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: operationAfterLoss === "Return to base Bet", onChange: e => { stopGame(); setLostCoefficient(e.target.value) } }} />
+                <InputNumber InputProps={{ value: winCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: operationAfterWin === "Return to base Bet", onChange: e => { stopGame(); setWinCoefficient(e.target.value) } }} />
               </div>
             </div>
 

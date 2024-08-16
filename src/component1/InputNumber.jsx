@@ -1,6 +1,9 @@
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import "../css_generated/InputNumber.css";
+import UpArrow from '../component/svg/up-arrow';
+import DownArrow from '../component/svg/down-arrow';
+import { cn } from '../utils';
 
 const InputNumber = memo(( {InputProps} ) => {
   const [value, setValue] = useState(InputProps.value );
@@ -51,22 +54,18 @@ const InputNumber = memo(( {InputProps} ) => {
         onChange={handleChange}
         onKeyPress={handleKeyPress}
         disabled ={InputProps.disabled}
+        min = {InputProps.min}
       />
       {InputProps.type === "xWithNumber" && <div className='absolute left-2 top-1/2 transfrom -translate-y-1/2'>X</div>}
       <div className='absolute right-2.5 top-1/2 transform -translate-y-1/2'>
-        <div className='flex flex-col'>  
-          <img
-            className='cursor-pointer w-3 h-3'
-            src='image/icon/up-arrow.svg'
-            alt='Increase'
-            onClick={()=>!InputProps.disabled && incrementValue()}
+        <div className={cn('flex flex-col cursor-pointer',InputProps.disabled ? "cursor-none contain-none select-none" : "")}>  
+          <UpArrow className = "cursor-pointer w-3 h-3"
+            action={()=>!InputProps.disabled && incrementValue()}
           />
-          <img
-            className='cursor-pointer w-3 h-3'
-            src='image/icon/down-arrow.svg'
-            alt='Decrease'
-            onClick={()=>!InputProps.disabled && decrementValue()}
+          <DownArrow className = "cursor-pointer w-3 h-3"
+            action={()=>!InputProps.disabled && decrementValue()}
           />
+          
         </div>
       </div>
     </div>

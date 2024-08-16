@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import MainPage from "./pages/MainPage"
-import Header from "./component1/Header";
 import Footer from './component1/Footer';
 import Earned from './pages/Earned';
 import Friends from './pages/Friends';
@@ -25,7 +24,7 @@ function App() {
   
   return (
     <JotaiProvider>
-    <div className="App h-screen flex flex-col relative">
+    <div className="App h-screen   flex flex-col relative">
       
       {!isLoading?
           ( <>

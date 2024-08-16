@@ -143,7 +143,7 @@ const UserInfo = () => {
                 <ArrowRight className={"w-4 h-4 m-auto"} />
             </div>)}
             renderArrowPrev={(clickHandler,hasPrev,labelPrev)=>(hasPrev && <div
-              type = "button" aria-level={labelPrev} className="prev flex " onClick={clickHandler}>
+              type = "button" aria-level={labelPrev} className="prev flex opacity-20" onClick={clickHandler}>
                 <ArrowLeft className={"w-4 h-4 m-auto"} />
               </div>)}
           >

@@ -5,6 +5,8 @@
 .App {
   text-align: center;
   font-family: 'roboto';
+  width: 100vw;
+  height: 100wh;
 }
 
 .App-logo {

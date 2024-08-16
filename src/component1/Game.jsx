@@ -234,7 +234,7 @@ starsElements.forEach(id => {
                       <stop offset="100%" style={{ stopColor: "#FFFFFF", stopOpacity: 1 }} />
                     </linearGradient>
                   </defs>
-                  <circle stroke="url(#gradientBorder)" cx="44" cy="44" r="20.2" fill="none" stroke-width="2" style={{ strokeDasharray: 126.92, strokeDashoffset: `${126 - timerRounded}px` }}></circle>
+                  <circle stroke="url(#gradientBorder)" cx="44" cy="44" r="20.2" fill="none" strokeWidth="2" style={{ strokeDasharray: 126.92, strokeDashoffset: `${126 - timerRounded}px` }}></circle>
                 </svg>
                 <div className='absolute left-1/2 top-1/2 transfrom -translate-x-1/2 -translate-y-1/2 text-2xl text-white font-black'>
                   {counterNumber - 1}

@@ -28,7 +28,7 @@ const ScrollModal = ({ children, icon, title, isOpen, setIsOpen }) => {
         >
             <div 
                 className={
-                    `absolute bottom-0 rounded-tl-[10px] rounded-tr-[10px] w-full bg-gradient-to-b from-[#1414AA] to-[#000075]
+                    `absolute bottom-0 rounded-tl-[10px] rounded-tr-[10px] w-full h-screen bg-gradient-to-b from-[#1414AA] to-[#000075]
                     ${isExiting ? 'animate-slide-out-bottom' : 'animate-slide-in-top'}`
                 }
             >
