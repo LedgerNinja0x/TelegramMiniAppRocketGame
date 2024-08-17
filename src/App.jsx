@@ -24,7 +24,7 @@ function App() {
   
   return (
     <JotaiProvider>
-    <div className="App h-screen   flex flex-col relative">
+    <div className="App h-screen flex flex-col relative">
       
       {!isLoading?
           ( <>

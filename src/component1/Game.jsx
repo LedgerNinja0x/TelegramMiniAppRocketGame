@@ -206,7 +206,7 @@ starsElements.forEach(id => {
   score = score === 'Crashed...' ? 'Crashed...' : `x${score}`
 
   return (
-    <div id='game' className={`${className} flex-auto flex flex-col h-full justify-between items-center relative`}>
+    <div id='game' className={`${className} flex-auto flex flex-col h-fit justify-between items-center relative`}>
 
       {/* <div id='game-toggle'>
         <span className={!realGame ? 'selected' : ''} onClick={() => { switchChanged({ target: { checked: false } }) }}>Virtual</span>

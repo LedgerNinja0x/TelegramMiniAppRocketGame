@@ -448,8 +448,6 @@ const MainPage = () => {
                   />
                 )
             }
-
-
           </div>
         </ScrollModal>
       </div>
