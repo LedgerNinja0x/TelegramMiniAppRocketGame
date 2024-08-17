@@ -256,16 +256,16 @@ starsElements.forEach(id => {
         {counterNumber === 0 && gamePhase === 'started'
           ? <img
             id='game-rocket'
-            src='/image/rocket-active.svg'
+            src='/image/rocket-active.png'
             className='shaking active' />
           : gamePhase === 'crashed'
             ? <img
               id='game-rocket'
-              src='/image/rocket-explosed.svg'
+              src='/image/rocket-explosed.png'
               className='explosed' />
             : <img
               id='game-rocket'
-              src='/image/rocket-inactive.svg'
+              src='/image/rocket-inactive.png'
               className='inactive' />}
       </div>
 

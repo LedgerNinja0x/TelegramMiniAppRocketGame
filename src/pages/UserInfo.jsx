@@ -84,7 +84,7 @@ const UserInfo = () => {
     const rankingItems = rankingData.map((data,index)=>{
       return(
         <div className="w-full left-3" key={index}>
-           <p><span className="text-blueFaded">Ranking : </span>{data}</p>
+           <p>Ranking : {data}</p>
         </div>
         
       )
@@ -143,7 +143,7 @@ const UserInfo = () => {
                 <ArrowRight className={"w-4 h-4 m-auto"} />
             </div>)}
             renderArrowPrev={(clickHandler,hasPrev,labelPrev)=>(hasPrev && <div
-              type = "button" aria-level={labelPrev} className="prev flex opacity-20" onClick={clickHandler}>
+              type = "button" aria-level={labelPrev} className="prev flex" onClick={clickHandler}>
                 <ArrowLeft className={"w-4 h-4 m-auto"} />
               </div>)}
           >

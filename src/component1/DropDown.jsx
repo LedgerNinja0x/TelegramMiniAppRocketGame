@@ -14,7 +14,7 @@ export default memo(function DropDown ({ label, content, onChange }) {
       onMouseLeave={() => setShowDropDown(false)}
       className={`dropdown text-black h-11 ${showDropDown ? 'show-dropdown' : ''}`}>
       <span className='d-d '>{selected}</span>
-      <img src='image/icon/up-down-arrow.png'/>
+      <img src='image/icon/down-arrow.png'/>
       <div className='dropdown-content w-full relative rounded-xl'>
         {list.map((i,index) => <p key = {index} onClick={e => {
           setList([...list.filter(i => i !== e.target.innerText), selected])

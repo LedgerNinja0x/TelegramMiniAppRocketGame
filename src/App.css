@@ -6,8 +6,9 @@
   text-align: center;
   font-family: 'roboto';
   width: 100vw;
-  height: 100wh;
+  /* height: 100wh; */
   overflow: hidden;
+  height: calc(var(--vh, 1vh)*100);
 }
 
 .App-logo {

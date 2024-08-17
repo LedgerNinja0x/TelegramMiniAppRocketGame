@@ -8,9 +8,9 @@
 }
 .dropdown img {
   position: absolute;
-  top: 10px;
+  top: 19px;
   right: 10px;
-  width: 12px;
+  width: 11px;
 }
 .dropdown:hover {
   cursor: pointer;
