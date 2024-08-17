@@ -5,7 +5,6 @@ import InputNumber from "../component1/InputNumber";
 import AppContext from "../component1/AppContext";
 import Game from '../component1/Game.jsx'
 import { useCookies } from 'react-cookie';
-import DropDown from "../component1/DropDown";
 import PannelScore from "../component/atom/PannelScore";
 import { Img } from "../assets/image";
 import { avatar } from "../assets/avatar/index.js";
@@ -16,13 +15,13 @@ import "../css_generated/Style.css"
 import SettingButton from "../component/svg/button_setting.jsx";
 import { useAtom } from "jotai";
 import { isActionState } from "../store/actionState.jsx";
-import { CSSTransition } from "react-transition-group";
-// import './SmoothTransantion.css'
+import SwitchButtonOption from "../component/atom/switchButtonOption.jsx";
+import SettingModal from "../component/atom/setting-modal.jsx";
+
 const MainPage = () => {
   const context = useContext(AppContext);
   const cookiesData = useCookies(['user_id', 'session']);
   const [cookies] = !context.ssrFlag ? cookiesData : [context.cookies];
-
   const modalRef = useRef();
 
   // State variables
@@ -32,7 +31,7 @@ const MainPage = () => {
   const [autoMode, setAutoMode] = useState(false);
   const [gamePhase, setGamePhase] = useState();
   const [bet, setBet] = useState(1);
-  const [autoStop, setAutoStop] = useState(20);
+  const [autoStop, setAutoStop] = useState(5);
   const [finalResult, setFinalResult] = useState(0);
   const [historyGames, setHistoryGames] = useState([]);
   const [balance, setBalance] = useState(10);
@@ -50,7 +49,6 @@ const MainPage = () => {
   const [lostCoefficient, setLostCoefficient] = useState(1);
   const [isAction,setActionState] = useAtom(isActionState);
   
-  
   // Refs for mutable state
   const balanceRef = useRef(balance);
   const historyGamesRef = useRef(historyGames);
@@ -66,6 +64,7 @@ const MainPage = () => {
       <img src={Img.imgSetting} width={24} height={24} alt="setting" />
     )
   }
+  const operationOption = ['Return to base Bet', 'Increase Bet by'];
   
   const handleModalButton = () => {
     startGame();
@@ -279,7 +278,8 @@ const MainPage = () => {
       } else {
         betRef.current = Math.min(valueAfterWinRef.current, parseFloat(balanceRef.current));
       }
-      setBet(parseFloat(betRef.current));
+      // console.log(bet);
+      // setBet(parseFloat(betRef.current));
     }
   };
   
@@ -290,7 +290,8 @@ const MainPage = () => {
       } else {
         betRef.current = Math.min(valueAfterLossRef.current, parseFloat(balanceRef.current));
       }
-      setBet(parseFloat(betRef.current));
+      // console.log(bet);
+      // setBet(parseFloat(betRef.current));
     }
   };
   
@@ -387,43 +388,45 @@ const MainPage = () => {
             )
         }
 
-        <ScrollModal icon={<NavPlay />} title="Auto Launch" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-          <div className="flex flex-col pt-2 px-4 pb-4 gap-4" >
-            <div className="flex gap-4">
-              <div className="flex flex-col w-1/2 gap-1">
-                <div className="text-sm leading-5">Bet</div>
-                <InputNumber InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
-                <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Minimal Bet is 0.1 Coin</div>
+        <SettingModal icon={<NavPlay />} title="Auto Launch" isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+          <div className="flex flex-col justify-between max-h-screen pt-2 px-4 pb-4 h-[calc(100vh-60px)]" >
+            <div className="flex flex-col gap-4" >
+              <div className="flex gap-4">
+                <div className="flex flex-col w-1/2 gap-1">
+                  <div className="text-sm leading-5">Bet</div>
+                  <InputNumber InputProps={{ value: bet, min: 1, step: 1, onChange: e => setBet(parseFloat(e.target.value)) }} />
+                  <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Minimal Bet is 0.1 Coin</div>
+                </div>
+
+                <div className="flex flex-col w-1/2 gap-1">
+                  <div className="text-sm leading-5">Auto Stop</div>
+                  <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, type:"xWithNumber", onChange: e => { stopGame(); setAutoStop(e.target.value) } }} />
+                  <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Auto Cash Out when this amount will be reached</div>
+                </div>
               </div>
 
-              <div className="flex flex-col w-1/2 gap-1">
-                <div className="text-sm leading-5">Auto Stop</div>
-                <InputNumber InputProps={{ value: autoStop, min: 1.01, max: 100, step: 1, type:"xWithNumber", onChange: e => { stopGame(); setAutoStop(e.target.value) } }} />
-                <div className="text-xs leading-[14px] text-[#FFFFFFCC]">Auto Cash Out when this amount will be reached</div>
-              </div>
-            </div>
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col w-full gap-1">
+                  <div className="text-sm leading-5">If Lose</div>
+                  <SwitchButtonOption contents={operationOption} setSlot={(e)=>setOperationAfterLoss(e)} slot={operationAfterLoss} />
+                </div>
 
-            <div className="flex gap-4">
-              <div className="flex flex-col w-1/2 gap-1">
-                <div className="text-sm leading-5">If Lose</div>
-                <DropDown label={operationAfterLoss} content={['Return to base Bet']} onChange={e => { setOperationAfterLoss(e) }}/>
-              </div>
-
-              <div className="flex flex-col w-1/2 gap-1">
-                <div className="text-sm leading-5">Coefficient</div>
-                <InputNumber InputProps={{ value: lostCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: operationAfterLoss === "Return to base Bet", onChange: e => { stopGame(); setWinCoefficient(parseFloat(e.target.value)) } }} />
-              </div>
-            </div>
-
-            <div className="flex gap-4">
-              <div className="flex flex-col w-1/2 gap-1">
-                <div className="text-sm leading-5">If Win</div>
-                <DropDown label={operationAfterWin} content={['Increase Bet by']} onChange={e => { setOperationAfterWin(e) }}/>
+                <div className="flex flex-col w-full gap-1">
+                  <div className="text-sm leading-5">Coefficient</div>
+                  <InputNumber InputProps={{ value: lostCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: operationAfterLoss === "Return to base Bet", onChange: e => { stopGame(); setWinCoefficient(parseFloat(e.target.value)) } }} />
+                </div>
               </div>
 
-              <div className="flex flex-col w-1/2 gap-1">
-                <div className="text-sm leading-5 text-[#FFFFFF99]">Coefficeent</div>
-                <InputNumber InputProps={{ value: winCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: operationAfterWin === "Return to base Bet", onChange: e => { stopGame(); setWinCoefficient(e.target.value) } }} />
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col w-full gap-1">
+                  <div className="text-sm leading-5">If Win</div>
+                  <SwitchButtonOption contents={operationOption} setSlot={(e)=>setOperationAfterWin(e)} slot={operationAfterWin} />
+                </div>
+
+                <div className="flex flex-col w-full gap-1">
+                  <div className="text-sm leading-5 text-[#FFFFFF99]">Coefficeent</div>
+                  <InputNumber InputProps={{ value: winCoefficient, min: 1.01, max: 100, step: 1, type:"xWithNumber", disabled: operationAfterWin === "Return to base Bet", onChange: e => { stopGame(); setWinCoefficient(e.target.value) } }} />
+                </div>
               </div>
             </div>
 
@@ -449,7 +452,7 @@ const MainPage = () => {
                 )
             }
           </div>
-        </ScrollModal>
+        </SettingModal>
       </div>
     </div>
     </div>

@@ -10,6 +10,7 @@ const InputNumber = memo(( {InputProps} ) => {
   
   
   const handleKeyPress = (e) => {
+
     const allowedChars = '0123456789.';
     const isInvalidKey = (e.key.length === 1 && !allowedChars.includes(e.key)) ||
                          (e.key === '.' && value.includes('.'));
@@ -28,19 +29,23 @@ const InputNumber = memo(( {InputProps} ) => {
 
   const handleChange = (e) => {
     const newValue = e.target.value;
-    setValue(newValue);
-    InputProps.onChange && InputProps.onChange({ target: { value: newValue } });
+        // Validate input: Only allow numbers and decimal points
+        if (/^\d*\.?\d*$/.test(newValue)) {
+          newValue >= 0 || newValue === '' ? setValue(newValue) : setValue(0.1);
+          InputProps.onChange && InputProps.onChange({ target: { value: newValue } });
+        }
+    
   };
 
   const incrementValue = () => {
-    const newValue = (parseFloat(value) || 0) + 1;
-    setValue(newValue);
+    const newValue = (parseFloat(value) || 0.1) + 1;
+    newValue >= 0.1 ? setValue(newValue) : setValue(0.1);
     InputProps.onChange && InputProps.onChange({ target: { value: newValue } });
   };
 
   const decrementValue = () => {
-    const newValue = (parseFloat(value) || 0) - 1;
-    setValue(newValue);
+    const newValue = (parseFloat(value) || 0.1) - 1;
+    newValue >= 0.1 || newValue === '' ? setValue(newValue) : setValue(0.1);
     InputProps.onChange && InputProps.onChange({ target: { value: newValue } });
   };
 
@@ -54,9 +59,9 @@ const InputNumber = memo(( {InputProps} ) => {
         onChange={handleChange}
         onKeyPress={handleKeyPress}
         disabled ={InputProps.disabled}
-        min = {InputProps.min}
+        min = {1}
       />
-      {InputProps.type === "xWithNumber" && <div className='absolute left-2 top-1/2 transfrom -translate-y-1/2'>X</div>}
+      {InputProps.type === "xWithNumber" && <div className='absolute left-2 top-1/2 transfrom -translate-y-1/2'>x</div>}
       <div className='absolute right-2.5 top-1/2 transform -translate-y-1/2'>
         <div className={cn('flex flex-col cursor-pointer',InputProps.disabled ? "cursor-none contain-none select-none" : "")}>  
           <UpArrow className = "cursor-pointer w-3 h-3"
