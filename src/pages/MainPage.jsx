@@ -307,7 +307,7 @@ const MainPage = () => {
   }
   
   return (
-    <div className="flex-auto p-4">
+    <div className="h-screen p-4">
     <div id='index-operations' className={`flex flex-col relative h-full w-full gap-4 justify-between ${autoMode ? 'auto-mode' : ''} transition flex flex-col gap-4 ${isAction==="start"? "pb-0" : "pb-[76px]" }`}>
       
     
