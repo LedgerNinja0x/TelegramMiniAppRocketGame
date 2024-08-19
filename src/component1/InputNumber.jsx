@@ -56,6 +56,8 @@ const InputNumber = memo(( {InputProps} ) => {
         className={`input-number absolute w-full h-11 top-0 left-0 box-border rounded-xl pl-4 ${InputProps.disabled ? "text-[#FFFFFF99] bg-white_20 cursor-none contain-none select-none" : ""}`}
         type='number'
         value={value}
+        inputMode='decimal'
+        pattern='[0-9]*'
         onChange={handleChange}
         onKeyPress={handleKeyPress}
         disabled ={InputProps.disabled}
