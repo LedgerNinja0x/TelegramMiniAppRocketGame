@@ -11,7 +11,7 @@ import UserInfo from './pages/UserInfo';
 import Stars from './component1/Stars';
 import Loading from './pages/Loading';
 import { Provider as JotaiProvider } from 'jotai';
-import Layout from './component/atom/layout.jsx';
+import Layout from './component/atom/layoutmain.jsx';
 
 
 
