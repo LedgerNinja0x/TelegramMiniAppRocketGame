@@ -336,7 +336,7 @@ const MainPage = () => {
       
       
 
-      <div className="flex flex-col text-white gap-4">
+      <div className="flex flex-col overflow-hidden text-white gap-4">
         <div >
           <div className={`flex flex-row justify-center text-base font-medium ${gamePhase === 'started' ? "opacity-20 !text-white" : ""}`}>
             <span className={`text-[#3861FB] ${!autoMode ? 'selected text-white ' : ''}`} onClick={e => setPlayMode(false)} >Manual</span>
