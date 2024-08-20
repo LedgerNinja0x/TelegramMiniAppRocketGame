@@ -2,12 +2,11 @@
 import { ACCELERATION } from '../utils/globals'
 import AppContext from './AppContext'
 import React, { memo, useContext, useEffect, useRef, useState } from 'react'
-import Switch from './Switch'
 import { useCookies } from 'react-cookie'
 import "../css_generated/Game.css"
 import { Img } from '../assets/image'
 
-export default memo(function Game({ gamePhase, finalResult, realGame, setRealGame, setLoaderIsShown, amount = 10.00, isMounted, className }) {
+export default memo(function Game({ gamePhase, finalResult, setRealGame, setLoaderIsShown, amount = 10.00,  className, bet, autoStop, socketFlag }) {
   const context = useContext(AppContext);
   const cookiesData = useCookies(['user_id', 'session']);
   const [cookies] = !context.ssrFlag ? cookiesData : [context.cookies];
@@ -22,13 +21,15 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
   const [ counterFlag, setCounterFlag ] = useState(false);
   const counterItem = [Img.go, Img.counter1, Img.counter2, Img.counter3];
   
+  
   if (gamePhase === 'stopped') {
     clearInterval(timerHandler)
   }
 
   useEffect(() => {
     
-    
+    let isMounted = true
+    let timer = 0 
 
     if (gamePhase === 'started' ) {
       setCurrentResult(1);
@@ -54,7 +55,14 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
               clearInterval(newCountTimeHandler); // Clear the interval when counter reaches zero
               setCounterNumber(0);// Ensure counter is set to zero
               setCounterFlag(true)
-              
+
+              context.socket.send(JSON.stringify({
+                operation: 'start',
+                bet,
+                autoStop,
+                // userID: cookies.user_id,  // -------------
+                // session: cookies.session, // -------------
+              }));
           } else {
               setCounterNumber(newCounterNumber);
           }
@@ -64,7 +72,9 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
       // Update the handler reference
       setCountTimeHandler(newCountTimeHandler);    
     }
-  
+    
+
+
     } else if (gamePhase === 'stopped' || gamePhase === 'crashed') {
       clearInterval(timerHandler)
       clearInterval(countTimeHandler);
@@ -75,6 +85,8 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
       }
     }
   }, [gamePhase])
+
+
 
   useEffect(()=>{
     let timer = 0;
@@ -145,7 +157,7 @@ export default memo(function Game({ gamePhase, finalResult, realGame, setRealGam
   let score = finalResult === 'Crashed...' ? 'Crashed...' : finalResult || currentResult
 
   if (typeof window !== 'undefined') {
-    const animationState = (gamePhase === 'started' && counterNumber===0) ? 'running' : 'paused';
+    const animationState = (gamePhase === 'started' && counterNumber===0 && socketFlag) ? 'running' : 'paused';
 
   const starsElements = ['stars1','stars2', 'stars3', 'stars'];
 
@@ -207,16 +219,10 @@ starsElements.forEach(id => {
 
   return (
     <div id='game' className={`${className} flex-auto flex flex-col h-fit justify-between items-center relative`}>
-
-      {/* <div id='game-toggle'>
-        <span className={!realGame ? 'selected' : ''} onClick={() => { switchChanged({ target: { checked: false } }) }}>Virtual</span>
-        <Switch checked={realGame} onChange={switchChanged}/>
-        <span className={realGame ? 'selected' : ''} onClick={() => { switchChanged({ target: { checked: true } }) }}>Real</span>
-      </div> */}
       <div className='flex flex-col items-center justify-between'>
         <div className="flex gap-2 items-center justify-center font-extrabold ">
           <img src={Img.coin} width={44} height={44} className="max-w-11 h-11" alt="coin" />
-          <p className="text-[40px] text-white font-extrabold">{amount.toFixed(2)}</p>
+          <p className="text-[40px] text-white font-extrabold">{parseFloat(amount).toFixed(2)}</p>
         </div>
         {
           counterNumber > 0 && counterNumber < 1.2 ?
@@ -243,7 +249,7 @@ starsElements.forEach(id => {
             </div> : ""
         }
         {
-          gamePhase === 'started' && counterNumber === 0 &&
+          gamePhase === 'started' && counterNumber === 0 && socketFlag && 
           <div className='text-2xl leading-7 mt-6 text-white font-roboto text-center score-position z-10'>{score}</div>
         }
         <div className='items-center justify-center h-fit absolute top-1/3 z-10'>
@@ -253,7 +259,7 @@ starsElements.forEach(id => {
 
 
       <div className='flex items-center'>
-        {counterNumber === 0 && gamePhase === 'started'
+        {counterNumber === 0 && gamePhase === 'started'&& socketFlag
           ? <img
             id='game-rocket'
             src='/image/rocket-active.png'

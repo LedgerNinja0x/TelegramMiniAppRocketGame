@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function googleAds () {
+export default function GoogleAds () {
   return (
     <ins className='adsbygoogle'
       style={{ display: 'block' }}

@@ -34,8 +34,9 @@
 #game #game-rocket.explosed {
   width: 90px;
   height: 100px;
-  margin-left: -45px;
-  top: 190px;
+  left: 50%;
+  top:50%;
+  margin-left: -32px;
 }
 #game .shaking {
   animation: shake 3s infinite ease-in-out both;
