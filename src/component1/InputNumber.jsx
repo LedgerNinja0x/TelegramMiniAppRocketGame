@@ -34,7 +34,7 @@ const InputNumber = memo(({ InputProps }) => {
       window.scrollTo(0, 0);
       document.body.scrollTop = 0;
     };
-  });
+  }, [inputElement]);
 
   const handleChange = (e) => {
     const newValue = e.target.value;
