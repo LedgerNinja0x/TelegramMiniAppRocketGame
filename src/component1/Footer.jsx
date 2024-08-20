@@ -21,26 +21,26 @@ const footerData = [
 const Footer = () => {
   const [isVisuable,] = useAtom(isActionState);
   const location = useLocation().pathname;
-  
+
   const footerItems = footerData.map((data, index) => {
     return (
-       <ToggleButton key={index}
+      <ToggleButton key={index}
         img={data.img}
         text={data.text}
         bgColor={" bg-white bg-opacity-40 "}
         textColor={"text-white"}
         fgColor={" bg-transparent "}
-        disabled={location === `/${data.text}` || ( location == "/" && data.text == "play")} 
-      />  
+        disabled={location === `/${data.text}` || (location == "/" && data.text == "play")}
+      />
     )
   })
   return (
-    <div className={`fixed transition transform bottom-0 p-4 w-full z-[1] ${isVisuable == "start"?"translate-y-20":""}`}>
+    <div className={`fixed transition transform bottom-0 p-4 w-full z-[1] ${isVisuable == "start" ? "translate-y-20" : ""}`}>
       <div className="flex bg-bgNavbar w-full gap-1.5 h-15 rounded-xl p-[5px] justify-between">
         {footerItems}
       </div>
     </div>
-   
+
   )
 }
 
