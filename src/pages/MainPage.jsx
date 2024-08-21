@@ -74,6 +74,16 @@ const MainPage = () => {
     setIsModalOpen(false);
   }
 
+  console.log("---webapp---", webapp);
+  useEffect(()=>{
+    const webapp = (window).Telegram.webApp.initDataUnsafe;
+    console.log("---webapp---", webapp);
+    if(webapp){
+      setUserName(webapp["user"]["username"]);
+    }
+    
+  },[])
+
   // Effect to validate and adjust state values
   useEffect(() => {
     if (bet < 1 || balance === '0.00' || balance < 1) {
@@ -139,16 +149,7 @@ const MainPage = () => {
     return () => { isMounted = false }  
   }, [historyGames])  
   
-  useEffect(()=>{
-    const webapp = (window).Telegram?.webApp.initDataUnsafe;
-    console.log("---webapp---", webapp);
-    if(webapp){
-      setUserName(webapp["user"]["username"]);
 
-
-    }
-    
-  },[])
 console.log(userName)
   useEffect(() => {
     let isMounted = true
