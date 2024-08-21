@@ -49,6 +49,8 @@ const MainPage = () => {
   const context = useContext(AppContext);
   const [socketStart, setSocketStart] = useState(false);
   const [realGame, setRealGame] = useState(false);
+  const [userName, setUserName] = useState("");
+
 
   // Refs for mutable state
   const balanceRef = useRef(balance);
@@ -138,9 +140,16 @@ const MainPage = () => {
   }, [historyGames])  
   
   useEffect(()=>{
+    const webapp = (window).Telegram?.webApp.initDataUnsafe;
+    console.log("---webapp---", webapp);
+    if(webapp){
+      setUserName(webapp["user"]["username"]);
+
+
+    }
     
   })
-
+console.log(userName)
   useEffect(() => {
     let isMounted = true
     if (true) {
