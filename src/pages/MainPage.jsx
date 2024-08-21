@@ -74,7 +74,7 @@ const MainPage = () => {
     setIsModalOpen(false);
   }
 
-  console.log("---webapp---", webapp);
+  console.log("---webapp---");
   useEffect(()=>{
     const webapp = (window).Telegram.webApp.initDataUnsafe;
     console.log("---webapp---", webapp);
