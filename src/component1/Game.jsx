@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie'
 import "../css_generated/Game.css"
 import { Img } from '../assets/image'
 
-export default memo(function Game({ gamePhase, finalResult, setRealGame, setLoaderIsShown, amount = 10.00,  className, bet, autoStop, socketFlag }) {
+export default memo(function Game({ gamePhase, finalResult, setRealGame, setLoaderIsShown, amount = 10.00,  className, bet, autoStop, socketFlag, realGame }) {
   const context = useContext(AppContext);
   const cookiesData = useCookies(['user_id', 'session']);
   const [cookies] = !context.ssrFlag ? cookiesData : [context.cookies];
@@ -42,10 +42,20 @@ export default memo(function Game({ gamePhase, finalResult, setRealGame, setLoad
           clearInterval(countTimeHandler);
       }
   
-      
+      console.log("game : ",realGame)
+              console.log(" ddddd " ,context.socket.connected)
+                context.socket.send(JSON.stringify({
+                  operation: 'start',
+                  bet,
+                  autoStop,
+                  isReal: realGame,
+                  // userID: cookies.user_id,  // -------------
+                  // session: cookies.session, // -------------
+                }));
       // Set the interval for counting time
      if(!counterFlag){
       const newCountTimeHandler =  setInterval(() => {
+        
           time += 0.015;
           setTimerRounded((prevRound) => prevRound + 0.61);
           const newCounterNumber = 5 - Math.ceil(time);
@@ -56,16 +66,13 @@ export default memo(function Game({ gamePhase, finalResult, setRealGame, setLoad
               setCounterNumber(0);// Ensure counter is set to zero
               setCounterFlag(true)
 
-              context.socket.send(JSON.stringify({
-                operation: 'start',
-                bet,
-                autoStop,
-                // userID: cookies.user_id,  // -------------
-                // session: cookies.session, // -------------
-              }));
-          } else {
-              setCounterNumber(newCounterNumber);
-          }
+              
+              
+            } else {
+                setCounterNumber(newCounterNumber);
+            }
+              
+              
           
       }, 10);
    
@@ -187,27 +194,40 @@ starsElements.forEach(id => {
     }
   }
 
-  const comments = ['WoW!', 'Cool!', 'Amazing!', 'Awesome!', "That's Hot!", 'You are Epic!']
-
+  const comments = [Img.wow, Img.imgAmazing, Img.imgIncredible, Img.imgFantastic,
+    Img.imgGreat, Img.imgRockrtStar, Img.imgBrilliant, Img.imgCrushing, Img.imgGenius,
+    Img.imgImpressive, Img.imgUnstoppable, Img.imgGotThis, Img.imgFire];
   let comment;
   let commentImg = Img.wow;
 
-  if (score >= 3 && score <= 3.2) {
+  if (score >= 2 && score <= 2.2) {
     comment = comments[0]
   } else if (score >= 3 && score <= 3.2) {
     comment = comments[1]
-  } else if (score >= 5 && score <= 5.3) {
+  } else if (score >= 4 && score <= 4.3) {
     comment = comments[2]
-  } else if (score >= 10 && score <= 10.4) {
+  } else if (score >= 5 && score <= 5.3) {
     comment = comments[3]
-  } else if (score >= 15 && score <= 15.5) {
+  } else if (score >= 6 && score <= 6.3) {
     comment = comments[4]
-  } else if (score >= 20 && score <= 20.75) {
+  } else if (score >= 7 && score <= 7.3) {
     comment = comments[5]
-  }
+  } else if (score >= 8.1 && score <= 7.55) {
+    comment = comments[6]
+  } else if (score >= 9.6 && score <= 10) {
+    comment = comments[7]
+  } else if (score >= 11 && score <= 12.5) {
+    comment = comments[8]
+  } else if (score >= 13 && score <= 13.5) {
+    comment = comments[9]
+  } else if (score >= 15 && score <= 16) {
+    comment = comments[10]
+  } else if (score >= 17 && score <= 18) {
+    comment = comments[11]
+  } 
 
-  if (score >= 25 && (score % 5 <= 1)) {
-    comment = comments[Math.floor(score / 5) % 5]
+  if (score >= 20 && (score % 5 >= 3 && score % 5 <= 4 )) {
+    comment = comments[12]
   }
 
   if (score.toString().indexOf('.') === -1) {
@@ -253,7 +273,7 @@ starsElements.forEach(id => {
           <div className='text-2xl leading-7 mt-6 text-white font-roboto text-center score-position z-10'>{score}</div>
         }
         <div className='items-center justify-center h-fit absolute top-1/3 z-10'>
-          {comment && <img src={commentImg} height={43} className='max-w-fit h-11 z-20' />}
+          {comment && <img src={comment} height={43} className='max-w-fit h-11 z-20' />}
         </div>
       </div>
 

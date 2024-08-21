@@ -48,7 +48,8 @@ const MainPage = () => {
   const [isAction,setActionState] = useAtom(isActionState);
   const context = useContext(AppContext);
   const [socketStart, setSocketStart] = useState(false);
-  
+  const [realGame, setRealGame] = useState(false);
+
   // Refs for mutable state
   const balanceRef = useRef(balance);
   const historyGamesRef = useRef(historyGames);
@@ -123,6 +124,7 @@ const MainPage = () => {
               operation: 'start',
               bet: betRef.current,
               autoStop,
+              isReal: realGame,
               // userID: cookies.user_id, // ------------------------
               // session: cookies.session // ------------------------
             }))  
@@ -144,7 +146,7 @@ const MainPage = () => {
     if (true) {
       const headers = new Headers()
       headers.append('Content-Type', 'application/json')
-      fetch('http://localhost:5000/users_info', { method: 'POST', body: JSON.stringify({ historySize: 100 }), headers })
+      fetch('http://88.198.67.119:5000/users_info', { method: 'POST', body: JSON.stringify({ historySize: 100 }), headers })
         .then(res => Promise.all([res.status, res.json()]))
         // .then(([status, data]) => {
         //   if (isMounted) {
@@ -173,7 +175,7 @@ const MainPage = () => {
         // })  
     }    
     return () => { isMounted = false }
-  }, []) // --------------------------------  
+  }, [realGame]) // --------------------------------  
 
   // useEffect(() => () => { 
   //   overlayRef.current.style.display = 'none' 
@@ -209,7 +211,7 @@ const MainPage = () => {
     setStopWasPressed(true);
     setActionState("stop");
     context.socket.send(JSON.stringify({ operation: 'stop' }));
-    // handleGameStopped()
+    handleGameStopped()
   };
   
   const handleGameStarted = () => {
@@ -328,7 +330,7 @@ const MainPage = () => {
       
       
       <Game className = {`transition-all ${isAction !== "start" ?"mt-24":"mt-0"} `} finalResult={finalResult} gamePhase={gamePhase} 
-      setLoaderIsShown={setLoaderIsShown} amount ={balance} bet ={bet} autoStop = {autoStop} socketFlag = {socketStart} />
+      setLoaderIsShown={setLoaderIsShown} amount ={balance} bet ={bet} autoStop = {autoStop} socketFlag = {socketStart} realGame = {realGame} />
       
       <div className="flex flex-col text-white gap-4">
         <div >
