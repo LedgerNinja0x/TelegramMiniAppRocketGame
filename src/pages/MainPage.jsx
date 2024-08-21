@@ -76,7 +76,7 @@ const MainPage = () => {
 
   console.log("---webapp---");
   useEffect(()=>{
-    const webapp = window.Telegram.webApp.initDataUnsafe;
+    const webapp = window.Telegram.WebApp.initDataUnsafe;
     console.log(window.Telegram)
     console.log("---webapp---", webapp);
     if(webapp){
