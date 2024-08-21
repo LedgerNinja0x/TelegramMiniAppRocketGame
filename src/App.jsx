@@ -48,7 +48,7 @@ function App() {
   useEffect (() => {
     let socket
     try{
-      socket = new WebSocket(`ws://88.198.67.119:5000`)
+      socket = new WebSocket(`wss://telegramminiapp-rocket-backend.onrender.com`)
     }catch (e) {
       //eslint-disable-next-line no-self-assign
       document.location.href = document.location.href

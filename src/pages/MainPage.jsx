@@ -146,7 +146,7 @@ const MainPage = () => {
     if (true) {
       const headers = new Headers()
       headers.append('Content-Type', 'application/json')
-      fetch('http://88.198.67.119:5000/users_info', { method: 'POST', body: JSON.stringify({ historySize: 100 }), headers })
+      fetch('https://telegramminiapp-rocket-backend.onrender.com/users_info', { method: 'POST', body: JSON.stringify({ historySize: 100 }), headers })
         .then(res => Promise.all([res.status, res.json()]))
         // .then(([status, data]) => {
         //   if (isMounted) {
