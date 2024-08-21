@@ -41,9 +41,7 @@ export default memo(function Game({ gamePhase, finalResult, setRealGame, setLoad
       if (countTimeHandler) {
           clearInterval(countTimeHandler);
       }
-  
-      console.log("game : ",realGame)
-              console.log(" ddddd " ,context.socket.connected)
+
                 context.socket.send(JSON.stringify({
                   operation: 'start',
                   bet,
