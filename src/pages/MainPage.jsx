@@ -148,7 +148,7 @@ const MainPage = () => {
 
     }
     
-  })
+  },[])
 console.log(userName)
   useEffect(() => {
     let isMounted = true
