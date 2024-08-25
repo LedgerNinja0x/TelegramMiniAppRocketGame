@@ -40,7 +40,7 @@ const Friends = () => {
     const type  ="text/plain"
     const blob = new Blob([generateInviteLink()],{type});
     const data = [new ClipboardItem({[type]:blob})]
-    await navigator.clipboard.write(copyText);
+    await navigator.clipboard.write(data);
     toast('Referral link is copied',
       {
         position: "top-center",
