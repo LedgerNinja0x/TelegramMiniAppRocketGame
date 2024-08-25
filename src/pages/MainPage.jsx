@@ -160,7 +160,7 @@ const MainPage = () => {
           .then(([status, data]) => {
             try {
               const myData = data.allUsersData
-                .sort((a, b) => b.balance - a.balance)
+                .sort((a, b) => b.balance.real - a.balance.real)
                 .map((i, index) => { i.rank = index + 1; return i })
                 .filter(i => i.name === realName)[0] //--------------------------
               setGames(myData)
