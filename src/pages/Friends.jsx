@@ -19,28 +19,25 @@ const Friends = () => {
   const [friendList, setFriendList] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [link, setLink] = useState("");
+  const [fullURL, setFullURL] = useState("");
   // Function to generate an invite link
   const generateInviteLink = () => {
     const tmpURL = `https://t.me/rocket_mini_bot?start=${userId}`;
     const tmpTEXT = "Rocket Game: Play and Get Rewards.🚀💰🤑";
     const fullURL = `https://t.me/share/url?url=${tmpURL}&text=${tmpTEXT}`;
-    return fullURL;
+    setFullURL(fullURL);
   };
 
   // Function to handle invite
   const inviteUser = () => {
     
-    utils.openTelegramLink(generateInviteLink());
+    utils.openTelegramLink(fullURL);
   };
 
 
 
-  const copyLink = async() => {
-    const type  ="text/plain"
-    const blob = new Blob([generateInviteLink()],{type});
-    const data = [new ClipboardItem({[type]:blob})]
-    await navigator.clipboard.write(data);
+  const copyLink = () => {
+    
     toast('Referral link is copied',
       {
         position: "top-center",
@@ -68,7 +65,10 @@ const Friends = () => {
       <ScrollModal icon={<NavFriends />} title={"Invite a Friend"} isOpen={isOpen} setIsOpen={setIsOpen}>
         <div className="pb-6 flex flex-col gap-4 px-4">
           <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Send invitation"} action={inviteUser} />
-          <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Copy link"} action={copyLink} />
+          <CopyToClipboard text={fullURL} >
+            <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Copy link"} action={copyLink} />
+          </CopyToClipboard>
+          
         </div>
       </ScrollModal>
     </div>
