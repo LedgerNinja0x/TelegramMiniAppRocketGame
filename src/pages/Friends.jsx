@@ -8,26 +8,7 @@ import ShadowButton from "../component/atom/shadow-btn";
 import CheckMark from "../component/svg/check-mark";
 import toast from "react-hot-toast";
 
-// const friendData = [
-//     {
-//         url: "anna.svg",
-//         name: "Anna Brown",
-//         label: "Beginner",
-//         rate: 1,
-//         id: 1808944,
-//         coin: 100,
-//         ton: 6.688
-//     },
-//     {
-//         url: "john.svg",
-//         name: "John Smith",
-//         label: "Beginner",
-//         rate: 1,
-//         id: 1808935,
-//         coin: 100,
-//         ton: 0
-//     }
-// ]
+const friendData = []
 
 const Friends = () => {
     const webapp = window.Telegram.WebApp;
@@ -73,15 +54,15 @@ const shareInviteLink = (inviteLink) => {
         )
     }
 
-    // const sendInvite = () => {
-    //     setIsOpen(false);
-    //     setFriendList(friendData);
-    // }
+    const sendInvite = () => {
+        setIsOpen(false);
+        setFriendList(friendData);
+    }
 
     return (
         <div className="flex flex-col h-full gap-4 pb-[76px] justify-between">
-            {/* <FriendComment friendData={friendList} />
-            <FriendsList friendData={friendList} /> */}
+            <FriendComment friendData={friendList} />
+            <FriendsList friendData={friendList} />
             <FriendEarned setIsModalOpen={setIsOpen} />
             <ScrollModal icon={<NavFriends />} title={"Invite a Friend"} isOpen={isOpen} setIsOpen={setIsOpen}>
                 <div className="pb-6 flex flex-col gap-4 px-4">

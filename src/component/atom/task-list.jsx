@@ -11,7 +11,7 @@ const serverUrl = REACT_APP_SERVER;
 
 
 
-const GenerateTask = (_task, _index) => {
+const GenerateTask = (_task, _index, stateTask) => {
     
    
     const [ isClaim, setIsClaim ] = useState(false);
@@ -42,6 +42,7 @@ const GenerateTask = (_task, _index) => {
           // eslint-disable-next-line no-self-assign
           document.location.href = document.location.href
         } 
+        stateTask()
          setIsClaim(false) 
         })
 
@@ -122,7 +123,15 @@ const TaskList = () => {
 
     
     const [user,] = useAtom(userData);
-
+    const stateTask = () =>{
+      setTaskState(prevState=>{
+        const newState = [...prevState];
+        doneTask.map((item)=>{
+          newState[item] = 2;
+        })
+        return newState
+      })
+    }
     useEffect(() => {
        let isMounted = true
        const headers = new Headers()
@@ -160,7 +169,7 @@ console.log(taskData)
     return (
         <div className="flex flex-col gap-2 text-[14px] overflow-auto pb-4" style={{ height: "calc(100vh - 200px)" }}>
             {
-                taskData.map((_task, _index) => GenerateTask(_task, _index))
+                taskData.map((_task, _index) => GenerateTask(_task, _index, stateTask))
             }
         </div>
     )
