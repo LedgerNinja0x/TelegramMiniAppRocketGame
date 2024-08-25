@@ -12,7 +12,7 @@ import { initUtils } from '@telegram-apps/sdk'
 const friendData = []
 
 const Friends = () => {
-  const webapp = window.Telegram.WebApp.initalData;
+  const webapp = window.Telegram.WebApp.initDataUnsafe;
   const userId = webapp["user"]["username"];;
   const utils = initUtils();
 
