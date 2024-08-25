@@ -21,18 +21,43 @@ const Friends = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [fullURL, setFullURL] = useState("");
+
+
+  const fallbackCopyTextToClipboard = (text) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+};
+
+    const handleCopy = () => {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => setCopySuccess('Text copied to clipboard!'))
+                .catch(err => {
+                    console.error('Error copying text: ', err);
+                    fallbackCopyTextToClipboard(textToCopy); // Fallback for older browsers
+                    setCopySuccess('Text copied (fallback method used).');
+                });
+        } else {
+            fallbackCopyTextToClipboard(textToCopy); // Fallback for older browsers
+            setCopySuccess('Text copied (fallback method used).');
+        }
+    };
   // Function to generate an invite link
   const generateInviteLink = () => {
     const tmpURL = `https://t.me/rocket_mini_bot?start=${userId}`;
     const tmpTEXT = "Rocket Game: Play and Get Rewards.🚀💰🤑";
     const fullURL = `https://t.me/share/url?url=${tmpURL}&text=${tmpTEXT}`;
-    setFullURL(fullURL);
+    return fullURL;
   };
 
   // Function to handle invite
   const inviteUser = () => {
     
-    utils.openTelegramLink(fullURL);
+    utils.openTelegramLink(generateInviteLink());
   };
 
 
@@ -66,7 +91,7 @@ const Friends = () => {
       <ScrollModal icon={<NavFriends />} title={"Invite a Friend"} isOpen={isOpen} setIsOpen={setIsOpen}>
         <div className="pb-6 flex flex-col gap-4 px-4">
           <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Send invitation"} action={inviteUser} />
-          <CopyToClipboard text={fullURL} >
+          <CopyToClipboard text={generateInviteLink()} >
             <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Copy link"} action={copyLink} />
           </CopyToClipboard>
           
