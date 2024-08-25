@@ -30,8 +30,8 @@ const Friends = () => {
 
   // Function to handle invite
   const inviteUser = () => {
-    generateInviteLink()
-    utils.openTelegramLink();
+    
+    utils.openTelegramLink(generateInviteLink());
   };
 
 
