@@ -13,6 +13,10 @@ import Loading from './pages/Loading';
 import Layout from './component/atom/layoutmain.jsx';
 import JotaiProvider from "./providers/jotaiProvider"
 import AppContext from './component1/AppContext';
+import { REACT_APP_WS_SERVER } from './utils/privateData.js';
+
+
+const wsServerUrl = REACT_APP_WS_SERVER;
 
 function App() {
   const [isLoading, setLoadingState] = useState(true);
@@ -48,7 +52,7 @@ function App() {
   useEffect (() => {
     let socket
     try{
-      socket = new WebSocket(`wss://telegramminiapp-rocket-backend.onrender.com`)
+      socket = new WebSocket(wsServerUrl)
     }catch (e) {
       //eslint-disable-next-line no-self-assign
       document.location.href = document.location.href

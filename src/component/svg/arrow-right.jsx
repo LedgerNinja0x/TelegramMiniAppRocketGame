@@ -1,8 +1,8 @@
 import { cn } from "../../utils";
 
-const ArrowRight = ( { className } ) => {
+const ArrowRight = ( { className, handleClick} ) => {
     return (
-        <svg width="9" height="16" viewBox="0 0 9 16" fill="none" className={cn("",className)} >
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none" className={cn("",className)} onClick = {handleClick} >
             <path d="M8.62158 8.00684C8.62158 8.11198 8.59945 8.21159 8.55518 8.30566C8.51644 
                 8.39421 8.45833 8.47721 8.38086 8.55469L1.80664 14.9878C1.65723 15.1372 1.47461 
                 15.2119 1.25879 15.2119C1.12044 15.2119 0.993164 15.1787 0.876953 15.1123C0.760742 

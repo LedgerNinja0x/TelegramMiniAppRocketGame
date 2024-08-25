@@ -22,7 +22,7 @@ const StatInfo = ({data}) => {
                         <div className={`${_data.stop > 0 ? "text-[#84CB69]" : "text-[#F56D63]"}`}>
                             {
                                 _data.stop > 0 ?
-                                `+${(_data.stop * _data.bet).toFixed(2)}` :
+                                `+${((_data.stop-1) * _data.bet).toFixed(2)}` :
                                 `-${_data.bet}`
                             }
                         </div>

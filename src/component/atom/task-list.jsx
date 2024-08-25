@@ -1,89 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CheckMark from "../svg/check-mark";
 import LoadingSpinner from "../svg/loading-spinner";
 import toast from "react-hot-toast";
+import { REACT_APP_SERVER } from "../../utils/privateData";
+import { useAtom } from "jotai";
+import { userData } from "../../store";
+import { Link } from "react-router-dom";
 
-const taskData = [
-    {
-        src: "ins-avatar.svg",
-        title: "Task title",
-        amount: 100,
-        status: 0
-    },
-    {
-        src: "you-avatar.svg",
-        title: "Task title",
-        amount: 100,
-        status: 1
-    },
-    {
-        src: "tg-avatar.svg",
-        title: "Task title",
-        amount: 100,
-        status: 2
-    },
-    {
-        src: "you-avatar.svg",
-        title: "Task title",
-        amount: 100,
-        status: 2
-    },
-    {
-        src: "you-avatar.svg",
-        title: "Task title",
-        amount: 100,
-        status: 2
-    },
-    {
-        src: "tg-avatar.svg",
-        title: "Task title",
-        amount: 100,
-        status: 2
-    },
-    {
-        src: "ins-avatar.svg",
-        title: "Task title",
-        amount: 100,
-        status: 2
-    },
-    {
-        src: "you-avatar.svg",
-        title: "Task title",
-        amount: 100,
-        status: 2
-    },
-    {
-        src: "you-avatar.svg",
-        title: "Task title",
-        amount: 100,
-        status: 2
-    },
-    {
-        src: "you-avatar.svg",
-        title: "Task title",
-        amount: 100,
-        status: 2
-    }
-]
+const serverUrl = REACT_APP_SERVER;
+
+
 
 const GenerateTask = (_task, _index) => {
-
+    
+   
     const [ isClaim, setIsClaim ] = useState(false);
+    const [user,setUser] = useAtom(userData);
 
     const goClaim = () => {
-        setIsClaim(true);
-        toast('100 coins added to your balance',
-            {
-                position: "top-center",
-                icon: <CheckMark />,
-                style: {
-                    borderRadius: '8px',
-                    background: '#7886A0',
-                    color: '#fff',
-                    width: '90vw'
-                },
-            }
-        )
+      setIsClaim(true);
+      const headers = new Headers()
+      headers.append('Content-Type', 'application/json')
+      fetch(`${serverUrl}/task_balance`, { method: 'POST', body: JSON.stringify({ userName: user.UserName, amount: _task.amount, task: _index }), headers })
+      .then(res => Promise.all([res.status, res.json()]))
+      .then(() =>
+      {
+          try{
+          toast(`${_task.amount} coins added to your balance`,
+              {
+                  position: "top-center",
+                  icon: <CheckMark />,
+                  style: {
+                      borderRadius: '8px',
+                      background: '#7886A0',
+                      color: '#fff',
+                      width: '90vw'
+                  },
+              }
+          )
+            } catch (e) {
+          // eslint-disable-next-line no-self-assign
+          document.location.href = document.location.href
+        } 
+         setIsClaim(false) 
+        })
+
+       
     }
 
     return (
@@ -97,9 +59,11 @@ const GenerateTask = (_task, _index) => {
             </div>
             {
                 _task.status == 0 ?
-                    <button className="rounded-lg w-[61px] py-1 px-0 h-7 bg-[#3861FB] text-white text-center text-[14px]">
+                <Link to={'/play'}>
+                    <button className="rounded-lg w-[61px] py-1 px-0 h-7 bg-[#3861FB] text-white text-center text-[14px]" >
                         Start
-                    </button> :
+                    </button>
+                    </Link> :
                     _task.status == 1 ?
                         <button
                             className="rounded-lg w-[61px] py-1 px-0 h-7 bg-white text-[#080888] text-center text-[14px]"
@@ -120,6 +84,79 @@ const GenerateTask = (_task, _index) => {
 }
 
 const TaskList = () => {
+    const [taskState, setTaskState] = useState([0,0,0,0,0]);
+
+    const taskData = [
+        {
+            src: "ins-avatar.svg",
+            title: "Achieved 5x",
+            amount: 50,
+            status: taskState[0]
+        },
+        {
+            src: "you-avatar.svg",
+            title: "Achieved 10x",
+            amount: 100,
+            status: taskState[1]
+        },
+        {
+            src: "tg-avatar.svg",
+            title: "Achieved 50x",
+            amount: 300,
+            status: taskState[2]
+        },
+        {
+            src: "you-avatar.svg",
+            title: "3 consecutive successes",
+            amount: 50,
+            status: taskState[3]
+        },
+        {
+            src: "you-avatar.svg",
+            title: "5 consecutive successes",
+            amount: 100,
+            status: taskState[4]
+        },
+        
+    ]
+
+    
+    const [user,] = useAtom(userData);
+
+    useEffect(() => {
+       let isMounted = true
+       const headers = new Headers()
+       headers.append('Content-Type', 'application/json')
+       fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
+         .then(res => Promise.all([res.status, res.json()]))
+         .then(([status, data]) => {
+           if (isMounted) {
+             try {
+              const performtask = data.task.achieve_task 
+              const doneTask = data.task.done_task
+
+              setTaskState(prevState =>{
+                const newState = [...prevState];
+                performtask.map((item)=>{
+                    newState[item] = 1;
+                })
+                doneTask.map((item)=>{
+                  newState[item] = 2;
+                })
+                return newState
+              })
+ 
+             } catch (e) {
+               // eslint-disable-next-line no-self-assign
+               document.location.href = document.location.href
+             } 
+           } 
+         })
+       return ()=>{isMounted=false}
+   
+   },[])
+
+console.log(taskData)
     return (
         <div className="flex flex-col gap-2 text-[14px] overflow-auto pb-4" style={{ height: "calc(100vh - 200px)" }}>
             {

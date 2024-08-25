@@ -129,14 +129,14 @@ const SectionControl = () =>{
 
   useEffect(() => () => { context.overlayRef.current.style.display = 'none' }, [])
 
-  function getFreeBets () {
-    if (!cookies.name) {
-      modalRef.current.style.display = 'block'
-      context.overlayRef.current.style.display = 'block'
-    } else if (!realGame && (balance === '0.00' || balance < 1) && (expiration < new Date().getTime())) {
-      context.socket.send(JSON.stringify({ operation: 'get_free_bets', userID: cookies.user_id }))
-    }
-  }
+  // function getFreeBets () {
+  //   if (!cookies.name) {
+  //     modalRef.current.style.display = 'block'
+  //     context.overlayRef.current.style.display = 'block'
+  //   } else if (!realGame && (balance === '0.00' || balance < 1) && (expiration < new Date().getTime())) {
+  //     context.socket.send(JSON.stringify({ operation: 'get_free_bets', userID: cookies.user_id }))
+  //   }
+  // }
 
 
   const stopGame = () =>{

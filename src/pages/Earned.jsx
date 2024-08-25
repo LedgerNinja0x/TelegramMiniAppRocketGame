@@ -21,7 +21,7 @@ const Earned = () => {
 
     return (
         <div className="flex flex-col h-full gap-4">
-            <EarningTab tabList={tabList} tabId={tabId} setTabId={setTabId} />
+            <EarningTab tabList={tabList} tabId={tabId} setTabId={setTabId} />      
             <EarningTask />
         </div>
     )

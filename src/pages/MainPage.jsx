@@ -11,18 +11,22 @@ import ShadowButton from "../component/atom/shadow-btn.jsx";
 import "../css_generated/Style.css"
 import SettingButton from "../component/svg/button_setting.jsx";
 import { useAtom } from "jotai";
-import { isActionState } from "../store";
+import { isActionState, realGameState, userInfo } from "../store";
 import SwitchButtonOption from "../component/atom/switchButtonOption.jsx";
 import SettingModal from "../component/atom/setting-modal.jsx";
 import GoogleAds from "../component1/GoogleAds.jsx"
 import AppContext from "../component1/AppContext.jsx";
 import { cn } from "../utils/index.js";
+import { userData } from "../store";
+import {  REACT_APP_SERVER } from "../utils/privateData.js";
+import { RANKINGDATA } from "../utils/globals.js";
+
 
 
 const MainPage = () => {
 
   const modalRef = useRef();
-
+  const serverUrl = REACT_APP_SERVER;
   // State variables
   const [stopWasPressed, setStopWasPressed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,8 +36,7 @@ const MainPage = () => {
   const [autoStop, setAutoStop] = useState(5);
   const [finalResult, setFinalResult] = useState(0);
   const [historyGames, setHistoryGames] = useState([]);
-  const [balance, setBalance] = useState(10);
-  const [rank, setRank] = useState(1);
+  const [balance, setBalance] = useState(userData.balance);
   const [expiration, setExpiration] = useState(0);
   const [loaderIsShown, setLoaderIsShown] = useState();
   const [operationAfterWin, setOperationAfterWin] = useState('Return to base Bet');
@@ -48,8 +51,9 @@ const MainPage = () => {
   const [isAction,setActionState] = useAtom(isActionState);
   const context = useContext(AppContext);
   const [socketStart, setSocketStart] = useState(false);
-  const [realGame, setRealGame] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [isReal, setRealGame] = useAtom(realGameState);
+  const [user,setUser] = useAtom(userData);
+  const [winState, setWinstate] = useState(false);
 
 
   // Refs for mutable state
@@ -73,19 +77,7 @@ const MainPage = () => {
     startGame();
     setIsModalOpen(false);
   }
-
-  console.log("---webapp---");
-  useEffect(()=>{
-    console.log(window.Telegram)
-    console.log(window.Telegram.WebApp)
-    const webapp = window.Telegram.WebApp.initDataUnsafe;
-    console.log("---webapp---", webapp);
-    if(webapp){
-      setUserName(webapp["user"]["username"]);
-    }
-    
-  },[])
-
+setRealGame(true)
   // Effect to validate and adjust state values
   useEffect(() => {
     if (bet < 1 || balance === '0.00' || balance < 1) {
@@ -138,7 +130,8 @@ const MainPage = () => {
               operation: 'start',
               bet: betRef.current,
               autoStop,
-              isReal: realGame,
+              isReal: isReal,
+              userName: user.UserName
               // userID: cookies.user_id, // ------------------------
               // session: cookies.session // ------------------------
             }))  
@@ -151,43 +144,66 @@ const MainPage = () => {
     return () => { isMounted = false }  
   }, [historyGames])  
   
-
-console.log(userName)
   useEffect(() => {
-    let isMounted = true
-    if (true) {
+      const webapp = window.Telegram.WebApp.initDataUnsafe;
+       let isMounted = true
+    if(webapp){
+
+      const realName = webapp["user"]["first_name"]+" "+webapp["user"]["last_name"];
+      const userName = webapp["user"]["username"];
+      
       const headers = new Headers()
       headers.append('Content-Type', 'application/json')
-      fetch('https://telegramminiapp-rocket-backend.onrender.com/users_info', { method: 'POST', body: JSON.stringify({ historySize: 100 }), headers })
+      fetch(`${serverUrl}/users_info`, { method: 'POST', body: JSON.stringify({ historySize: 100, realName:realName, userName: userName }), headers })
         .then(res => Promise.all([res.status, res.json()]))
-        // .then(([status, data]) => {
-        //   if (isMounted) {
-        //     try {
-        //       const myData = data.allUsersData
-        //         .sort((a, b) => b.balance - a.balance)
-        //         .map((i, index) => { i.rank = index + 1; return i })
-        //         // .filter(i => i.name === cookies.name)[0] //--------------------------
-        //       setGames( myData)  
-        //       setWins( myData.Wins)
-        //       setLosses(myData.Losses)
-        //       const newHistoryGames = myData.gamesHistory
-        //       historyGamesRef.current = newHistoryGames
-        //       setHistoryGames(newHistoryGames)
-        //       const newBalance =  parseFloat(myData.balance).toFixed(2)
-        //       balanceRef.current = newBalance
-        //       setBalance(newBalance)
-        //       setRank(myData.rank)
-        //       setExpiration(myData.expiration)
-        //       setLoaderIsShown(false)
-        //     } catch (e) {
-        //       // eslint-disable-next-line no-self-assign
-        //       document.location.href = document.location.href
-        //     }  
-        //   }  
-        // })  
-    }    
-    return () => { isMounted = false }
-  }, [realGame]) // --------------------------------  
+        .then(([status, data]) => {
+          if (isMounted) {
+            try {
+              const myData = data.allUsersData
+                .sort((a, b) => b.balance - a.balance)
+                .map((i, index) => { i.rank = index + 1; return i })
+                .filter(i => i.name === realName)[0] //--------------------------
+              setGames( myData)
+
+              const newBalance =  parseFloat(isReal ? myData.balance.real : myData.balance.virtual).toFixed(2)
+              balanceRef.current = newBalance
+              setBalance(newBalance)
+              setUser({
+                RealName : realName, UserName:userName, 
+                Balance:isReal ? myData.balance.real.toFixed(2): myData.balance.virtual.toFixed(2),
+                GameWon: isReal ? myData.realWins:  myData.virtualWins,
+                GameLost: isReal ? myData.realLosses: myData.virtualLosses,
+                Rank: myData.rank, Ranking: myData.ranking 
+              })
+              const newHistoryGames = isReal ? myData.gamesHistory.real : myData.gamesHistory.virtual
+              historyGamesRef.current = newHistoryGames
+              setHistoryGames(newHistoryGames)
+              setLoaderIsShown(false)
+            } catch (e) {
+              // eslint-disable-next-line no-self-assign
+              document.location.href = document.location.href
+            } 
+          } 
+        })
+      return ()=>{isMounted=false}
+    
+      } 
+      
+  },[isReal,gamePhase]) // --------------------------------  
+
+  // const register = (realName, userName) => {
+  //   if (validateInput()) {
+  //     const headers = new Headers()
+  //     headers.append('Content-Type', 'application/json')
+  //     fetch(`${serverUrl}/register`, {
+  //       method: 'POST',
+  //       body: JSON.stringify({ name: realName, user_name: userName }),
+  //       headers
+  //     })
+  //       .then(res => Promise.all([res.status, res.json()]))
+  //       .catch(err => alert(err))
+  //   }
+  // }
 
   // useEffect(() => () => { 
   //   overlayRef.current.style.display = 'none' 
@@ -197,7 +213,7 @@ console.log(userName)
     setStopWasPressed(false);
     setActionState("start");
     setGamePhase('started')
-    setSocketStart(true);
+    setSocketStart(false);
     
     context.socket.onmessage = async e => {
         const data = JSON.parse(e.data);
@@ -227,6 +243,7 @@ console.log(userName)
   };
   
   const handleGameStarted = () => {
+    setWinstate(false)
     const animation = document.getElementById('stars').style.animation
     document.getElementById('stars').style.animation = 'none'
     setTimeout(() => {
@@ -236,13 +253,17 @@ console.log(userName)
     }, 50);
   };
 
-  const handleGameStopped = (data = { stop: 'x', profit: '' }) => {
+  const handleGameStopped = (data = { stop: 'x', profit: '0' }) => {
     setFinalResult(data.stop);
     setGamePhase('stopped');
     updateGameHistory(data, 'stopped');
+    const newBalance = (parseFloat(balanceRef.current) + parseFloat(data.profit)).toFixed(2)
+    setBalance(newBalance)
+    balanceRef.current = newBalance
     updateBalance(data.profit);
     setGames(games + 1);
     setWins(wins + 1);
+    setWinstate(true);
     adjustBetAfterWin();
   };
 
@@ -276,24 +297,23 @@ console.log(userName)
   const adjustBetAfterWin = () => {
     if (autoMode) {
       if (operationAfterWinRef.current === 'Increase Bet by') {
-        betRef.current = Math.min(betRef.current * valueAfterWinRef.current, parseFloat(balanceRef.current));
+        betRef.current = Math.min(betRef.current * valueAfterWinRef.current, balanceRef.current);
       } else {
-        betRef.current = Math.min(valueAfterWinRef.current, parseFloat(balanceRef.current));
+        betRef.current = Math.min(valueAfterWinRef.current, balanceRef.current);
       }
-      // console.log(bet);
-      setBet(parseFloat(betRef.current));
+      setBet(betRef.current);
     }
   };
 
+  
   const adjustBetAfterLoss = () => {
     if (autoMode) {
       if (operationAfterLossRef.current === 'Increase Bet by') {
-        betRef.current = Math.min(betRef.current * valueAfterLossRef.current, parseFloat(balanceRef.current));
+        betRef.current = Math.min(betRef.current * valueAfterLossRef.current, balanceRef.current);
       } else {
-        betRef.current = Math.min(valueAfterLossRef.current, parseFloat(balanceRef.current));
+        betRef.current = Math.min(valueAfterLossRef.current, balanceRef.current);
       }
-      // console.log(bet);
-      setBet(parseFloat(betRef.current));
+      setBet(betRef.current);
     }
   };
   
@@ -327,22 +347,22 @@ console.log(userName)
           <div className="flex gap-2.5">
             <img src={avatar.avatar1} width="64px" height="64px" className="max-w-16 h-16" alt="avatar" />
             <div className="flex flex-col w-full gap-0.5">
-              <p className="font-semibold">Sergei Kovtun</p>
-              <p className="font-semibold">Beginner · 1/10</p>
-              <p>1808944</p>
+              <p className="font-semibold">{user.RealName}</p>
+              <p className="font-semibold">{user.Ranking} · {RANKINGDATA.indexOf(user.Ranking)+1}/10</p>
+              <p>{user.Rank}</p>
             </div>
           </div>
 
 
           <div className="flex flex-col gap-2">
-            <PannelScore img={Img.agree} text2={"Won"} text3={wins} />
-            <PannelScore img={Img.disagree} text2={"Lost"} text3={losses} />
+            <PannelScore img={Img.agree} text2={"Won"} text3={user.GameWon} />
+            <PannelScore img={Img.disagree} text2={"Lost"} text3={user.GameLost} />
           </div>
         </div>
       
       
-      <Game className = {`transition-all ${isAction !== "start" ?"mt-24":"mt-0"} `} finalResult={finalResult} gamePhase={gamePhase} 
-      setLoaderIsShown={setLoaderIsShown} amount ={balance} bet ={bet} autoStop = {autoStop} socketFlag = {socketStart} realGame = {realGame} />
+      <Game className = {`transition-all ${isAction !== "start" ?"mt-24":"mt-0"} `} finalResult={finalResult} gamePhase={gamePhase} isWin = {winState}
+      setLoaderIsShown={setLoaderIsShown} amount ={balance} bet ={bet} autoStop = {autoStop} socketFlag = {socketStart} realGame = {isReal} />
       
       <div className="flex flex-col text-white gap-4">
         <div >

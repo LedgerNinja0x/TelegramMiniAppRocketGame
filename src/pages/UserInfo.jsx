@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback,useEffect } from "react";
 import TabButton from "../component/atom/tab-button";
 import { avatar } from "../assets/avatar/index.js";
 import PannelScore from "../component/atom/PannelScore";
@@ -11,11 +11,16 @@ import "../css_generated/userInfo.css"
 import { Button } from "bootstrap";
 import ArrowRight from "../component/svg/arrow-right.jsx";
 import ArrowLeft from "../component/svg/arrow-left.jsx";
+import { useAtom } from "jotai";
+import { userData } from "../store/userData.jsx";
+import { RANKINGDATA } from "../utils/globals.js";
+import { REACT_APP_SERVER } from "../utils/privateData.js";
+
 
 const fadeAnimationHandler = (props, state) => {
   const transitionTime = props.transitionTime + 'ms';
   const transitionTimingFunction = 'ease-in-out';
-
+  
   let slideStyle = {
       position: 'absolute',
       display: 'block',
@@ -31,18 +36,18 @@ const fadeAnimationHandler = (props, state) => {
       MozTransitionTimingFunction: transitionTimingFunction,
       WebkitTransitionTimingFunction: transitionTimingFunction,
       OTransitionTimingFunction: transitionTimingFunction,
-  };
-
+    };
+    
  
-
-  return {
+    
+    return {
       slideStyle
   };
 };
 
 const statsList = [
     {
-        src: "coin-y.svg",
+      src: "coin-y.svg",
         amount: "10,968.67",
         id: 1
     },
@@ -51,100 +56,122 @@ const statsList = [
         amount: "679.9",
         id: 2
     }
-]
+  ]
+  
+ 
 
-const friendData = [
-    {
-        url: "anna.svg",
-        name: "Anna Brown",
-        label: "Beginner",
-        rate: 1,
-        id: 1808944,
-        ranking: 1
-    },
-    {
-        url: "john.svg",
-        name: "John Smith",
-        label: "Beginner",
-        rate: 1,
-        id: 1808935,
-        ranking: 2
-    }
-]
-
-const rankingData = [ 
-  "Beginner", "Pilot", "Explorer", "Astronaut",
-  "Captain", "Commander", "Admiral", "Legend", 
-  "Master of the Universe", "God of Space"
-]
 
 const UserInfo = () => {
-    const [ tabId, setTabId ] = useState(1);
-    const [ rankingIndex, setRankingIndex] =useState(0);
-    const rankingItems = rankingData.map((data,index)=>{
-      return(
-        <div className="w-full left-3" key={index}>
-           <p>Ranking : {data}</p>
-        </div>
-        
-      )
-    })
+  const [user,]=useAtom(userData);
+  const [ tabId, setTabId ] = useState(1);
+  const [ rankingIndex, setRankingIndex] =useState(0);
+  const [ friendData, setFriendData] = useState([])
+  const serverUrl = REACT_APP_SERVER
+  const rankingItems = RANKINGDATA.map((data,index)=>{
+    return(
+      <div className="w-full left-3" key={index}>
+          <p>Ranking : {data}</p>
+      </div>
+      
+    )
+  })
     const rankingNext = () => {
-      setRankingIndex ((rankingIndex + 1) % rankingData.length);
+      setRankingIndex (((rankingIndex + 1) + RANKINGDATA.length) % RANKINGDATA.length);
     }
     const rankingPrev = () => {
-      setRankingIndex((rankingIndex - 1) % rankingData.length);
+      setRankingIndex(((rankingIndex - 1) + RANKINGDATA.length) % RANKINGDATA.length);
     }
 
+
+    useEffect(() => {
+      const webapp = window.Telegram.WebApp.initDataUnsafe;
+       let isMounted = true
+    if(webapp){
+      
+      const realName = webapp["user"]["first_name"]+" "+webapp["user"]["last_name"];
+      const userName = webapp["user"]["username"];
+      
+      const headers = new Headers()
+      headers.append('Content-Type', 'application/json')
+      fetch(`${serverUrl}/users_info`, { method: 'POST', body: JSON.stringify({ historySize: 100, realName:realName, userName: userName }), headers })
+        .then(res => Promise.all([res.status, res.json()]))
+        .then(([status, data]) => {
+          if (isMounted) {
+            try {
+              const myData = data.allUsersData
+                .sort((a, b) => b.balance - a.balance)
+                .map((i, index) => { i.rank = index + 1; return i })
+                .filter(i => (i.ranking ===RANKINGDATA[rankingIndex] && i.name !== realName)) //--------------------------
+              
+              console.log(myData,"  ",RANKINGDATA[rankingIndex])
+
+              const filterData = myData.map((data)=>{
+                return {url:"john.svg",
+                name:data.name,
+                label:data.ranking,
+                rate:RANKINGDATA.indexOf(user.Ranking)+1,
+                id : data.balance.real,
+                ranking : data.rank}
+              })
+              console.log(filterData)
+              setFriendData(filterData)
+             
+            } catch (e) {
+              // eslint-disable-next-line no-self-assign
+              document.location.href = document.location.href
+            } 
+          } 
+        })
+      return ()=>{isMounted=false}
+    
+      } 
+      
+  },[rankingIndex])
+console.log(rankingIndex)
   return (
     <div className="flex flex-col gap-4 items-center text-white text-base">
-      <div className="font-semibold">Sergei Kovtun</div>
+      <div className="font-semibold">{user.RealName}</div>
       <TabButton tabList={statsList} tabNo={tabId} setTabNo={setTabId} />
       <div className="flex flex-col gap-4 overflow-auto w-full " style={{height: "calc(100vh - 200px)"}}>
         <div className="flex gap-[41px] text-blueFaded text-sm justify-center">
             
-            <div>Level <span className="text-white">1/10</span></div>
-            <div>Rank <span className="text-white">1808944</span></div>
+            <div>Level <span className="text-white">{RANKINGDATA.indexOf(user.Ranking)+1}/10</span></div>
+            <div>Rank <span className="text-white">{user.Rank}</span></div>
             
         </div>
         <div className="flex flex-col items-center gap-2">
             <img src={avatar.avatar1} width="200px" height="200px" className="max-w-[200px] h-[200px]" alt="avatar" />
             <div className="rounded-[8px] border-[3px] border-[#56D0EA] py-2 w-[200px] text-center text-white">
-             { rankingData[rankingIndex] }
+             { user.Ranking }
             </div>
         </div>
         <div className="flex gap-4 w-full">
             <div className="w-1/2">
-              <PannelScore img={Img.agree} text2={"Won"} text3={"48"} className="w-full py-[10px]" />
+              <PannelScore img={Img.agree} text2={"Won"} text3={user.GameWon} className="w-full py-[10px]" />
             </div>
             <div className="w-1/2">
-              <PannelScore img={Img.disagree} text2={"Lost"} text3={"32"} className="w-full py-[10px]" />
+              <PannelScore img={Img.disagree} text2={"Lost"} text3={user.GameLost} className="w-full py-[10px]" />
             </div>
         </div>
-        {/* <div className="py-2 flex justify-between w-full items-center">
-            <div className="text-[#ffffff66]" onClick={()=>setRankingIndex((rankingIndex-1+rankingData.length)%rankingData.length)}>
-              <ArrowLeft className="h-5 w-5" />
-            </div>
-            <div className="text-white">
-  <span className="text-blueFaded transition-transform duration-150 ease-in transform before:content-[''] before:block before:translate-x-20">
-    Ranking:
-  </span>
-  {rankingData[rankingIndex]}
-</div>
-            <div className="text-white " onClick={()=>setRankingIndex((rankingIndex+1)%rankingData.length)}>
-              <ArrowRight className={"h-5 w-5"} />
-            </div>
-        </div> */}
+        
           <div className="h-9 text-center ">
           <Carousel 
             showThumbs ={false} showStatus = {false} showIndicators= {false} infiniteLoop = {true} 
             renderArrowNext={(clickHandler,hasNext,labelNext)=>(hasNext && <div
-            type = "button" aria-level={labelNext} className="next flex" onClick={clickHandler}>
-                <ArrowRight className={"w-4 h-4 m-auto"} />
+            type = "button" aria-level={labelNext} className="next flex" 
+            onClick={()=>{
+              clickHandler() 
+              rankingNext()
+              }}>
+                <ArrowRight className={"w-4 h-4 m-auto"}  />
             </div>)}
             renderArrowPrev={(clickHandler,hasPrev,labelPrev)=>(hasPrev && <div
-              type = "button" aria-level={labelPrev} className="prev flex" onClick={clickHandler}>
-                <ArrowLeft className={"w-4 h-4 m-auto"} />
+              type = "button" aria-level={labelPrev} className="prev flex" 
+              onClick={()=>{
+                clickHandler() 
+                rankingPrev()
+                }}>
+                <ArrowLeft className={"w-4 h-4 m-auto"}/>
               </div>)}
           >
                 {rankingItems}
