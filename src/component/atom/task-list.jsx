@@ -41,8 +41,8 @@ const GenerateTask = (_task, _index, stateTask) => {
           // eslint-disable-next-line no-self-assign
           document.location.href = document.location.href
         }
-        stateTask()
         setIsClaim(false)
+        stateTask()
       })
 
 
