@@ -73,10 +73,10 @@ const shareInviteLink = (inviteLink) => {
         )
     }
 
-    const sendInvite = () => {
-        setIsOpen(false);
-        setFriendList(friendData);
-    }
+    // const sendInvite = () => {
+    //     setIsOpen(false);
+    //     setFriendList(friendData);
+    // }
 
     return (
         <div className="flex flex-col h-full gap-4 pb-[76px] justify-between">
