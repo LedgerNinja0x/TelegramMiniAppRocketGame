@@ -23,29 +23,7 @@ const Friends = () => {
   const [fullURL, setFullURL] = useState("");
 
 
-  const fallbackCopyTextToClipboard = (text) => {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
-};
-
-    const handleCopy = () => {
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(textToCopy)
-                .then(() => setCopySuccess('Text copied to clipboard!'))
-                .catch(err => {
-                    console.error('Error copying text: ', err);
-                    fallbackCopyTextToClipboard(textToCopy); // Fallback for older browsers
-                    setCopySuccess('Text copied (fallback method used).');
-                });
-        } else {
-            fallbackCopyTextToClipboard(textToCopy); // Fallback for older browsers
-            setCopySuccess('Text copied (fallback method used).');
-        }
-    };
+  
   // Function to generate an invite link
   const generateInviteLink = () => {
     const tmpURL = `https://t.me/rocket_mini_bot?start=${userId}`;
