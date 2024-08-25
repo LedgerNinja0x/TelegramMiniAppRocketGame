@@ -37,7 +37,8 @@ const Friends = () => {
 
 
   const copyLink = () => {
-    navigator.clipboard.writeText(generateInviteLink());
+    const copyText = generateInviteLink();
+    navigator.clipboard.writeText(copyText);
     toast('Referral link is copied',
       {
         position: "top-center",
