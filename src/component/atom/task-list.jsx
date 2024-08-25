@@ -129,35 +129,37 @@ const TaskList = () => {
     fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
       .then(res => Promise.all([res.status, res.json()]))
       .then(([status, data]) => {
-        if (isMounted) {
-          try {
-            const performtask = data.task.achieve_task
-            const doneTask = data.task.done_task
 
-            setTaskState(prevState => {
-              const newState = [...prevState];
-              performtask.map((item) => {
-                newState[item] = 1;
-              })
-              doneTask.map((item) => {
-                newState[item] = 2;
-              })
-              return newState
+        try {
+          const performtask = data.task.achieve_task
+          const doneTask = data.task.done_task
+
+          setTaskState(prevState => {
+            const newState = [...prevState];
+            performtask.map((item) => {
+              newState[item] = 1;
             })
+            doneTask.map((item) => {
+              newState[item] = 2;
+            })
+            return newState
+          })
 
-          } catch (e) {
-            // eslint-disable-next-line no-self-assign
-            document.location.href = document.location.href
-          }
+        } catch (e) {
+          // eslint-disable-next-line no-self-assign
+          document.location.href = document.location.href
         }
+
       })
   }
 
   useEffect(() => {
     let isMounted = true
-    stateTask();
-    return () => { isMounted = false }
 
+    if (isMounted) {
+      stateTask();
+    }
+    return () => { isMounted = false }
   }, [])
 
   console.log(taskData)
