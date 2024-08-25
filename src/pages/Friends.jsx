@@ -30,6 +30,7 @@ import toast from "react-hot-toast";
 // ]
 
 const Friends = () => {
+    const webapp = window.Telegram.WebApp;
 
     const [ friendList, setFriendList ] = useState([]);
     const [ isOpen, setIsOpen ] = useState(false);
@@ -44,12 +45,12 @@ const Friends = () => {
     // Function to handle invite
 const inviteUser = () => {
 
-    const userId = WebApp.getUser().id; // Get the current user's ID
+    const userId = webapp.getUser().id; // Get the current user's ID
     const inviteLink = generateInviteLink(userId);
     shareInviteLink(inviteLink); // Share the invite link
     
     // Display the invite link to the user
-    WebApp.showModal("Invite Friends", `Share this link with your friends: ${inviteLink}`);
+    webapp.showModal("Invite Friends", `Share this link with your friends: ${inviteLink}`);
 };
 
 const shareInviteLink = (inviteLink) => {
