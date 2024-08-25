@@ -12,8 +12,8 @@ import { initUtils } from '@telegram-apps/sdk'
 const friendData = []
 
 const Friends = () => {
-  const webapp = window.Telegram.WebApp;
-  const userId = webapp.getUser().id;
+  const webapp = window.Telegram.WebApp.initalData;
+  const userId = webapp["user"]["username"];;
   const utils = initUtils();
 
   const [friendList, setFriendList] = useState([]);
