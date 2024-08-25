@@ -8,6 +8,7 @@ import ShadowButton from "../component/atom/shadow-btn";
 import CheckMark from "../component/svg/check-mark";
 import toast from "react-hot-toast";
 import { initUtils } from '@telegram-apps/sdk'
+import {CopyToClipboard} from "react-copy-to-clipboard"
 
 const friendData = []
 
