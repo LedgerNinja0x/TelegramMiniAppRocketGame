@@ -7,71 +7,69 @@ import NavFriends from "../component/svg/nav_friends";
 import ShadowButton from "../component/atom/shadow-btn";
 import CheckMark from "../component/svg/check-mark";
 import toast from "react-hot-toast";
+import { initUtils } from '@telegram-apps/sdk'
 
 const friendData = []
 
 const Friends = () => {
-    const webapp = window.Telegram.WebApp;
+  const webapp = window.Telegram.WebApp;
+  const userId = webapp.getUser().id;
+  const utils = initUtils();
 
-    const [ friendList, setFriendList ] = useState([]);
-    const [ isOpen, setIsOpen ] = useState(false);
-    const [ isClosing, setIsClosing ] = useState(false);
-    const [link, setLink] = useState("");
-    // Function to generate an invite link
-    const generateInviteLink = (userId) => {
-        const baseUrl = "https://t.me/rocket_mini_bot/join"; // Your app's URL
-        return `${baseUrl}?ref=${userId}`; // Append user ID as a parameter
-    };
-    
-    // Function to handle invite
-const inviteUser = () => {
+  const [friendList, setFriendList] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [link, setLink] = useState("");
+  // Function to generate an invite link
+  const generateInviteLink = () => {
+    const tmpURL = `https://t.me/rocket_mini_bot?start=${userId}`;
+    const tmpTEXT = "Rocket Game: Play and Get Rewards.🚀💰🤑";
+    const fullURL = `https://t.me/share/url?url=${tmpURL}&text=${tmpTEXT}`;
+    return fullURL;
+  };
 
-    const userId = webapp.getUser().id; // Get the current user's ID
-    const inviteLink = generateInviteLink(userId);
-    shareInviteLink(inviteLink); // Share the invite link
-    
-    // Display the invite link to the user
-    webapp.showModal("Invite Friends", `Share this link with your friends: ${inviteLink}`);
-};
+  // Function to handle invite
+  const inviteUser = () => {
+    generateInviteLink()
+    utils.openTelegramLink();
+  };
 
-const shareInviteLink = (inviteLink) => {
-    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}`;
-    window.open(shareUrl, '_blank'); // Open share dialog in a new tab
-};
 
-    const copyLink = () => {
-        toast('Referral link is copied',
-            {
-                position: "top-center",
-                icon: <CheckMark />,
-                style: {
-                    borderRadius: '8px',
-                    background: '#7886A0',
-                    color: '#fff',
-                    width: '90vw'
-                },
-            }
-        )
-    }
 
-    const sendInvite = () => {
-        setIsOpen(false);
-        setFriendList(friendData);
-    }
-
-    return (
-        <div className="flex flex-col h-full gap-4 pb-[76px] justify-between">
-            <FriendComment friendData={friendList} />
-            <FriendsList friendData={friendList} />
-            <FriendEarned setIsModalOpen={setIsOpen} />
-            <ScrollModal icon={<NavFriends />} title={"Invite a Friend"} isOpen={isOpen} setIsOpen={setIsOpen}>
-                <div className="pb-6 flex flex-col gap-4 px-4">
-                    <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Send invitation"} action={inviteUser} />
-                    <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Copy link"} action={copyLink}/>
-                </div>
-            </ScrollModal>
-        </div>
+  const copyLink = () => {
+    navigator.clipboard.writeText(generateInviteLink());
+    toast('Referral link is copied',
+      {
+        position: "top-center",
+        icon: <CheckMark />,
+        style: {
+          borderRadius: '8px',
+          background: '#7886A0',
+          color: '#fff',
+          width: '90vw'
+        },
+      }
     )
+  }
+
+  const sendInvite = () => {
+    setIsOpen(false);
+    setFriendList(friendData);
+  }
+
+  return (
+    <div className="flex flex-col h-full gap-4 pb-[76px] justify-between">
+      <FriendComment friendData={friendList} />
+      <FriendsList friendData={friendList} />
+      <FriendEarned setIsModalOpen={setIsOpen} />
+      <ScrollModal icon={<NavFriends />} title={"Invite a Friend"} isOpen={isOpen} setIsOpen={setIsOpen}>
+        <div className="pb-6 flex flex-col gap-4 px-4">
+          <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Send invitation"} action={inviteUser} />
+          <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Copy link"} action={copyLink} />
+        </div>
+      </ScrollModal>
+    </div>
+  )
 }
 
 export default Friends;
