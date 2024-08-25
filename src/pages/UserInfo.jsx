@@ -99,7 +99,7 @@ const UserInfo = () => {
           if (isMounted) {
             try {
               const myData = data.allUsersData
-                .sort((a, b) => b.balance - a.balance)
+                .sort((a, b) => b.balance.real - a.balance.real)
                 .map((i, index) => { i.rank = index + 1; return i })
                 .filter(i => (i.ranking ===RANKINGDATA[rankingIndex] && i.name !== realName)) //--------------------------
               
