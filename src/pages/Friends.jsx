@@ -80,8 +80,8 @@ const shareInviteLink = (inviteLink) => {
 
     return (
         <div className="flex flex-col h-full gap-4 pb-[76px] justify-between">
-            <FriendComment friendData={friendList} />
-            <FriendsList friendData={friendList} />
+            {/* <FriendComment friendData={friendList} />
+            <FriendsList friendData={friendList} /> */}
             <FriendEarned setIsModalOpen={setIsOpen} />
             <ScrollModal icon={<NavFriends />} title={"Invite a Friend"} isOpen={isOpen} setIsOpen={setIsOpen}>
                 <div className="pb-6 flex flex-col gap-4 px-4">
