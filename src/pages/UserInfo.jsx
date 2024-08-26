@@ -182,7 +182,7 @@ console.log(rankingIndex)
               {
                 friendData.length>0?
                   friendData.map((_data, _index) => <FriendRanking data={_data} key={_index} />)
-                  : `No ${RANKINGDATA[rankingIndex]} yet.`
+                  : <div className="text-center text-[#ACC1D9]">`No ${RANKINGDATA[rankingIndex]}s yet.`</div>
               }
             </div>
         </div>
