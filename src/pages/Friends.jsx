@@ -51,7 +51,7 @@ const Friends = () => {
                   url: "john.svg",
                   name: data.name,
                   label: data.ranking,
-                  rate: RANKINGDATA.indexOf(data.Ranking) + 1,
+                  rate: (RANKINGDATA.indexOf(data.Ranking) + 1),
                   id: data.balance.real,
                   coin: 100,
                   ton: 0
