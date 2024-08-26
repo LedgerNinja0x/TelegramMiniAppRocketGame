@@ -41,7 +41,6 @@ const Friends = () => {
 
 
   const copyLink = () => {
-    
     toast('Referral link is copied',
       {
         position: "top-center",
@@ -54,6 +53,7 @@ const Friends = () => {
         },
       }
     )
+    return generateInviteLink();
   }
 
   const sendInvite = () => {
@@ -69,8 +69,8 @@ const Friends = () => {
       <ScrollModal icon={<NavFriends />} title={"Invite a Friend"} isOpen={isOpen} setIsOpen={setIsOpen}>
         <div className="pb-6 flex flex-col gap-4 px-4">
           <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Send invitation"} action={inviteUser} />
-          <CopyToClipboard text={generateInviteLink()} >
-            <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Copy link"} action={copyLink} />
+          <CopyToClipboard text={copyLink} >
+            <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Copy link"}  />
           </CopyToClipboard>
           
         </div>

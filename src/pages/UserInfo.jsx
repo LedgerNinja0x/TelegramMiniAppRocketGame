@@ -70,7 +70,7 @@ const UserInfo = () => {
   const rankingItems = RANKINGDATA.map((data,index)=>{
     return(
       <div className="w-full left-3" key={index}>
-          <p>Ranking : {data}</p>
+          <p>Ranking:{data}</p>
       </div>
       
     )
@@ -102,8 +102,6 @@ const UserInfo = () => {
                 .sort((a, b) => b.balance.real - a.balance.real)
                 .map((i, index) => { i.rank = index + 1; return i })
                 .filter(i => (i.ranking ===RANKINGDATA[rankingIndex] && i.name !== realName)) //--------------------------
-              
-              console.log(myData,"  ",RANKINGDATA[rankingIndex])
 
               const filterData = myData.map((data)=>{
                 return {url:"john.svg",
@@ -182,7 +180,9 @@ console.log(rankingIndex)
         <div className=" w-full" style={{height: "calc(100vh - 630px)"}}>
             <div className="flex flex-col gap-2 pb-8">
               {
-                friendData.map((_data, _index) => <FriendRanking data={_data} key={_index} />)
+                friendData.length>0?
+                  friendData.map((_data, _index) => <FriendRanking data={_data} key={_index} />)
+                  : `No ${RANKINGDATA[rankingIndex]} yet.`
               }
             </div>
         </div>
