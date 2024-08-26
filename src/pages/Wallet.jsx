@@ -26,10 +26,9 @@ const Wallet = () => {
                 <WalletInfo className={"mt-2"} address={walletAddress} />
                 <ShadowButton
                     className={"mt-4"}
+                    content={walletAddress ? "Disconnect wallet" : "Connect wallet"}
                     action={() => setWalletAddress((address) => address ? "" : "UQ67wW...UQ67wW")}
-                >
-                    {walletAddress ? "Disconnect wallet" : "Connect wallet"}
-                </ShadowButton>
+                />
             </div>
         </div>
     )
