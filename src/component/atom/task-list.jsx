@@ -13,7 +13,7 @@ const serverUrl = REACT_APP_SERVER;
 
 const GenerateTask = (_task, _index, stateTask) => {
 
-  // const [isClaim, setIsClaim] = useState(false);
+  const [isClaim, setIsClaim] = useState(false);
   // const [user, setUser] = useAtom(userData);
 
   // const goClaim = () => {
@@ -64,7 +64,6 @@ const GenerateTask = (_task, _index, stateTask) => {
           _task.status == 1 ?
             <button
               className="rounded-lg w-[61px] py-1 px-0 h-7 bg-white text-[#080888] text-center text-[14px]"
-              onClick={goClaim}
             >
               {
                 isClaim ?
