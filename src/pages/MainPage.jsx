@@ -163,7 +163,7 @@ const MainPage = () => {
       const headers = new Headers()
       headers.append('Content-Type', 'application/json')
       if (isMounted) {
-        
+        console.log("11111")
         fetch(`${serverUrl}/users_info`, { method: 'POST', body: JSON.stringify({ historySize: 100, realName: realName, userName: userName }), headers })
         .then(res => Promise.all([res.status, res.json()]))
         .then(([status, data]) => {
