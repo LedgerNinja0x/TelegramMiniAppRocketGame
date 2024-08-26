@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import FriendComment from "../component/molecules/friend-comment";
 import FriendEarned from "../component/molecules/friend-earned";
 import FriendsList from "../component/molecules/friends-list";
@@ -41,23 +41,27 @@ const Friends = () => {
           .then(res => Promise.all([res.status, res.json()]))
           .then(([status, data]) => {
             try {
-              const myData = data.allUsersData
+              console.log(data)
+              const myData = data
                 .sort((a, b) => b.balance.real - a.balance.real)
                 .map((i, index) => { i.rank = index + 1; return i })
               console.log(myData)
-              const friendData = myData.map((data)=>{
-                  return {
-                    url:"john.svg",
-                  name:data.name,
-                  label:data.ranking,
-                  rate:RANKINGDATA.indexOf(data.Ranking)+1,
-                  id : data.balance.real,
+              const friendData = myData.map((data) => {
+                return {
+                  url: "john.svg",
+                  name: data.name,
+                  label: data.ranking,
+                  rate: RANKINGDATA.indexOf(data.Ranking) + 1,
+                  id: data.balance.real,
                   coin: 100,
-                  ton: 0}
-                })
-                setFriendList(friendData);
-              
+                  ton: 0
+                }
+              })
+              console.log(friendData)
+              setFriendList(friendData);
+
             } catch (e) {
+              console.log(e)
               // eslint-disable-next-line no-self-assign
               // document.location.href = document.location.href
             }

@@ -2,6 +2,7 @@ import AtomLabel from "../atom/atom-label";
 import FriendInfo from "../atom/friend-info";
 
 const FriendsList = ( { friendData } ) => {
+    console.log(friendData)
     return (
         <div className="flex-auto flex" style={{height: "calc(100vh - 500px)"}}>
             {
