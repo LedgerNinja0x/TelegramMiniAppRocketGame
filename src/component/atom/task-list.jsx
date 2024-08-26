@@ -13,39 +13,36 @@ const serverUrl = REACT_APP_SERVER;
 
 const GenerateTask = (_task, _index, stateTask) => {
 
-
   const [isClaim, setIsClaim] = useState(false);
   const [user, setUser] = useAtom(userData);
 
   const goClaim = () => {
-    setIsClaim(true);
-    const headers = new Headers()
-    headers.append('Content-Type', 'application/json')
-    fetch(`${serverUrl}/task_balance`, { method: 'POST', body: JSON.stringify({ userName: user.UserName, amount: _task.amount, task: _index }), headers })
-      .then(res => Promise.all([res.status, res.json()]))
-      .then(() => {
-        try {
-          toast(`${_task.amount} coins added to your balance`,
-            {
-              position: "top-center",
-              icon: <CheckMark />,
-              style: {
-                borderRadius: '8px',
-                background: '#7886A0',
-                color: '#fff',
-                width: '90vw'
-              },
-            }
-          )
-        } catch (e) {
-          // eslint-disable-next-line no-self-assign
-          document.location.href = document.location.href
-        }
-        setIsClaim(false)
-        stateTask()
-      })
-
-
+    // setIsClaim(true);
+    // const headers = new Headers()
+    // headers.append('Content-Type', 'application/json')
+    // fetch(`${serverUrl}/task_balance`, { method: 'POST', body: JSON.stringify({ userName: user.UserName, amount: _task.amount, task: _index }), headers })
+    //   .then(res => Promise.all([res.status, res.json()]))
+    //   .then(() => {
+    //     try {
+    //       toast(`${_task.amount} coins added to your balance`,
+    //         {
+    //           position: "top-center",
+    //           icon: <CheckMark />,
+    //           style: {
+    //             borderRadius: '8px',
+    //             background: '#7886A0',
+    //             color: '#fff',
+    //             width: '90vw'
+    //           },
+    //         }
+    //       )
+    //     } catch (e) {
+    //       // eslint-disable-next-line no-self-assign
+    //       document.location.href = document.location.href
+    //     }
+    //     setIsClaim(false)
+    //     stateTask()
+    //   })
   }
 
   return (
@@ -87,40 +84,6 @@ const TaskList = () => {
   let taskState = [];
 
   const [taskData, setTaskData] = useState([]);
-  // const taskData = [
-  //   {
-  //     src: "ins-avatar.svg",
-  //     title: "Achieved 5x",
-  //     amount: 50,
-  //     status: taskState[0]
-  //   },
-  //   {
-  //     src: "you-avatar.svg",
-  //     title: "Achieved 10x",
-  //     amount: 100,
-  //     status: taskState[1]
-  //   },
-  //   {
-  //     src: "tg-avatar.svg",
-  //     title: "Achieved 50x",
-  //     amount: 300,
-  //     status: taskState[2]
-  //   },
-  //   {
-  //     src: "you-avatar.svg",
-  //     title: "3 consecutive successes",
-  //     amount: 50,
-  //     status: taskState[3]
-  //   },
-  //   {
-  //     src: "you-avatar.svg",
-  //     title: "5 consecutive successes",
-  //     amount: 100,
-  //     status: taskState[4]
-  //   },
-
-  // ]
-
 
   const [user,] = useAtom(userData);
 
@@ -149,8 +112,6 @@ const TaskList = () => {
             .then(([status, data]) => {
               console.log(data)
               try {
-
-
                 setTaskData(prevState => {
                   let newState = [...prevState];
                   newState = data.task.map((item, index) => ({
@@ -159,15 +120,11 @@ const TaskList = () => {
                     amount: item.amount,
                     status: taskState[index],
                   }));
-
                   return newState;
                 });
-
               } catch (e) {
-                // eslint-disable-next-line no-self-assign
-                document.location.href = document.location.href
+                console.log(e);
               }
-
             })
 
 
@@ -181,9 +138,9 @@ const TaskList = () => {
 
   }
   console.log(taskData)
+
   useEffect(() => {
     let isMounted = true
-
     if (isMounted) {
       stateTask();
     }
