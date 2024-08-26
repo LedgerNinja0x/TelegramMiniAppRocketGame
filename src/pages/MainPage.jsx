@@ -144,7 +144,7 @@ const MainPage = () => {
             // session: cookies.session // ------------------------
           }))
         } catch (e) {
-          
+
           // eslint-disable-next-line no-self-assign
           document.location.href = document.location.href
         }
@@ -164,7 +164,7 @@ const MainPage = () => {
       const headers = new Headers()
       headers.append('Content-Type', 'application/json')
       if (isMounted) {
-        console.log("11111")
+        console.log(gamePhase,"11111",isReal)
         fetch(`${serverUrl}/users_info`, { method: 'POST', body: JSON.stringify({ historySize: 100, realName: realName, userName: userName }), headers })
         .then(res => Promise.all([res.status, res.json()]))
         .then(([status, data]) => {
