@@ -1,3 +1,3 @@
 import { atom } from "jotai";
 
-export const realGameState = atom(false);
+export const realGameState = atom(true);
