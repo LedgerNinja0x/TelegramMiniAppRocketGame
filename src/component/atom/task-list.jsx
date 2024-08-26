@@ -50,7 +50,8 @@ const serverUrl = REACT_APP_SERVER;
 //   )
 // }
 
-const generateTask = () => {
+const generateTask = (task, index, stateTask) => {
+  console.log(task, index, stateTask);
   return (
     <>
     </>
