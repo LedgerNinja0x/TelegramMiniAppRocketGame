@@ -11,8 +11,10 @@ const serverUrl = REACT_APP_SERVER;
 
 
 
-const GenerateTask = (_task, _index, stateTask) => {
+const generateTask = (_task, _index, stateTask) => {
 
+  console.log(_task, _index, stateTask);
+  
   const [isClaim, setIsClaim] = useState(false);
   // const [user, setUser] = useAtom(userData);
 
@@ -147,7 +149,7 @@ const TaskList = () => {
   return (
     <div className="flex flex-col gap-2 text-[14px] overflow-auto pb-4" style={{ height: "calc(100vh - 200px)" }}>
       {
-        taskData.map((_task, _index) => GenerateTask(_task, _index, stateTask))
+        taskData.map((_task, _index) => generateTask(_task, _index, stateTask))
       }
     </div>
   )
