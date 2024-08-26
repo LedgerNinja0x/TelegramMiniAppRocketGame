@@ -14,7 +14,7 @@ import Layout from './component/atom/layoutmain.jsx';
 import JotaiProvider from "./providers/jotaiProvider"
 import AppContext from './component1/AppContext';
 import { REACT_APP_WS_SERVER } from './utils/privateData.js';
-
+import Help from './pages/Help.jsx';
 
 const wsServerUrl = REACT_APP_WS_SERVER;
 
@@ -113,6 +113,7 @@ function App() {
                 <Route path='/stats' element={<Layout><Stats /></Layout>} />
                 <Route path='/wallet' element={<Layout><Wallet /></Layout>} />
                 <Route path='/userInfo' element={<Layout><UserInfo /></Layout>} />
+                <Route path='/help' element={<Layout><Help /></Layout>} />
               </Routes>
             
             <Footer />

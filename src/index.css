@@ -61,6 +61,12 @@ code {
   /* Adjust this if you want a different border width */
 }
 
+.shadow-btn-custom-border {
+  border-image-source: linear-gradient(180deg, #FFFFFF00 0%, #cccccc 100%);
+  border-width: 1px;
+  /* Adjust this if you want a different border width */
+}
+
 .invite-btn-shadow {
   box-shadow: 0px 2px 0px 0px #191998;
 }

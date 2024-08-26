@@ -20,6 +20,12 @@ import { cn } from "../utils/index.js";
 import { userData } from "../store";
 import { REACT_APP_SERVER } from "../utils/privateData.js";
 import { RANKINGDATA } from "../utils/globals.js";
+import InfoModal from "../component/atom/infoModel.jsx";
+import { Link } from "react-router-dom";
+import TgIcon from "../assets/icon/tg-icon";
+import TgTwitter from "../assets/icon/tg-twitter";
+import TgYout from "../assets/icon/tg-yout";
+import TgInst from "../assets/icon/tg-inst";
 
 
 
@@ -54,6 +60,8 @@ const MainPage = () => {
   const [isReal, setRealGame] = useAtom(realGameState);
   const [user, setUser] = useAtom(userData);
   const [winState, setWinstate] = useState(false);
+  const [firstLogin, setFirstLogin] = useState(true);
+  const [infoState, setInfoState] = useState(false)
 
 
   // Refs for mutable state
@@ -143,7 +151,9 @@ const MainPage = () => {
     }
     return () => { isMounted = false }
   }, [historyGames])
-
+  const checkFirstState = () => {
+    fetch(`${serverUrl}/check_first`, { method: 'POST', body: JSON.stringify({ userName: userName }), headers })
+  }
   useEffect(() => {
     const webapp = window.Telegram.WebApp.initDataUnsafe;
     let isMounted = true
@@ -167,6 +177,7 @@ const MainPage = () => {
 
               const newBalance = parseFloat(isReal ? myData.balance.real : myData.balance.virtual).toFixed(2)
               balanceRef.current = newBalance
+              setFirstLogin(myData.first_state);
               setBalance(newBalance)
               setUser({
                 RealName: realName, UserName: userName,
@@ -179,6 +190,7 @@ const MainPage = () => {
               historyGamesRef.current = newHistoryGames
               setHistoryGames(newHistoryGames)
               setLoaderIsShown(false)
+              checkFirstState()
             } catch (e) {
               // eslint-disable-next-line no-self-assign
               document.location.href = document.location.href
@@ -189,7 +201,7 @@ const MainPage = () => {
     }
 
   }, [isReal, gamePhase]) // --------------------------------  
-
+   
   // const register = (realName, userName) => {
   //   if (validateInput()) {
   //     const headers = new Headers()
@@ -361,7 +373,7 @@ const MainPage = () => {
 
 
           <Game className={`transition-all ${isAction !== "start" ? "mt-24" : "mt-0"} `} finalResult={finalResult} gamePhase={gamePhase} isWin={winState}
-            setLoaderIsShown={setLoaderIsShown} amount={balance} bet={bet} autoStop={autoStop} socketFlag={socketStart} realGame={isReal} />
+            setLoaderIsShown={setLoaderIsShown} amount={balance} bet={bet} autoStop={autoStop} socketFlag={socketStart} realGame={isReal} setInfoState = {(e)=>setInfoState(e)} />
 
           <div className="flex flex-col text-white gap-4">
             <div >
@@ -480,6 +492,50 @@ const MainPage = () => {
                 }
               </div>
             </SettingModal>
+
+            <InfoModal title = "Welcome, Recruit!" isOpen={firstLogin} setIsOpen={()=>setFirstLogin(false)} height="h-[480px]">
+                <div className="flex items-center justify-center">
+                  <img src = {avatar.avatar1} width="128px" height="128px" className="max-w-[128px] h-[128px]" alt="avatar"  />
+                </div>
+                <div className="flex flex-col gap-6 text-black text-center text-[15px] font-normal leading-5 tracking-[-2%]">
+                  <div>
+                    🚀 Place your bet and press the Start button to launch the rocket! 
+                  </div>
+                  <div>
+                  💰 As the rocket flies, a multiplier increases your bet. Press the Stop button to get your profit! 
+                  </div>
+                  <div>
+                    💥 But be careful, because the rocket can crash at any moment, and if it does, you'll lose your bet!
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <Link to ={'/help'} className="w-1/2">
+                  <ShadowButton className=" bg-white text-[#3861FB] invite-btn-setting !border-[#F3E3E3]" content="learn more"  />
+                  </Link>
+                    <ShadowButton className="w-1/2" content="Got it!"  action={()=>setFirstLogin(false)} />
+              
+                </div>
+            </InfoModal>
+            <InfoModal title = "Coming soon!" isOpen={infoState} setIsOpen={()=>setInfoState(false)} height="h-[280px]">
+                <div className="flex items-center justify-center">
+                  <img src = '/image/icon/rocketX.svg' width="48px" height="48px" className="max-w-[48px] h-[48px]" alt="avatar"  />
+                </div>
+                <div className="flex flex-col gap-6 text-black text-center text-[15px] font-normal leading-5 tracking-[-2%]">
+                  <div>
+                  🛠 Our token is under development! 
+                  </div>
+                  <div>
+                  📢 Join our social media to stay up to date.
+                  </div>
+                  <div className="px-8 flex justify-between w-full">
+                    <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgIcon />}></ShadowButton>
+                    <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgTwitter />}></ShadowButton>
+                    <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgInst />}></ShadowButton>
+                    <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgYout />}></ShadowButton>
+                </div>
+                </div>
+                
+            </InfoModal>
           </div>
         </div>
       </div>
