@@ -55,7 +55,13 @@ const Friends = () => {
     const link = generateInviteLink();
     console.log(link);
     try {
-      await navigator.clipboard.writeText(link);
+      const textField = document.createElement('textarea');
+      textField.innerText = link;
+      const parentElement = document.getElementById("clipboard");
+      parentElement.appendChild(textField);
+      textField.select();
+      document.execCommand('copy');
+      parentElement.removeChild(textField);
       console.log("success");
       // setCopySuccess('Copied!');
     } catch (err) {
@@ -75,7 +81,7 @@ const Friends = () => {
       <FriendsList friendData={friendList} />
       <FriendEarned setIsModalOpen={setIsOpen} />
       <ScrollModal icon={<NavFriends />} title={"Invite a Friend"} isOpen={isOpen} setIsOpen={setIsOpen}>
-        <div className="pb-6 flex flex-col gap-4 px-4">
+        <div className="pb-6 flex flex-col gap-4 px-4" id="clipboard">
           <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Send invitation"} action={inviteUser} />
           <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Copy link"} action={copyLink} />
         </div>
