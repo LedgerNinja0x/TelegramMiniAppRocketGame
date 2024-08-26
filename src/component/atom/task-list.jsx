@@ -136,7 +136,7 @@ const TaskList = () => {
 
           setTaskData(prevState => {
             const newState = [...prevState];
-           newState = data.map((item, index) => ({
+           newState = data.task.map((item, index) => ({
                 src: item.src,
                 title: item.title,
                 amount: item.amount,
