@@ -68,6 +68,7 @@ const Friends = () => {
       <FriendEarned setIsModalOpen={setIsOpen} />
       <ScrollModal icon={<NavFriends />} title={"Invite a Friend"} isOpen={isOpen} setIsOpen={setIsOpen}>
         <div className="pb-6 flex flex-col gap-4 px-4">
+<<<<<<< HEAD
           <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} action={inviteUser}>
             Send invitation
           </ShadowButton>
@@ -78,6 +79,14 @@ const Friends = () => {
             </CopyToClipboard>
           </ShadowButton>
 
+=======
+          <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Send invitation"} action={inviteUser} />
+          <CopyToClipboard text={"test"} onCopy={() => console.log("aaa")}>
+            <span>aaa</span>
+            {/* <ShadowButton className={"bg-[#3434DA] shadow-btn-lightblue-border"} content={"Copy link"}  /> */}
+          </CopyToClipboard>
+          
+>>>>>>> parent of e7b83a2 (test:clipboard-2)
         </div>
       </ScrollModal>
     </div>
