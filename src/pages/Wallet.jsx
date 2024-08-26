@@ -5,13 +5,13 @@ import WalletInfo from "../component/atom/wallet-info";
 
 const Wallet = () => {
 
-    const [ walletAddress, setWalletAddress ] = useState("");
+    const [walletAddress, setWalletAddress] = useState("");
 
     return (
         <div className="h-full pb-[76px] flex flex-col">
-            <div className="flex-auto flex" style={{height: "calc(100vh - 320px)"}}>
+            <div className="flex-auto flex" style={{ height: "calc(100vh - 320px)" }}>
                 <div className="my-auto flex flex-col items-center text-center gap-4 h-fit">
-                    <img 
+                    <img
                         src="/image/main/ton.png"
                         alt=""
                         className="h-full max-w-[200px]"
@@ -23,12 +23,13 @@ const Wallet = () => {
             </div>
             <div className="w-full">
                 <AtomLabel content={"Wallet"} />
-                <WalletInfo className={"mt-2"} address={walletAddress}/>
-                <ShadowButton 
-                    className={"mt-4"} 
-                    content={ walletAddress ? "Disconnect wallet" : "Connect wallet"} 
+                <WalletInfo className={"mt-2"} address={walletAddress} />
+                <ShadowButton
+                    className={"mt-4"}
                     action={() => setWalletAddress((address) => address ? "" : "UQ67wW...UQ67wW")}
-                />
+                >
+                    {walletAddress ? "Disconnect wallet" : "Connect wallet"}
+                </ShadowButton>
             </div>
         </div>
     )

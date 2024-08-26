@@ -396,22 +396,24 @@ const MainPage = () => {
                     />}
                     <ShadowButton
                       action={startGame}
-                      content={"Start"}
                       disabled={
                         balance === '0.00' ||
                         bet < 0.1 || autoStop < 1.01 ||
                         balance < 0.1 || isNaN(bet) || isNaN(autoStop) || isNaN(valueAfterWin)
                         || isNaN(valueAfterLoss)
                       }
-                    />
+                    >
+                      Start
+                    </ShadowButton>
                   </div>
                 ) :
                 (
                   <ShadowButton
                     className={"bg-[#CC070A] shadow-btn-red-border invite-btn-red-shadow"}
-                    content={"Stop"}
                     action={stopGame}
-                  />
+                  >
+                    Stop
+                  </ShadowButton>
                 )
             }
 
@@ -462,13 +464,14 @@ const MainPage = () => {
                     (
                       <ShadowButton
                         action={handleModalButton}
-                        content={"Start"}
                         disabled={
                           balance === '0.00' || bet < 1 || autoStop < 1.01 ||
                           balance < 1 || isNaN(bet) || isNaN(autoStop) || isNaN(valueAfterWin)
                           || isNaN(valueAfterLoss)
                         }
-                      />
+                      >
+                        Start
+                      </ShadowButton>
                     ) :
                     (
                       <ShadowButton
