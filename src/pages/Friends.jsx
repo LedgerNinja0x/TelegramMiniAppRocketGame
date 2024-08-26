@@ -42,7 +42,7 @@ const Friends = () => {
           .then(([status, data]) => {
             try {
               console.log(data)
-              const myData = data
+              const myData = data.friendData
                 .sort((a, b) => b.balance.real - a.balance.real)
                 .map((i, index) => { i.rank = index + 1; return i })
               console.log(myData)
