@@ -47,13 +47,13 @@ const Friends = () => {
                 .map((i, index) => { i.rank = index + 1; return i })
               console.log(myData)
               const friendData = myData.map((data) => {
-                console.log(RANKINGDATA.indexOf(data.Ranking))
-                console.log(RANKINGDATA.indexOf(data.Ranking)+1)
+                console.log(RANKINGDATA.indexOf(data.ranking))
+                console.log(RANKINGDATA.indexOf(data.ranking)+1)
                 return {
                   url: "john.svg",
                   name: data.name,
                   label: data.ranking,
-                  rate: (RANKINGDATA.indexOf(data.Ranking) + 1),
+                  rate: (RANKINGDATA.indexOf(data.ranking) + 1),
                   id: data.balance.real,
                   coin: 100,
                   ton: 0
