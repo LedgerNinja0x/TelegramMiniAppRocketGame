@@ -39,7 +39,7 @@ const Friends = () => {
 
 
 
-  const copyLink = () => {
+  const copyLink = async () => {
     toast('Referral link is copied',
       {
         position: "top-center",
@@ -54,7 +54,14 @@ const Friends = () => {
     )
     const link = generateInviteLink();
     console.log(link);
-    navigator.clipboard.writeText(link);
+    try {
+      await navigator.clipboard.writeText(copyMe);
+      console.log("success");
+      // setCopySuccess('Copied!');
+    } catch (err) {
+      console.log(err);
+      // setCopySuccess('Failed to copy!');
+    }
   }
 
   const sendInvite = () => {
