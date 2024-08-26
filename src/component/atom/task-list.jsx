@@ -136,16 +136,13 @@ const TaskList = () => {
           const performtask = data.task.achieve_task
           const doneTask = data.task.done_task
 
-          taskState=(prevState => {
-            const newState = [...prevState];
-            performtask.map((item) => {
+          taskState= performtask.map((item) => {
               newState[item] = 1;
-            })
-            doneTask.map((item) => {
+          })
+          taskState= doneTask.map((item) => {
               newState[item] = 2;
             })
-            return newState
-          })
+            
           console.log(taskState)
        fetch(`${serverUrl}/get_task`, { method: 'POST', body: JSON.stringify({ }), headers })
       .then(res => Promise.all([res.status, res.json()]))
