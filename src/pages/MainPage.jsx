@@ -60,7 +60,7 @@ const MainPage = () => {
   const [isReal, setRealGame] = useAtom(realGameState);
   const [user, setUser] = useAtom(userData);
   const [winState, setWinstate] = useState(false);
-  const [firstLogin, setFirstLogin] = useState(true);
+  const [firstLogin, setFirstLogin] = useState(false);
   const [infoState, setInfoState] = useState(false)
 
 
@@ -163,6 +163,7 @@ const MainPage = () => {
       const headers = new Headers()
       headers.append('Content-Type', 'application/json')
       if (isMounted) {
+        
         fetch(`${serverUrl}/users_info`, { method: 'POST', body: JSON.stringify({ historySize: 100, realName: realName, userName: userName }), headers })
         .then(res => Promise.all([res.status, res.json()]))
         .then(([status, data]) => {
