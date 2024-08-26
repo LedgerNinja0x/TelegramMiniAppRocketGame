@@ -15,6 +15,7 @@ import { useAtom } from "jotai";
 import { userData } from "../store/userData.jsx";
 import { RANKINGDATA } from "../utils/globals.js";
 import { REACT_APP_SERVER } from "../utils/privateData.js";
+import { userData } from "../store/userData.jsx";
 
 
 const fadeAnimationHandler = (props, state) => {
@@ -45,18 +46,7 @@ const fadeAnimationHandler = (props, state) => {
   };
 };
 
-const statsList = [
-    {
-      src: "coin-y.svg",
-        amount: "10,968.67",
-        id: 1
-    },
-    {
-        src: "ton.svg",
-        amount: "679.9",
-        id: 2
-    }
-  ]
+
   
  
 
@@ -67,6 +57,18 @@ const UserInfo = () => {
   const [ rankingIndex, setRankingIndex] =useState(0);
   const [ friendData, setFriendData] = useState([])
   const serverUrl = REACT_APP_SERVER
+  const statsList = [
+    {
+      src: "coin-y.svg",
+        amount: user.Balance.Real,
+        id: 1
+    },
+    {
+        src: "ton.svg",
+        amount: "0",
+        id: 2
+    }
+  ]
   const rankingItems = RANKINGDATA.map((data,index)=>{
     return(
       <div className="w-full left-3" key={index}>
