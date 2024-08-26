@@ -15,7 +15,6 @@ import { useAtom } from "jotai";
 import { userData } from "../store/userData.jsx";
 import { RANKINGDATA } from "../utils/globals.js";
 import { REACT_APP_SERVER } from "../utils/privateData.js";
-import { userData } from "../store/userData.jsx";
 
 
 const fadeAnimationHandler = (props, state) => {
