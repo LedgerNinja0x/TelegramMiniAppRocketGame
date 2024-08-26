@@ -144,6 +144,7 @@ const MainPage = () => {
             // session: cookies.session // ------------------------
           }))
         } catch (e) {
+          
           // eslint-disable-next-line no-self-assign
           document.location.href = document.location.href
         }
