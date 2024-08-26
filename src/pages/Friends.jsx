@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import FriendComment from "../component/molecules/friend-comment";
 import FriendEarned from "../component/molecules/friend-earned";
 import FriendsList from "../component/molecules/friends-list";
@@ -9,6 +9,9 @@ import CheckMark from "../component/svg/check-mark";
 import toast from "react-hot-toast";
 import { initUtils } from '@telegram-apps/sdk'
 import { CopyToClipboard } from "react-copy-to-clipboard"
+import { REACT_APP_SERVER } from "../utils/privateData.js";
+import { RANKINGDATA } from "../utils/globals.js";
+
 
 const friendData = []
 
@@ -21,6 +24,7 @@ const Friends = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [fullURL, setFullURL] = useState("");
+  const serverUrl = REACT_APP_SERVER;
 
   useEffect(() => {
     const webapp = window.Telegram.WebApp.initDataUnsafe;
@@ -46,7 +50,7 @@ const Friends = () => {
                     url:"john.svg",
                   name:data.name,
                   label:data.ranking,
-                  rate:RANKINGDATA.indexOf(user.Ranking)+1,
+                  rate:RANKINGDATA.indexOf(data.Ranking)+1,
                   id : data.balance.real,
                   coin: 100,
                   ton: 0}
@@ -62,7 +66,7 @@ const Friends = () => {
       }
     }
 
-  }, [isReal, gamePhase])
+  }, [])
 
   // Function to generate an invite link
   const generateInviteLink = () => {
