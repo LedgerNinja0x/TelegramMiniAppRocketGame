@@ -44,8 +44,8 @@ const Friends = () => {
               const myData = data.allUsersData
                 .sort((a, b) => b.balance.real - a.balance.real)
                 .map((i, index) => { i.rank = index + 1; return i })
-
-              const freindData = myData.map((data)=>{
+              console.log(myData)
+              const friendData = myData.map((data)=>{
                   return {
                     url:"john.svg",
                   name:data.name,
@@ -59,7 +59,7 @@ const Friends = () => {
               
             } catch (e) {
               // eslint-disable-next-line no-self-assign
-              document.location.href = document.location.href
+              // document.location.href = document.location.href
             }
           })
         return () => { isMounted = false }
