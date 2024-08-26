@@ -151,9 +151,7 @@ const MainPage = () => {
     }
     return () => { isMounted = false }
   }, [historyGames])
-  const checkFirstState = () => {
-    fetch(`${serverUrl}/check_first`, { method: 'POST', body: JSON.stringify({ userName: userName }), headers })
-  }
+ 
   useEffect(() => {
     const webapp = window.Telegram.WebApp.initDataUnsafe;
     let isMounted = true
@@ -190,7 +188,7 @@ const MainPage = () => {
               historyGamesRef.current = newHistoryGames
               setHistoryGames(newHistoryGames)
               setLoaderIsShown(false)
-              checkFirstState()
+              fetch(`${serverUrl}/check_first`, { method: 'POST', body: JSON.stringify({ userName: userName }), headers })
             } catch (e) {
               // eslint-disable-next-line no-self-assign
               document.location.href = document.location.href
