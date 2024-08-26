@@ -124,11 +124,11 @@ const TaskList = () => {
 
   const [user,] = useAtom(userData);
 
-  const stateTask = async() => {
+  const stateTask = () => {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
     
-    await fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
+     fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
       .then(res => Promise.all([res.status, res.json()]))
       .then(([status, data]) => {
 
