@@ -127,6 +127,31 @@ const TaskList = () => {
   const stateTask = async() => {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
+    fetch(`${serverUrl}/get_task`, { method: 'POST', body: JSON.stringify({ }), headers })
+      .then(res => Promise.all([res.status, res.json()]))
+      .then(([status, data]) => {
+        console.log(data)
+        try {
+          
+
+          setTaskData(prevState => {
+            const newState = [...prevState];
+           newState = data.map((item, index) => ({
+                src: item.src,
+                title: item.title,
+                amount: item.amount,
+                status: taskState[index],
+            }));
+        
+            return newState;
+        });
+
+        } catch (e) {
+          // eslint-disable-next-line no-self-assign
+          document.location.href = document.location.href
+        }
+
+      })
     await fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
       .then(res => Promise.all([res.status, res.json()]))
       .then(([status, data]) => {
@@ -151,32 +176,9 @@ const TaskList = () => {
         }
       })
           
-      fetch(`${serverUrl}/get_task`, { method: 'POST', body: JSON.stringify({ }), headers })
-      .then(res => Promise.all([res.status, res.json()]))
-      .then(([status, data]) => {
-
-        try {
-          
-
-          setTaskData(prevState => {
-            const newState = data.map((item, index) => ({
-                src: item.src,
-                title: item.title,
-                amount: item.amount,
-                status: taskState[index],
-            }));
-        
-            return newState;
-        });
-
-        } catch (e) {
-          // eslint-disable-next-line no-self-assign
-          document.location.href = document.location.href
-        }
-
-      })
+      
   }
-
+  console.log(taskData)
   useEffect(() => {
     let isMounted = true
 
