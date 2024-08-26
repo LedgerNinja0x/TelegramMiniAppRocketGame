@@ -196,9 +196,9 @@ const MainPage = () => {
             }
           })
           fetch(`${serverUrl}/check_first`, { method: 'POST', body: JSON.stringify({ userName: userName }), headers })
-        return () => { isMounted = false }
+        }
       }
-    }
+      return () => { isMounted = false }
 
   }, [isReal, gamePhase]) // --------------------------------  
    
