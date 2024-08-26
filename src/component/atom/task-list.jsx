@@ -146,13 +146,8 @@ const TaskList = () => {
             })
             return newState
           })
-        } catch (e) {
-          // eslint-disable-next-line no-self-assign
-          document.location.href = document.location.href
-        }
-      })
-      
-      fetch(`${serverUrl}/get_task`, { method: 'POST', body: JSON.stringify({ }), headers })
+          console.log(taskState)
+       fetch(`${serverUrl}/get_task`, { method: 'POST', body: JSON.stringify({ }), headers })
       .then(res => Promise.all([res.status, res.json()]))
       .then(([status, data]) => {
         console.log(data)
@@ -177,6 +172,15 @@ const TaskList = () => {
         }
 
       })
+
+
+        } catch (e) {
+          // eslint-disable-next-line no-self-assign
+          document.location.href = document.location.href
+        }
+      })
+      
+      
       
   }
   console.log(taskData)
