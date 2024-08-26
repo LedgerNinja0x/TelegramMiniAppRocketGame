@@ -84,7 +84,7 @@ const GenerateTask = (_task, _index, stateTask) => {
 }
 
 const TaskList = () => {
-  let taskState=[];
+  let taskState = [];
 
   const [taskData, setTaskData] = useState([]);
   // const taskData = [
@@ -124,61 +124,61 @@ const TaskList = () => {
 
   const [user,] = useAtom(userData);
 
-  const stateTask = () => {
+  const stateTask = async () => {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
-    
-     fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
+
+    await fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
       .then(res => Promise.all([res.status, res.json()]))
       .then(([status, data]) => {
 
         try {
           const performtask = data.task.achieve_task
           const doneTask = data.task.done_task
-          taskState=[0,0,0,0,0]
-           performtask.map((item) => {
-              taskState[item] = 1;
+          taskState = [0, 0, 0, 0, 0]
+          performtask.map((item) => {
+            taskState[item] = 1;
           })
-           doneTask.map((item) => {
+          doneTask.map((item) => {
             taskState[item] = 2;
-            })
-            
+          })
+
           console.log(taskState)
-       fetch(`${serverUrl}/get_task`, { method: 'POST', body: JSON.stringify({ }), headers })
-      .then(res => Promise.all([res.status, res.json()]))
-      .then(([status, data]) => {
-        console.log(data)
-        try {
-          
+          fetch(`${serverUrl}/get_task`, { method: 'POST', body: JSON.stringify({}), headers })
+            .then(res => Promise.all([res.status, res.json()]))
+            .then(([status, data]) => {
+              console.log(data)
+              try {
 
-          setTaskData(prevState => {
-            let newState = [...prevState];
-           newState = data.task.map((item, index) => ({
-                src: item.src,
-                title: item.title,
-                amount: item.amount,
-                status: taskState[index],
-            }));
-        
-            return newState;
-        });
+
+                setTaskData(prevState => {
+                  let newState = [...prevState];
+                  newState = data.task.map((item, index) => ({
+                    src: item.src,
+                    title: item.title,
+                    amount: item.amount,
+                    status: taskState[index],
+                  }));
+
+                  return newState;
+                });
+
+              } catch (e) {
+                // eslint-disable-next-line no-self-assign
+                document.location.href = document.location.href
+              }
+
+            })
+
 
         } catch (e) {
           // eslint-disable-next-line no-self-assign
           document.location.href = document.location.href
         }
-
       })
 
 
-        } catch (e) {
-          // eslint-disable-next-line no-self-assign
-          document.location.href = document.location.href
-        }
-      })
-      
-      
-      
+
   }
   console.log(taskData)
   useEffect(() => {
