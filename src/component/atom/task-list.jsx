@@ -133,9 +133,6 @@ const TaskList = () => {
           document.location.href = document.location.href
         }
       })
-
-
-
   }
   console.log(taskData)
 
@@ -151,7 +148,7 @@ const TaskList = () => {
   return (
     <div className="flex flex-col gap-2 text-[14px] overflow-auto pb-4" style={{ height: "calc(100vh - 200px)" }}>
       {
-        taskData.map((_task, _index) => GenerateTask(_task, _index, stateTask))
+        // taskData.map((_task, _index) => GenerateTask(_task, _index, stateTask))
       }
     </div>
   )
