@@ -11,11 +11,11 @@ const serverUrl = REACT_APP_SERVER;
 
 
 
-const generateTask = (_task, _index, stateTask) => {
+const GenerateTask = (_task, _index, stateTask) => {
 
   console.log(_task, _index, stateTask);
   
-  const [isClaim, setIsClaim] = useState(false);
+  // const [isClaim, setIsClaim] = useState(false);
   // const [user, setUser] = useAtom(userData);
 
   // const goClaim = () => {
@@ -68,8 +68,8 @@ const generateTask = (_task, _index, stateTask) => {
               className="rounded-lg w-[61px] py-1 px-0 h-7 bg-white text-[#080888] text-center text-[14px]"
             >
               {
-                isClaim ?
-                  <LoadingSpinner className="w-4 h-4 mx-auto" /> :
+                // isClaim ?
+                //   <LoadingSpinner className="w-4 h-4 mx-auto" /> :
                   "Claim"
               }
             </button> :
@@ -149,7 +149,7 @@ const TaskList = () => {
   return (
     <div className="flex flex-col gap-2 text-[14px] overflow-auto pb-4" style={{ height: "calc(100vh - 200px)" }}>
       {
-        taskData.map((_task, _index) => generateTask(_task, _index, stateTask))
+        taskData.map((_task, _index) => GenerateTask(_task, _index, stateTask))
       }
     </div>
   )
