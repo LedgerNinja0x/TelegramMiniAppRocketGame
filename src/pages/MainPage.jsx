@@ -164,10 +164,11 @@ const MainPage = () => {
       headers.append('Content-Type', 'application/json')
       if (isMounted) {
         fetch(`${serverUrl}/users_info`, { method: 'POST', body: JSON.stringify({ historySize: 100, realName: realName, userName: userName }), headers })
-          .then(res => Promise.all([res.status, res.json()]))
-          .then(([status, data]) => {
-            try {
-              const myData = data.allUsersData
+        .then(res => Promise.all([res.status, res.json()]))
+        .then(([status, data]) => {
+          try {
+            
+            const myData = data.allUsersData
                 .sort((a, b) => b.balance.real - a.balance.real)
                 .map((i, index) => { i.rank = index + 1; return i })
                 .filter(i => i.name === realName)[0] //--------------------------
@@ -188,12 +189,12 @@ const MainPage = () => {
               historyGamesRef.current = newHistoryGames
               setHistoryGames(newHistoryGames)
               setLoaderIsShown(false)
-              fetch(`${serverUrl}/check_first`, { method: 'POST', body: JSON.stringify({ userName: userName }), headers })
             } catch (e) {
               // eslint-disable-next-line no-self-assign
               document.location.href = document.location.href
             }
           })
+          fetch(`${serverUrl}/check_first`, { method: 'POST', body: JSON.stringify({ userName: userName }), headers })
         return () => { isMounted = false }
       }
     }
@@ -516,7 +517,7 @@ const MainPage = () => {
             </InfoModal>
             <InfoModal title = "Coming soon!" isOpen={infoState} setIsOpen={()=>setInfoState(false)} height="h-[280px]">
                 <div className="flex items-center justify-center">
-                  <img src = '/image/icon/rocketX.svg' width="48px" height="48px" className="max-w-[48px] h-[48px]" alt="avatar"  />
+                  <img src = '/image/icon/rocketx.svg' width="48px" height="48px" className="max-w-[48px] h-[48px]" alt="avatar"  />
                 </div>
                 <div className="flex flex-col gap-6 text-black text-center text-[15px] font-normal leading-5 tracking-[-2%]">
                   <div>
