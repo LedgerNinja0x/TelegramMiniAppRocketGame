@@ -127,7 +127,32 @@ const TaskList = () => {
   const stateTask = async() => {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
-    fetch(`${serverUrl}/get_task`, { method: 'POST', body: JSON.stringify({ }), headers })
+    
+    await fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
+      .then(res => Promise.all([res.status, res.json()]))
+      .then(([status, data]) => {
+
+        try {
+          const performtask = data.task.achieve_task
+          const doneTask = data.task.done_task
+
+          taskState=(prevState => {
+            const newState = [...prevState];
+            performtask.map((item) => {
+              newState[item] = 1;
+            })
+            doneTask.map((item) => {
+              newState[item] = 2;
+            })
+            return newState
+          })
+        } catch (e) {
+          // eslint-disable-next-line no-self-assign
+          document.location.href = document.location.href
+        }
+      })
+      
+      fetch(`${serverUrl}/get_task`, { method: 'POST', body: JSON.stringify({ }), headers })
       .then(res => Promise.all([res.status, res.json()]))
       .then(([status, data]) => {
         console.log(data)
@@ -152,30 +177,6 @@ const TaskList = () => {
         }
 
       })
-    await fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
-      .then(res => Promise.all([res.status, res.json()]))
-      .then(([status, data]) => {
-
-        try {
-          const performtask = data.task.achieve_task
-          const doneTask = data.task.done_task
-
-          taskState=(prevState => {
-            const newState = [...prevState];
-            performtask.map((item) => {
-              newState[item] = 1;
-            })
-            doneTask.map((item) => {
-              newState[item] = 2;
-            })
-            return newState
-          })
-        } catch (e) {
-          // eslint-disable-next-line no-self-assign
-          document.location.href = document.location.href
-        }
-      })
-          
       
   }
   console.log(taskData)
