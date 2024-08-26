@@ -22,7 +22,47 @@ const Friends = () => {
   const [isClosing, setIsClosing] = useState(false);
   const [fullURL, setFullURL] = useState("");
 
+  useEffect(() => {
+    const webapp = window.Telegram.WebApp.initDataUnsafe;
+    let isMounted = true
+    if (webapp) {
 
+      const realName = webapp["user"]["first_name"] + " " + webapp["user"]["last_name"];
+      const userName = webapp["user"]["username"];
+
+      const headers = new Headers()
+      headers.append('Content-Type', 'application/json')
+      if (isMounted) {
+        fetch(`${serverUrl}/get_friend`, { method: 'POST', body: JSON.stringify({ userName: userName }), headers })
+          .then(res => Promise.all([res.status, res.json()]))
+          .then(([status, data]) => {
+            try {
+              const myData = data.allUsersData
+                .sort((a, b) => b.balance.real - a.balance.real)
+                .map((i, index) => { i.rank = index + 1; return i })
+
+              const freindData = myData.map((data)=>{
+                  return {
+                    url:"john.svg",
+                  name:data.name,
+                  label:data.ranking,
+                  rate:RANKINGDATA.indexOf(user.Ranking)+1,
+                  id : data.balance.real,
+                  coin: 100,
+                  ton: 0}
+                })
+                setFriendList(friendData);
+              
+            } catch (e) {
+              // eslint-disable-next-line no-self-assign
+              document.location.href = document.location.href
+            }
+          })
+        return () => { isMounted = false }
+      }
+    }
+
+  }, [isReal, gamePhase])
 
   // Function to generate an invite link
   const generateInviteLink = () => {
