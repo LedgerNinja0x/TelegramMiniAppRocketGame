@@ -55,7 +55,7 @@ const Friends = () => {
     const link = generateInviteLink();
     console.log(link);
     try {
-      await navigator.clipboard.writeText(copyMe);
+      await navigator.clipboard.writeText(link);
       console.log("success");
       // setCopySuccess('Copied!');
     } catch (err) {
