@@ -84,49 +84,50 @@ const GenerateTask = (_task, _index, stateTask) => {
 }
 
 const TaskList = () => {
-  const [taskState, setTaskState] = useState([0, 0, 0, 0, 0]);
+  let taskState=[];
 
-  const taskData = [
-    {
-      src: "ins-avatar.svg",
-      title: "Achieved 5x",
-      amount: 50,
-      status: taskState[0]
-    },
-    {
-      src: "you-avatar.svg",
-      title: "Achieved 10x",
-      amount: 100,
-      status: taskState[1]
-    },
-    {
-      src: "tg-avatar.svg",
-      title: "Achieved 50x",
-      amount: 300,
-      status: taskState[2]
-    },
-    {
-      src: "you-avatar.svg",
-      title: "3 consecutive successes",
-      amount: 50,
-      status: taskState[3]
-    },
-    {
-      src: "you-avatar.svg",
-      title: "5 consecutive successes",
-      amount: 100,
-      status: taskState[4]
-    },
+  const [taskData, setTaskData] = useState([]);
+  // const taskData = [
+  //   {
+  //     src: "ins-avatar.svg",
+  //     title: "Achieved 5x",
+  //     amount: 50,
+  //     status: taskState[0]
+  //   },
+  //   {
+  //     src: "you-avatar.svg",
+  //     title: "Achieved 10x",
+  //     amount: 100,
+  //     status: taskState[1]
+  //   },
+  //   {
+  //     src: "tg-avatar.svg",
+  //     title: "Achieved 50x",
+  //     amount: 300,
+  //     status: taskState[2]
+  //   },
+  //   {
+  //     src: "you-avatar.svg",
+  //     title: "3 consecutive successes",
+  //     amount: 50,
+  //     status: taskState[3]
+  //   },
+  //   {
+  //     src: "you-avatar.svg",
+  //     title: "5 consecutive successes",
+  //     amount: 100,
+  //     status: taskState[4]
+  //   },
 
-  ]
+  // ]
 
 
   const [user,] = useAtom(userData);
 
-  const stateTask = () => {
+  const stateTask = async() => {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
-    fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
+    await fetch(`${serverUrl}/task_perform`, { method: 'POST', body: JSON.stringify({ userName: user.UserName }), headers })
       .then(res => Promise.all([res.status, res.json()]))
       .then(([status, data]) => {
 
@@ -134,7 +135,7 @@ const TaskList = () => {
           const performtask = data.task.achieve_task
           const doneTask = data.task.done_task
 
-          setTaskState(prevState => {
+          taskState=(prevState => {
             const newState = [...prevState];
             performtask.map((item) => {
               newState[item] = 1;
@@ -144,6 +145,29 @@ const TaskList = () => {
             })
             return newState
           })
+        } catch (e) {
+          // eslint-disable-next-line no-self-assign
+          document.location.href = document.location.href
+        }
+      })
+          
+      fetch(`${serverUrl}/get_task`, { method: 'POST', body: JSON.stringify({ }), headers })
+      .then(res => Promise.all([res.status, res.json()]))
+      .then(([status, data]) => {
+
+        try {
+          
+
+          setTaskData(prevState => {
+            const newState = data.map((item, index) => ({
+                src: item.src,
+                title: item.title,
+                amount: item.amount,
+                status: taskState[index],
+            }));
+        
+            return newState;
+        });
 
         } catch (e) {
           // eslint-disable-next-line no-self-assign
