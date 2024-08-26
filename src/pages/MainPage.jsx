@@ -176,7 +176,7 @@ const MainPage = () => {
 
               const newBalance = parseFloat(isReal ? myData.balance.real : myData.balance.virtual).toFixed(2)
               balanceRef.current = newBalance
-              setFirstLogin(myData.first_state);
+              setFirstLogin(myData.first_state!=="false");
               setBalance(newBalance)
               setUser({
                 RealName: realName, UserName: userName,
