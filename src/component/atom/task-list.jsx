@@ -135,12 +135,12 @@ const TaskList = () => {
         try {
           const performtask = data.task.achieve_task
           const doneTask = data.task.done_task
-
-          taskState= performtask.map((item) => {
-              newState[item] = 1;
+          taskState=[0,0,0,0,0]
+           performtask.map((item) => {
+              taskState[item] = 1;
           })
-          taskState= doneTask.map((item) => {
-              newState[item] = 2;
+           doneTask.map((item) => {
+            taskState[item] = 2;
             })
             
           console.log(taskState)
