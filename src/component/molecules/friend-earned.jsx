@@ -1,7 +1,10 @@
+import { useAtom } from "jotai";
 import AtomLabel from "../atom/atom-label";
 import ShadowButton from "../atom/shadow-btn";
+import { userData } from "../../store";
 
 const FriendEarned = ( {setIsModalOpen} ) => {
+    const [user,] = useAtom(userData)
     return (
         <div>
             <AtomLabel content={"Earned"} />
@@ -13,7 +16,7 @@ const FriendEarned = ( {setIsModalOpen} ) => {
                             alt=""
                             className="w-6 h-6"
                         />
-                        <span className="font-bold text-base text-white">+200</span>
+                        <span className="font-bold text-base text-white">{user.Balance.Real}</span>
                     </div>
                 </div>
                 <div className="w-1/2">
@@ -23,7 +26,7 @@ const FriendEarned = ( {setIsModalOpen} ) => {
                             alt=""
                             className="w-6 h-6"
                         />
-                        <span className="font-bold text-base text-white">+6.688</span>
+                        <span className="font-bold text-base text-white">0</span>
                     </div>
                 </div>
             </div>

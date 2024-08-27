@@ -1,21 +1,25 @@
 import { useState } from "react";
 import EarningTab from "../component/molecules/earning-tab";
 import EarningTask from "../component/molecules/earning-task";
+import { useAtom } from "jotai";
+import { userData } from "../store";
 
-const tabList = [
-    {
-        id: 1,
-        src: "coin-y.svg",
-        amount: 600
-    },
-    {
-        id: 2,
-        src: "ton.svg",
-        amount: 678.9
-    }
-]
+
 
 const Earned = () => {
+    const [user,] =useAtom(userData) 
+    const tabList = [
+        {
+            id: 1,
+            src: "coin-y.svg",
+            amount: user.Balance.Real
+        },
+        {
+            id: 2,
+            src: "ton.svg",
+            amount: 0
+        }
+    ]
 
     const [ tabId, setTabId ] = useState(1);
 

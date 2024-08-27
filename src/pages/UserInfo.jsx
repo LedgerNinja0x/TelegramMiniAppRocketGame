@@ -76,6 +76,7 @@ const UserInfo = () => {
       
     )
   })
+  console.log(user)
     const rankingNext = () => {
       setRankingIndex (((rankingIndex + 1) + RANKINGDATA.length) % RANKINGDATA.length);
     }
