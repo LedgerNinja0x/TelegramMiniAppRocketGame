@@ -64,7 +64,7 @@ const MainPage = () => {
   const [winState, setWinstate] = useState(false);
   const [firstLogin, setFirstLogin] = useState(false);
   const [infoState, setInfoState] = useState(false);
-  const [rewardState, setRewardState] = useState(true);
+  const [rewardState, setRewardState] = useState(false);
 
 
   // Refs for mutable state
