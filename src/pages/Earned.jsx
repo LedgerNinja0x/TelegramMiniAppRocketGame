@@ -7,12 +7,12 @@ import { userData } from "../store";
 
 
 const Earned = () => {
-    const [user,] =useAtom(userData) 
+    const [user,] = useAtom(userData)
     const tabList = [
         {
             id: 1,
             src: "coin-y.svg",
-            amount: user.Balance.Real
+            amount: user.Balance
         },
         {
             id: 2,
@@ -21,11 +21,11 @@ const Earned = () => {
         }
     ]
 
-    const [ tabId, setTabId ] = useState(1);
+    const [tabId, setTabId] = useState(1);
 
     return (
         <div className="flex flex-col h-full gap-4">
-            <EarningTab tabList={tabList} tabId={tabId} setTabId={setTabId} />      
+            <EarningTab tabList={tabList} tabId={tabId} setTabId={setTabId} />
             <EarningTask />
         </div>
     )
