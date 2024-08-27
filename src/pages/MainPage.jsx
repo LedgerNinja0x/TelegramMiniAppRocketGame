@@ -26,6 +26,8 @@ import TgIcon from "../assets/icon/tg-icon";
 import TgTwitter from "../assets/icon/tg-twitter";
 import TgYout from "../assets/icon/tg-yout";
 import TgInst from "../assets/icon/tg-inst";
+import toast from "react-hot-toast";
+import rewardBG from "../assets/image/reward_bg.png"
 
 
 
@@ -61,7 +63,8 @@ const MainPage = () => {
   const [user, setUser] = useAtom(userData);
   const [winState, setWinstate] = useState(false);
   const [firstLogin, setFirstLogin] = useState(false);
-  const [infoState, setInfoState] = useState(false)
+  const [infoState, setInfoState] = useState(false);
+  const [rewardState, setRewardState] = useState(true);
 
 
   // Refs for mutable state
@@ -152,7 +155,7 @@ const MainPage = () => {
     }
     return () => { isMounted = false }
   }, [historyGames])
- 
+
   useEffect(() => {
     const webapp = window.Telegram.WebApp.initDataUnsafe;
     let isMounted = true
@@ -164,13 +167,13 @@ const MainPage = () => {
       const headers = new Headers()
       headers.append('Content-Type', 'application/json')
       if (isMounted) {
-        console.log(gamePhase,"1               ",isReal)
+        console.log(gamePhase, "1               ", isReal)
         fetch(`${serverUrl}/users_info`, { method: 'POST', body: JSON.stringify({ historySize: 100, realName: realName, userName: userName }), headers })
-        .then(res => Promise.all([res.status, res.json()]))
-        .then(([status, data]) => {
-          try {
-            
-            const myData = data.allUsersData
+          .then(res => Promise.all([res.status, res.json()]))
+          .then(([status, data]) => {
+            try {
+
+              const myData = data.allUsersData
                 .sort((a, b) => b.balance.real - a.balance.real)
                 .map((i, index) => { i.rank = index + 1; return i })
                 .filter(i => i.name === realName)[0] //--------------------------
@@ -178,7 +181,8 @@ const MainPage = () => {
 
               const newBalance = parseFloat(isReal ? myData.balance.real : myData.balance.virtual).toFixed(2)
               balanceRef.current = newBalance
-              setFirstLogin(myData.first_state!=="false");
+              setFirstLogin(myData.first_state !== "false");
+              setRewardState(myData.first_state !== "false");
               setBalance(newBalance)
               setUser({
                 RealName: realName, UserName: userName,
@@ -196,13 +200,13 @@ const MainPage = () => {
               document.location.href = document.location.href
             }
           })
-          fetch(`${serverUrl}/check_first`, { method: 'POST', body: JSON.stringify({ userName: userName }), headers })
-        }
+        fetch(`${serverUrl}/check_first`, { method: 'POST', body: JSON.stringify({ userName: userName }), headers })
       }
-      return () => { isMounted = false }
+    }
+    return () => { isMounted = false }
 
   }, [isReal, gamePhase]) // --------------------------------  
-   
+
   // const register = (realName, userName) => {
   //   if (validateInput()) {
   //     const headers = new Headers()
@@ -277,6 +281,21 @@ const MainPage = () => {
     setWins(wins + 1);
     setWinstate(true);
     adjustBetAfterWin();
+    toast(`${data.profit} coins added to your balance`,
+      {
+        position: "top-center",
+        icon: "🥳",
+        style: {
+          borderRadius: '8px',
+          background: '#84CB69',
+          color: '#0D1421',
+          width: '90vw',
+          textAlign:'start',
+          justifyContent:'start',
+          justifyItems:'start'
+        },
+      }
+    )
   };
 
   const handleGameCrashed = (data) => {
@@ -287,6 +306,19 @@ const MainPage = () => {
     setGames(games + 1);
     setLosses(losses + 1);
     adjustBetAfterLoss();
+    toast(`You lost ${data.profit} coin`,
+      {
+        position: "top-center",
+        icon: "😱",
+        style: {
+          borderRadius: '8px',
+          background: '#F56D63',
+          color: '#FFFFFF',
+          width: '90vw',
+
+        },
+      }
+    )
   };
 
   const updateGameHistory = (data, status) => {
@@ -373,8 +405,24 @@ const MainPage = () => {
           </div>
 
 
+          <div className={` transform translate-y-[100px] bg-cover bg-center bg-opacity-20 justify-between flex gap-2 px-4 py-2 items-center reward-bg h-[76px] rounded-[10px] ${rewardState?"":"hidden"}`} style={{background:`url(${rewardBG})`}}>
+            <div>
+              <img src="/image/cup.png" width={48} height={48} className="max-w-12 h-12"></img>
+            </div>
+            
+            <div className="text-[15px] w-1/2 leading-5 tracking-[-2%] text-white">You have uncompleted tasks that you can get rewards for.</div>
+            <ShadowButton 
+              content="Get Rewards" 
+              className={`relative px-3 py-1 bg-[#84CB69] text-[#080888] shadow-btn-custom-border h-7 text-sm leading-5 w-[108px] font-medium `}
+              action={()=>setRewardState(false)} 
+            />
+            <div className="absolute w-[30px], h-[30px]  top-0 right-0" onClick={()=>setRewardState(false)}>
+              <img src="/image/icon/CloseButton.svg" width={30} height={30} className="max-w-[30px] h-[30px]" alt="close"/>
+            </div>
+            
+          </div>
           <Game className={`transition-all ${isAction !== "start" ? "mt-24" : "mt-0"} `} finalResult={finalResult} gamePhase={gamePhase} isWin={winState}
-            setLoaderIsShown={setLoaderIsShown} amount={balance} bet={bet} autoStop={autoStop} socketFlag={socketStart} realGame={isReal} setInfoState = {(e)=>setInfoState(e)} />
+            setLoaderIsShown={setLoaderIsShown} amount={balance} bet={bet} autoStop={autoStop} socketFlag={socketStart} realGame={isReal} setInfoState={(e) => setInfoState(e)} />
 
           <div className="flex flex-col text-white gap-4">
             <div >
@@ -494,48 +542,48 @@ const MainPage = () => {
               </div>
             </SettingModal>
 
-            <InfoModal title = "Welcome, Recruit!" isOpen={firstLogin} setIsOpen={()=>setFirstLogin(false)} height="h-[480px]">
-                <div className="flex items-center justify-center">
-                  <img src = {avatar.avatar1} width="128px" height="128px" className="max-w-[128px] h-[128px]" alt="avatar"  />
+            <InfoModal title="Welcome, Recruit!" isOpen={firstLogin} setIsOpen={() => setFirstLogin(false)} height="h-[480px]">
+              <div className="flex items-center justify-center">
+                <img src={avatar.avatar1} width="128px" height="128px" className="max-w-[128px] h-[128px]" alt="avatar" />
+              </div>
+              <div className="flex flex-col gap-6 text-black text-center text-[15px] font-normal leading-5 tracking-[-2%]">
+                <div>
+                  🚀 Place your bet and press the Start button to launch the rocket!
                 </div>
-                <div className="flex flex-col gap-6 text-black text-center text-[15px] font-normal leading-5 tracking-[-2%]">
-                  <div>
-                    🚀 Place your bet and press the Start button to launch the rocket! 
-                  </div>
-                  <div>
-                  💰 As the rocket flies, a multiplier increases your bet. Press the Stop button to get your profit! 
-                  </div>
-                  <div>
-                    💥 But be careful, because the rocket can crash at any moment, and if it does, you'll lose your bet!
-                  </div>
+                <div>
+                  💰 As the rocket flies, a multiplier increases your bet. Press the Stop button to get your profit!
                 </div>
-                <div className="flex gap-4">
-                  <Link to ={'/help'} className="w-1/2">
-                  <ShadowButton className=" bg-white text-[#3861FB] invite-btn-setting !border-[#F3E3E3]" content="learn more"  />
-                  </Link>
-                    <ShadowButton className="w-1/2" content="Got it!"  action={()=>setFirstLogin(false)} />
-              
+                <div>
+                  💥 But be careful, because the rocket can crash at any moment, and if it does, you'll lose your bet!
                 </div>
+              </div>
+              <div className="flex gap-4">
+                <Link to={'/help'} className="w-1/2">
+                  <ShadowButton className=" bg-white text-[#3861FB] invite-btn-setting !border-[#F3E3E3]" content="learn more" />
+                </Link>
+                <ShadowButton className="w-1/2" content="Got it!" action={() => setFirstLogin(false)} />
+
+              </div>
             </InfoModal>
-            <InfoModal title = "Coming soon!" isOpen={infoState} setIsOpen={()=>setInfoState(false)} height="h-[280px]">
-                <div className="flex items-center justify-center">
-                  <img src = '/image/icon/rocketx.svg' width="48px" height="48px" className="max-w-[48px] h-[48px]" alt="avatar"  />
+            <InfoModal title="Coming soon!" isOpen={infoState} setIsOpen={() => setInfoState(false)} height="h-[280px]">
+              <div className="flex items-center justify-center">
+                <img src='/image/icon/rocketx.svg' width="48px" height="48px" className="max-w-[48px] h-[48px]" alt="avatar" />
+              </div>
+              <div className="flex flex-col gap-6 text-black text-center text-[15px] font-normal leading-5 tracking-[-2%]">
+                <div>
+                  🛠 Our token is under development!
                 </div>
-                <div className="flex flex-col gap-6 text-black text-center text-[15px] font-normal leading-5 tracking-[-2%]">
-                  <div>
-                  🛠 Our token is under development! 
-                  </div>
-                  <div>
+                <div>
                   📢 Join our social media to stay up to date.
-                  </div>
-                  <div className="px-8 flex justify-between w-full">
-                    <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgIcon />}></ShadowButton>
-                    <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgTwitter />}></ShadowButton>
-                    <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgInst />}></ShadowButton>
-                    <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgYout />}></ShadowButton>
                 </div>
+                <div className="px-8 flex justify-between w-full">
+                  <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgIcon />}></ShadowButton>
+                  <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgTwitter />}></ShadowButton>
+                  <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgInst />}></ShadowButton>
+                  <ShadowButton className={"w-8 h-8 flex justify-center p-0 items-center rounded-lg"} content={<TgYout />}></ShadowButton>
                 </div>
-                
+              </div>
+
             </InfoModal>
           </div>
         </div>
